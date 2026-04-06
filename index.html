@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario Casa Quintana - Final</title>
+  <style>
+    :root { --admin: #1a237e; --vendedor: #2e7d32; }
+    body { font-family: sans-serif; background: #f0f2f5; margin: 0; padding: 10px; }
+    
+    /* Contenedor de botones de arriba */
+    .nav { display: flex; justify-content: space-between; padding: 10px; background: white; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    
+    /* La tarjeta blanca principal */
+    .card { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    
+    /* --- AQUÍ ESTÁ LO QUE BUSCABAS: EL SCROLL --- */
+    .table-wrapper { 
+        overflow-y: auto;   /* Activa el movimiento arriba/abajo */
+        max-height: 60vh;   /* Altura fija para que no crezca infinito */
+        border: 1px solid #ddd; 
+        margin-bottom: 10px;
+    }
+
+    table { width: 100%; border-collapse: collapse; background: white; }
+    
+    /* Para que los títulos NO se muevan al bajar */
+    th { 
+        background: #eee; 
+        padding: 10px; 
+        border: 1px solid #ddd; 
+        font-size: 0.8em; 
+        position: sticky; 
+        top: 0; 
+        z-index: 10;
+    }
+
+    td { padding: 10px; border: 1px solid #eee; text-align: center; font-size: 0.9em; }
+    input { width: 60px; padding: 5px; text-align: center; font-size: 1em; }
+    
+    .btn-modo { padding: 8px 12px; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer; }
+    .btn-enviar { width: 100%; padding: 15px; border: none; border-radius: 8px; color: white; font-weight: bold; font-size: 1.1em; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="nav">
+    <div id="status" style="color: var(--vendedor); font-weight: bold; padding: 5px;">MODO VENDEDOR</div>
+    <button id="btn-switch" class="btn-modo" style="background: var(--admin);" onclick="toggleModo()">ACCESO ADMIN</button>
+</div>
+
+<div class="card">
+    <h2 id="titulo">📋 Conteo Físico Diario</h2>
+    <div class="table-wrapper">
+        <table id="miTabla">
+            <thead id="thead"></thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </div>
+    <button id="btn-send" class="btn-enviar" style="background: var(--vendedor);" onclick="enviar()">ENVIAR A GOOGLE SHEETS</button>
+</div>
+
+<script>
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbwm6pwwMpZjYJvUjSR5715mP6VIq4rhAHV3lQIgMKwIEPni8f8KZplpD3Ts6tCUm2Qe/exec";
+    const CLAVE = "2026";
+    let isAdmin = false;
+
+    // LISTA DE PRODUCTOS
+   // LISTA COMPLETA DE 52 PRODUCTOS PARA CASA QUINTANA
+    const productos = [
+        {n: "AGUA 1 1/2", s: 49}, {n: "AGUA DE 1 LITRO", s: 68}, {n: "AGUA 1 1/2 SABOR", s: 39}, {n: "ALCOHOL", s: 2},
+        {n: "BOING 1/2", s: 9}, {n: "BUSCAPINA", s: 70}, {n: "CEPILLO DENTAL", s: 19}, {n: "CORTA UÑAS", s: 4},
+        {n: "CIGARROS", s: 280}, {n: "CONDON", s: 3}, {n: "COTONETES", s: 13}, {n: "CREMA HINDS", s: 15},
+        {n: "DESODORANTE HOMBRE", s: 8}, {n: "DESODORANTE MUJER", s: 6}, {n: "ENCENDEDOR", s: 25},
+        {n: "GEL CHICO", s: 4}, {n: "GEL GRANDE", s: 4}, {n: "IBUPROFENO", s: 23}, {n: "JABON PALMOLIVE", s: 17},
+        {n: "JABON ZEST", s: 11}, {n: "JARRITO 2 LITROS", s: 16}, {n: "LORATAINA", s: 22}, {n: "PALOMITAS", s: 23},
+        {n: "PAPEL HIGIENICO", s: 83}, {n: "PARACETAMOL", s: 11}, {n: "PASTA COLGATE", s: 0},
+        {n: "PASTA LUMINUS WHITE", s: 14}, {n: "PEPTO BISMOL", s: 28}, {n: "POMADA LABIOS", s: 0},
+        {n: "RASTRILLO 2 HOJAS", s: 14}, {n: "RASTRILLO 3 HOJAS", s: 20}, {n: "RED COLA 2 LTS", s: 25},
+        {n: "RITZ", s: 24}, {n: "ROSEL", s: 22}, {n: "SAL DE UVAS PICOT", s: 0}, {n: "SEDALMERK", s: 36},
+        {n: "SHAMPOO CAPRICE", s: 15}, {n: "SHAMPOO PALMOLIVE", s: 13}, {n: "SHAMPOO PANTENE", s: 12},
+        {n: "SHAMPOO H & SH", s: 13}, {n: "SOPA MARUCHAN", s: 34}, {n: "TALCO", s: 6}, {n: "TOALLA FEMENINA", s: 35},
+        {n: "TOALLA FEM NOCTURNA", s: 4}, {n: "ZACATE CHICO", s: 17}, {n: "ZACATE GRANDE", s: 13},
+        {n: "CABLE TIPO C", s: 6}, {n: "CUBO TIPO C", s: 8}, {n: "CABLE IPHONE", s: 8},
+        {n: "CUBO IPHONE", s: 6}, {n: "PANTENE G", s: 2}, {n: "COLGATE G", s: 8}
+    ];
+
+    function toggleModo() {
+        if (!isAdmin) {
+            if (prompt("Clave:") === CLAVE) { isAdmin = true; } 
+            else { alert("Clave mal"); return; }
+        } else { isAdmin = false; }
+        render();
+    }
+
+    function render() {
+        const thead = document.getElementById('thead');
+        const tbody = document.getElementById('tbody');
+        const status = document.getElementById('status');
+        const btnSwitch = document.getElementById('btn-switch');
+        const titulo = document.getElementById('titulo');
+        const btnSend = document.getElementById('btn-send');
+
+        tbody.innerHTML = ""; // Limpiar tabla
+
+        if (isAdmin) {
+            status.innerText = "MODO ADMINISTRADOR";
+            status.style.color = "var(--admin)";
+            btnSwitch.innerText = "SALIR ADMIN";
+            titulo.innerText = "⚙️ Gestión de Inventario";
+            btnSend.style.background = "var(--admin)";
+            thead.innerHTML = "<tr><th>Producto</th><th>Inicial</th><th>+C</th><th>-V</th><th>Físico</th></tr>";
+        } else {
+            status.innerText = "MODO VENDEDOR";
+            status.style.color = "var(--vendedor)";
+            btnSwitch.innerText = "ACCESO ADMIN";
+            titulo.innerText = "📋 Conteo Físico Diario";
+            btnSend.style.background = "var(--vendedor)";
+            thead.innerHTML = "<tr><th>Producto</th><th>Conteo Real</th></tr>";
+        }
+
+        productos.forEach((p, i) => {
+            let row = tbody.insertRow();
+            if (isAdmin) {
+                row.innerHTML = `<td>${p.n}</td><td>${p.s}</td>
+                <td><input type="number" id="c-${i}" value="0"></td>
+                <td><input type="number" id="v-${i}" value="0"></td>
+                <td><input type="number" id="f-${i}" value="${p.s}"></td>`;
+            } else {
+                row.innerHTML = `<td>${p.n}</td><td><input type="number" id="f-${i}" placeholder="0"></td>`;
+            }
+        });
+    }
+
+    async function enviar() {
+        const btn = document.getElementById('btn-send');
+        btn.disabled = true;
+        btn.innerText = "ENVIANDO...";
+
+        const data = productos.map((p, i) => {
+            const f = parseInt(document.getElementById(`f-${i}`).value) || 0;
+            const c = isAdmin ? (parseInt(document.getElementById(`c-${i}`).value) || 0) : 0;
+            const v = isAdmin ? (parseInt(document.getElementById(`v-${i}`).value) || 0) : 0;
+            return {
+                rol: isAdmin ? "Admin" : "Vendedor",
+                nombre: p.n, inicial: p.s, compra: c, venta: v, fisico: f,
+                diferencia: f - (p.s + c - v)
+            };
+        });
+
+        try {
+            await fetch(URL_GAS, { method: "POST", body: JSON.stringify(data) });
+            alert("✅ ¡Enviado!");
+            location.reload();
+        } catch (e) {
+            alert("Error de conexión");
+            btn.disabled = false;
+            btn.innerText = "REINTENTAR";
+        }
+    }
+
+    // EJECUTAR AL CARGAR
+    render();
+</script>
+</body>
+</html>

@@ -66,23 +66,24 @@
     let isAdmin = false;
 
     // LISTA DE PRODUCTOS
-   // LISTA COMPLETA DE 52 PRODUCTOS PARA CASA QUINTANA
+
+  // LISTA CON EXISTENCIAS INICIALES EN CERO
     const productos = [
-        {n: "AGUA 1 1/2", s: 49}, {n: "AGUA DE 1 LITRO", s: 68}, {n: "AGUA 1 1/2 SABOR", s: 39}, {n: "ALCOHOL", s: 2},
-        {n: "BOING 1/2", s: 9}, {n: "BUSCAPINA", s: 70}, {n: "CEPILLO DENTAL", s: 19}, {n: "CORTA UÑAS", s: 4},
-        {n: "CIGARROS", s: 280}, {n: "CONDON", s: 3}, {n: "COTONETES", s: 13}, {n: "CREMA HINDS", s: 15},
-        {n: "DESODORANTE HOMBRE", s: 8}, {n: "DESODORANTE MUJER", s: 6}, {n: "ENCENDEDOR", s: 25},
-        {n: "GEL CHICO", s: 4}, {n: "GEL GRANDE", s: 4}, {n: "IBUPROFENO", s: 23}, {n: "JABON PALMOLIVE", s: 17},
-        {n: "JABON ZEST", s: 11}, {n: "JARRITO 2 LITROS", s: 16}, {n: "LORATAINA", s: 22}, {n: "PALOMITAS", s: 23},
-        {n: "PAPEL HIGIENICO", s: 83}, {n: "PARACETAMOL", s: 11}, {n: "PASTA COLGATE", s: 0},
-        {n: "PASTA LUMINUS WHITE", s: 14}, {n: "PEPTO BISMOL", s: 28}, {n: "POMADA LABIOS", s: 0},
-        {n: "RASTRILLO 2 HOJAS", s: 14}, {n: "RASTRILLO 3 HOJAS", s: 20}, {n: "RED COLA 2 LTS", s: 25},
-        {n: "RITZ", s: 24}, {n: "ROSEL", s: 22}, {n: "SAL DE UVAS PICOT", s: 0}, {n: "SEDALMERK", s: 36},
-        {n: "SHAMPOO CAPRICE", s: 15}, {n: "SHAMPOO PALMOLIVE", s: 13}, {n: "SHAMPOO PANTENE", s: 12},
-        {n: "SHAMPOO H & SH", s: 13}, {n: "SOPA MARUCHAN", s: 34}, {n: "TALCO", s: 6}, {n: "TOALLA FEMENINA", s: 35},
-        {n: "TOALLA FEM NOCTURNA", s: 4}, {n: "ZACATE CHICO", s: 17}, {n: "ZACATE GRANDE", s: 13},
-        {n: "CABLE TIPO C", s: 6}, {n: "CUBO TIPO C", s: 8}, {n: "CABLE IPHONE", s: 8},
-        {n: "CUBO IPHONE", s: 6}, {n: "PANTENE G", s: 2}, {n: "COLGATE G", s: 8}
+        {n: "AGUA 1 1/2", s: 0}, {n: "AGUA DE 1 LITRO", s: 0}, {n: "AGUA 1 1/2 SABOR", s: 0}, {n: "ALCOHOL", s: 0},
+        {n: "BOING 1/2", s: 0}, {n: "BUSCAPINA", s: 0}, {n: "CEPILLO DENTAL", s: 0}, {n: "CORTA UÑAS", s: 0},
+        {n: "CIGARROS", s: 0}, {n: "CONDON", s: 0}, {n: "COTONETES", s: 0}, {n: "CREMA HINDS", s: 0},
+        {n: "DESODORANTE HOMBRE", s: 0}, {n: "DESODORANTE MUJER", s: 0}, {n: "ENCENDEDOR", s: 0},
+        {n: "GEL CHICO", s: 0}, {n: "GEL GRANDE", s: 0}, {n: "IBUPROFENO", s: 0}, {n: "JABON PALMOLIVE", s: 0},
+        {n: "JABON ZEST", s: 0}, {n: "JARRITO 2 LITROS", s: 0}, {n: "LORATAINA", s: 0}, {n: "PALOMITAS", s: 0},
+        {n: "PAPEL HIGIENICO", s: 0}, {n: "PARACETAMOL", s: 0}, {n: "PASTA COLGATE", s: 0},
+        {n: "PASTA LUMINUS WHITE", s: 0}, {n: "PEPTO BISMOL", s: 0}, {n: "POMADA LABIOS", s: 0},
+        {n: "RASTRILLO 2 HOJAS", s: 0}, {n: "RASTRILLO 3 HOJAS", s: 0}, {n: "RED COLA 2 LTS", s: 0},
+        {n: "RITZ", s: 0}, {n: "ROSEL", s: 0}, {n: "SAL DE UVAS PICOT", s: 0}, {n: "SEDALMERK", s: 0},
+        {n: "SHAMPOO CAPRICE", s: 15}, {n: "SHAMPOO PALMOLIVE", s: 0}, {n: "SHAMPOO PANTENE", s: 0},
+        {n: "SHAMPOO H & SH", s: 0}, {n: "SOPA MARUCHAN", s: 0}, {n: "TALCO", s: 0}, {n: "TOALLA FEMENINA", s: 0},
+        {n: "TOALLA FEM NOCTURNA", s: 0}, {n: "ZACATE CHICO", s: 0}, {n: "ZACATE GRANDE", s: 0},
+        {n: "CABLE TIPO C", s: 0}, {n: "CUBO TIPO C", s: 0}, {n: "CABLE IPHONE", s: 0},
+        {n: "CUBO IPHONE", s: 0}, {n: "PANTENE G", s: 0}, {n: "COLGATE G", s: 0}
     ];
 
     function toggleModo() {

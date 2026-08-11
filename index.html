@@ -3,61 +3,393 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventario Casa Quintana - Final</title>
-  <style>
-    :root { --admin: #1a237e; --vendedor: #2e7d32; }
-    body { font-family: sans-serif; background: #f0f2f5; margin: 0; padding: 10px; }
-    
-    /* Contenedor de botones de arriba */
-    .nav { display: flex; justify-content: space-between; padding: 10px; background: white; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    
-    /* La tarjeta blanca principal */
-    .card { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    
-    /* --- AQUÍ ESTÁ LO QUE BUSCABAS: EL SCROLL --- */
-    .table-wrapper { 
-        overflow-y: auto;   /* Activa el movimiento arriba/abajo */
-        max-height: 60vh;   /* Altura fija para que no crezca infinito */
-        border: 1px solid #ddd; 
-        margin-bottom: 10px;
-    }
+    <title>Inventario Hostal Doña Aurora</title>
+    <style>
+        :root {
+            --banner-gradient: linear-gradient(90deg, #4a80f0 0%, #36d19c 100%);
+            --btn-green: #34c759;
+            --btn-green-hover: #2db34f;
+            --th-bg: #dbe7ff;
+            --th-text: #1a2b4c;
+            --bg: #e5edf5;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-dark: #2c3e50;
+            --text-muted: #64748b;
+        }
 
-    table { width: 100%; border-collapse: collapse; background: white; }
-    
-    /* Para que los títulos NO se muevan al bajar */
-    th { 
-        background: #eee; 
-        padding: 10px; 
-        border: 1px solid #ddd; 
-        font-size: 0.8em; 
-        position: sticky; 
-        top: 0; 
-        z-index: 10;
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    td { padding: 10px; border: 1px solid #eee; text-align: center; font-size: 0.9em; }
-    input { width: 60px; padding: 5px; text-align: center; font-size: 1em; }
-    
-    .btn-modo { padding: 8px 12px; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer; }
-    .btn-enviar { width: 100%; padding: 15px; border: none; border-radius: 8px; color: white; font-weight: bold; font-size: 1.1em; cursor: pointer; }
-</style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-dark);
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 920px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        /* Banner Superior */
+        .banner {
+            background: var(--banner-gradient);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .banner-center {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .banner-center h1 {
+            font-size: 1.5em;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .banner-center p {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 0.85em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            opacity: 0.95;
+            font-weight: 600;
+        }
+
+        /* Barra de Herramientas (Buscador, Fecha, Modo) */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            min-width: 240px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 10px 16px 10px 38px;
+            border-radius: 25px;
+            border: 1px solid transparent;
+            background-color: #ebf3f7;
+            font-size: 0.9em;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-container input:focus {
+            background-color: #fff;
+            border-color: #4a80f0;
+            box-shadow: 0 0 0 3px rgba(74, 128, 240, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 0.9em;
+        }
+
+        .date-display {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #475569;
+            background: #f1f5f9;
+            padding: 8px 14px;
+            border-radius: 20px;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82em;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        /* Switch iOS style */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #1a237e;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .mode-label {
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        /* Tarjeta de Contenido */
+        .content-card {
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .card-title {
+            font-size: 1.15em;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Tabla Estilizada con Scroll Unificado */
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 60vh; /* Permite desplazar toda la lista sin cambiar de página */
+            overflow-y: auto;
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 4px 6px;
+        }
+
+        th {
+            background: var(--th-bg);
+            color: var(--th-text);
+            padding: 10px 8px;
+            font-size: 0.82em;
+            font-weight: 700;
+            border-radius: 8px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        td {
+            padding: 8px 6px;
+            font-size: 0.88em;
+            text-align: center;
+            background: #f8fafc;
+            border-radius: 6px;
+        }
+
+        td.prod-name {
+            text-align: left;
+            font-weight: 500;
+            padding-left: 12px;
+            background: transparent;
+        }
+
+        td.col-c { color: #16a34a; font-weight: 600; }
+        td.col-v { color: #dc2626; font-weight: 600; }
+
+        input[type="number"] {
+            width: 58px;
+            padding: 6px 4px;
+            text-align: center;
+            font-size: 0.9em;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            outline: none;
+            background: #fff;
+        }
+
+        input[type="number"]:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Barra Inferior (Estadísticas y Envío) */
+        .footer-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 8px;
+            gap: 12px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 16px;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #334155;
+            flex-wrap: wrap;
+        }
+
+        .btn-enviar {
+            background: var(--btn-green);
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
+            transition: all 0.2s;
+        }
+
+        .btn-enviar:hover {
+            background: var(--btn-green-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-enviar:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .signal-icon {
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
 
-<div class="nav">
-    <div id="status" style="color: var(--vendedor); font-weight: bold; padding: 5px;">MODO VENDEDOR</div>
-    <button id="btn-switch" class="btn-modo" style="background: var(--admin);" onclick="toggleModo()">ACCESO ADMIN</button>
-</div>
-
-<div class="card">
-    <h2 id="titulo">📋 Conteo Físico Diario</h2>
-    <div class="table-wrapper">
-        <table id="miTabla">
-            <thead id="thead"></thead>
-            <tbody id="tbody"></tbody>
-        </table>
+<div class="main-container">
+    <!-- Banner Principal -->
+    <div class="banner">
+        <div style="width: 80px;"></div>
+        <div class="banner-center">
+            <h1>HOSTAL DOÑA AURORA</h1>
+            <p>Inventario Diario</p>
+        </div>
+        <button class="logout-btn" onclick="location.reload()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            Cerrar Sesión
+        </button>
     </div>
-    <button id="btn-send" class="btn-enviar" style="background: var(--vendedor);" onclick="enviar()">ENVIAR A GOOGLE SHEETS</button>
+
+    <!-- Barra de Herramientas -->
+    <div class="toolbar">
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search" placeholder="Buscar producto..." oninput="filtrarProductos()">
+        </div>
+
+        <div class="date-display">
+            📅 <span id="fecha-hoy">-- --- ----</span>
+        </div>
+
+        <div class="toggle-container">
+            <span>Modo Admin / Modo Vendedor</span>
+            <label class="switch">
+                <input type="checkbox" id="mode-toggle" onchange="toggleModoSwitch()">
+                <span class="slider"></span>
+            </label>
+            <span id="mode-text" class="mode-label">Vendedor</span>
+        </div>
+    </div>
+
+    <!-- Contenedor Principal Tabla -->
+    <div class="content-card">
+        <div class="card-title">
+            📋 Conteo Físico Diario
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead id="thead"></thead>
+                <tbody id="tbody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Estadísticas y Botón de Envío -->
+    <div class="footer-bar">
+        <div class="stats">
+            <div>Total Prod.: <strong id="stat-total">0</strong></div>
+            <div>Suma Inicial: <strong id="stat-inicial">0</strong></div>
+            <div>Ventas Hoy: <strong id="stat-ventas">0</strong></div>
+            <div>Diferencia Total: <strong id="stat-dif">0</strong></div>
+        </div>
+
+        <button id="btn-send" class="btn-enviar" onclick="enviar()">
+            Enviar a Google Sheets ↑
+            <span class="signal-icon">((•))</span>
+        </button>
+    </div>
 </div>
 
 <script>
@@ -65,9 +397,6 @@
     const CLAVE = "2026";
     let isAdmin = false;
 
-    // LISTA DE PRODUCTOS
-
-  // LISTA CON EXISTENCIAS INICIALES EN CERO
     const productos = [
         {n: "AGUA 1 1/2", s: 0}, {n: "AGUA DE 1 LITRO", s: 0}, {n: "AGUA 1 1/2 SABOR", s: 0}, {n: "ALCOHOL", s: 0},
         {n: "BOING 1/2", s: 0}, {n: "BUSCAPINA", s: 0}, {n: "CEPILLO DENTAL", s: 0}, {n: "CORTA UÑAS", s: 0},
@@ -86,49 +415,101 @@
         {n: "CUBO IPHONE", s: 0}, {n: "PANTENE G", s: 0}, {n: "COLGATE G", s: 0}
     ];
 
-    function toggleModo() {
-        if (!isAdmin) {
-            if (prompt("Clave:") === CLAVE) { isAdmin = true; } 
-            else { alert("Clave mal"); return; }
-        } else { isAdmin = false; }
+    function CargarFecha() {
+        const opciones = { day: '2-digit', month: 'short', year: 'numeric' };
+        const hoy = new Date().toLocaleDateString('es-ES', opciones).toUpperCase();
+        document.getElementById('fecha-hoy').innerText = hoy;
+    }
+
+    function toggleModoSwitch() {
+        const toggle = document.getElementById('mode-toggle');
+        if (toggle.checked) {
+            const pass = prompt("Clave de Administrador:");
+            if (pass === CLAVE) {
+                isAdmin = true;
+                document.getElementById('mode-text').innerText = "Admin";
+                document.getElementById('mode-text').style.color = "#1a237e";
+            } else {
+                alert("Clave incorrecta");
+                toggle.checked = false;
+                isAdmin = false;
+            }
+        } else {
+            isAdmin = false;
+            document.getElementById('mode-text').innerText = "Vendedor";
+            document.getElementById('mode-text').style.color = "#2563eb";
+        }
         render();
+    }
+
+    function autoCalcular(i) {
+        if (!isAdmin) return;
+        const c = parseInt(document.getElementById(`c-${i}`)?.value) || 0;
+        const v = parseInt(document.getElementById(`v-${i}`)?.value) || 0;
+        const inputFisico = document.getElementById(`f-${i}`);
+        if (inputFisico) {
+            inputFisico.value = productos[i].s + c - v;
+        }
+        actualizarEstadisticas();
+    }
+
+    function actualizarEstadisticas() {
+        let totalInicial = 0;
+        let totalVentas = 0;
+        let totalDiferencia = 0;
+
+        productos.forEach((p, i) => {
+            totalInicial += p.s;
+            const inputV = document.getElementById(`v-${i}`);
+            const inputF = document.getElementById(`f-${i}`);
+            const inputC = document.getElementById(`c-${i}`);
+
+            const v = inputV ? (parseInt(inputV.value) || 0) : 0;
+            const f = inputF ? (parseInt(inputF.value) || 0) : p.s;
+            const c = inputC ? (parseInt(inputC.value) || 0) : 0;
+
+            totalVentas += v;
+            totalDiferencia += (f - (p.s + c - v));
+        });
+
+        document.getElementById('stat-total').innerText = productos.length;
+        document.getElementById('stat-inicial').innerText = totalInicial;
+        document.getElementById('stat-ventas').innerText = totalVentas;
+        document.getElementById('stat-dif').innerText = totalDiferencia;
     }
 
     function render() {
         const thead = document.getElementById('thead');
-        const tbody = document.getElementById('tbody');
-        const status = document.getElementById('status');
-        const btnSwitch = document.getElementById('btn-switch');
-        const titulo = document.getElementById('titulo');
-        const btnSend = document.getElementById('btn-send');
-
-        tbody.innerHTML = ""; // Limpiar tabla
-
         if (isAdmin) {
-            status.innerText = "MODO ADMINISTRADOR";
-            status.style.color = "var(--admin)";
-            btnSwitch.innerText = "SALIR ADMIN";
-            titulo.innerText = "⚙️ Gestión de Inventario";
-            btnSend.style.background = "var(--admin)";
-            thead.innerHTML = "<tr><th>Producto</th><th>Inicial</th><th>+C</th><th>-V</th><th>Físico</th></tr>";
+            thead.innerHTML = "<tr><th>Producto</th><th>Inicial ↕</th><th>+C ↕</th><th>-V ↕</th><th>Físico ↕</th></tr>";
         } else {
-            status.innerText = "MODO VENDEDOR";
-            status.style.color = "var(--vendedor)";
-            btnSwitch.innerText = "ACCESO ADMIN";
-            titulo.innerText = "📋 Conteo Físico Diario";
-            btnSend.style.background = "var(--vendedor)";
-            thead.innerHTML = "<tr><th>Producto</th><th>Conteo Real</th></tr>";
+            thead.innerHTML = "<tr><th>Producto</th><th>Conteo Real ↕</th></tr>";
         }
+        filtrarProductos();
+        actualizarEstadisticas();
+    }
 
+    function filtrarProductos() {
+        const tbody = document.getElementById('tbody');
+        const query = document.getElementById('search').value.toLowerCase();
+        tbody.innerHTML = "";
+
+        // Se muestran TODOS los productos en una sola vista
         productos.forEach((p, i) => {
-            let row = tbody.insertRow();
-            if (isAdmin) {
-                row.innerHTML = `<td>${p.n}</td><td>${p.s}</td>
-                <td><input type="number" id="c-${i}" value="0"></td>
-                <td><input type="number" id="v-${i}" value="0"></td>
-                <td><input type="number" id="f-${i}" value="${p.s}"></td>`;
-            } else {
-                row.innerHTML = `<td>${p.n}</td><td><input type="number" id="f-${i}" placeholder="0"></td>`;
+            if (p.n.toLowerCase().includes(query)) {
+                let row = tbody.insertRow();
+                if (isAdmin) {
+                    row.innerHTML = `
+                        <td class="prod-name">${p.n}</td>
+                        <td>${p.s}</td>
+                        <td class="col-c"><input type="number" id="c-${i}" value="0" min="0" oninput="autoCalcular(${i})"></td>
+                        <td class="col-v"><input type="number" id="v-${i}" value="0" min="0" oninput="autoCalcular(${i})"></td>
+                        <td><input type="number" id="f-${i}" value="${p.s}"></td>`;
+                } else {
+                    row.innerHTML = `
+                        <td class="prod-name">${p.n}</td>
+                        <td><input type="number" id="f-${i}" placeholder="0" min="0"></td>`;
+                }
             }
         });
     }
@@ -136,31 +517,45 @@
     async function enviar() {
         const btn = document.getElementById('btn-send');
         btn.disabled = true;
-        btn.innerText = "ENVIANDO...";
+        btn.innerHTML = "Enviando... ⏳";
 
         const data = productos.map((p, i) => {
-            const f = parseInt(document.getElementById(`f-${i}`).value) || 0;
-            const c = isAdmin ? (parseInt(document.getElementById(`c-${i}`).value) || 0) : 0;
-            const v = isAdmin ? (parseInt(document.getElementById(`v-${i}`).value) || 0) : 0;
+            const inputF = document.getElementById(`f-${i}`);
+            const inputC = document.getElementById(`c-${i}`);
+            const inputV = document.getElementById(`v-${i}`);
+
+            const f = inputF ? (parseInt(inputF.value) || 0) : p.s;
+            const c = (isAdmin && inputC) ? (parseInt(inputC.value) || 0) : 0;
+            const v = (isAdmin && inputV) ? (parseInt(inputV.value) || 0) : 0;
+
             return {
                 rol: isAdmin ? "Admin" : "Vendedor",
-                nombre: p.n, inicial: p.s, compra: c, venta: v, fisico: f,
+                nombre: p.n,
+                inicial: p.s,
+                compra: c,
+                venta: v,
+                fisico: f,
                 diferencia: f - (p.s + c - v)
             };
         });
 
         try {
-            await fetch(URL_GAS, { method: "POST", body: JSON.stringify(data) });
-            alert("✅ ¡Enviado!");
+            await fetch(https://script.google.com/macros/s/AKfycbz3EVmnTXd43iaGwXGBeOBOxk6PV0WiHXx9BiV80x1wlJBB7D2evPfLpyR2-64z08OT/exec, { 
+                method: "POST", 
+                mode: "no-cors",
+                headers: { "Content-Type": "text/plain" },
+                body: JSON.stringify(data) 
+            });
+            alert("✅ ¡Datos enviados a Google Sheets correctamente!");
             location.reload();
         } catch (e) {
-            alert("Error de conexión");
+            alert("Error de conexión al enviar");
             btn.disabled = false;
-            btn.innerText = "REINTENTAR";
+            btn.innerHTML = 'Enviar a Google Sheets ↑ <span class="signal-icon">((•))</span>';
         }
     }
 
-    // EJECUTAR AL CARGAR
+    CargarFecha();
     render();
 </script>
 </body>

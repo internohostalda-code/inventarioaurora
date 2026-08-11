@@ -6,16 +6,16 @@
     <title>Inventario Hostal Doña Aurora</title>
     <style>
         :root {
-            --banner-gradient: linear-gradient(90deg, #4a80f0 0%, #36d19c 100%);
-            --btn-green: #34c759;
-            --btn-green-hover: #2db34f;
-            --th-bg: #dbe7ff;
-            --th-text: #1a2b4c;
-            --bg: #e5edf5;
+            --banner-gradient: linear-gradient(90deg, #d946ef 0%, #ec4899 100%);
+            --btn-green: #e11d48;
+            --btn-green-hover: #be123c;
+            --th-bg: #fce7f3;
+            --th-text: #831843;
+            --bg: #fdf2f8;
             --card-bg: #ffffff;
-            --border-color: #e2e8f0;
-            --text-dark: #2c3e50;
-            --text-muted: #64748b;
+            --border-color: #fbcfe8;
+            --text-dark: #371b28;
+            --text-muted: #9d174d;
         }
 
         * {
@@ -39,10 +39,9 @@
             background: var(--card-bg);
             border-radius: 20px;
             padding: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 30px rgba(219, 39, 119, 0.12);
         }
 
-        /* Banner Superior */
         .banner {
             background: var(--banner-gradient);
             color: white;
@@ -83,7 +82,6 @@
             font-weight: 600;
         }
 
-        /* Barra de Herramientas (Buscador, Fecha, Modo) */
         .toolbar {
             display: flex;
             flex-wrap: wrap;
@@ -104,7 +102,7 @@
             padding: 10px 16px 10px 38px;
             border-radius: 25px;
             border: 1px solid transparent;
-            background-color: #ebf3f7;
+            background-color: #fce7f3;
             font-size: 0.9em;
             outline: none;
             transition: all 0.2s;
@@ -112,8 +110,8 @@
 
         .search-container input:focus {
             background-color: #fff;
-            border-color: #4a80f0;
-            box-shadow: 0 0 0 3px rgba(74, 128, 240, 0.15);
+            border-color: #ec4899;
+            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
         }
 
         .search-icon {
@@ -121,7 +119,7 @@
             left: 14px;
             top: 50%;
             transform: translateY(-50%);
-            color: #94a3b8;
+            color: #be185d;
             font-size: 0.9em;
         }
 
@@ -131,8 +129,8 @@
             gap: 6px;
             font-size: 0.85em;
             font-weight: 600;
-            color: #475569;
-            background: #f1f5f9;
+            color: #831843;
+            background: #fbcfe8;
             padding: 8px 14px;
             border-radius: 20px;
         }
@@ -143,10 +141,9 @@
             gap: 8px;
             font-size: 0.82em;
             font-weight: 600;
-            color: #475569;
+            color: #831843;
         }
 
-        /* Switch iOS style */
         .switch {
             position: relative;
             display: inline-block;
@@ -164,7 +161,7 @@
             position: absolute;
             cursor: pointer;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #cbd5e1;
+            background-color: #f472b6;
             transition: .3s;
             border-radius: 24px;
         }
@@ -182,7 +179,7 @@
         }
 
         input:checked + .slider {
-            background-color: #1a237e;
+            background-color: #be185d;
         }
 
         input:checked + .slider:before {
@@ -191,16 +188,15 @@
 
         .mode-label {
             font-weight: 700;
-            color: #2563eb;
+            color: #db2777;
         }
 
-        /* Tarjeta de Contenido */
         .content-card {
             border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 16px;
             background: #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 10px rgba(219, 39, 119, 0.05);
         }
 
         .card-title {
@@ -210,12 +206,12 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            color: #831843;
         }
 
-        /* Tabla Estilizada con Scroll Unificado */
         .table-wrapper {
             overflow-x: auto;
-            max-height: 60vh; /* Permite desplazar toda la lista sin cambiar de página */
+            max-height: 60vh;
             overflow-y: auto;
             border-radius: 10px;
         }
@@ -242,7 +238,7 @@
             padding: 8px 6px;
             font-size: 0.88em;
             text-align: center;
-            background: #f8fafc;
+            background: #fff5f8;
             border-radius: 6px;
         }
 
@@ -253,26 +249,25 @@
             background: transparent;
         }
 
-        td.col-c { color: #16a34a; font-weight: 600; }
-        td.col-v { color: #dc2626; font-weight: 600; }
+        td.col-c { color: #059669; font-weight: 600; }
+        td.col-v { color: #e11d48; font-weight: 600; }
 
         input[type="number"] {
             width: 58px;
             padding: 6px 4px;
             text-align: center;
             font-size: 0.9em;
-            border: 1px solid #cbd5e1;
+            border: 1px solid #fbcfe8;
             border-radius: 10px;
             outline: none;
             background: #fff;
         }
 
         input[type="number"]:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+            border-color: #ec4899;
+            box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.25);
         }
 
-        /* Barra Inferior (Estadísticas y Envío) */
         .footer-bar {
             display: flex;
             flex-wrap: wrap;
@@ -288,7 +283,7 @@
             gap: 16px;
             font-size: 0.85em;
             font-weight: 600;
-            color: #334155;
+            color: #831843;
             flex-wrap: wrap;
         }
 
@@ -304,7 +299,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
+            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.35);
             transition: all 0.2s;
         }
 
@@ -328,7 +323,6 @@
 <body>
 
 <div class="main-container">
-    <!-- Banner Principal -->
     <div class="banner">
         <div style="width: 80px;"></div>
         <div class="banner-center">
@@ -341,7 +335,6 @@
         </button>
     </div>
 
-    <!-- Barra de Herramientas -->
     <div class="toolbar">
         <div class="search-container">
             <span class="search-icon">🔍</span>
@@ -362,7 +355,6 @@
         </div>
     </div>
 
-    <!-- Contenedor Principal Tabla -->
     <div class="content-card">
         <div class="card-title">
             📋 Conteo Físico Diario
@@ -376,7 +368,6 @@
         </div>
     </div>
 
-    <!-- Estadísticas y Botón de Envío -->
     <div class="footer-bar">
         <div class="stats">
             <div>Total Prod.: <strong id="stat-total">0</strong></div>
@@ -393,7 +384,7 @@
 </div>
 
 <script>
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbwm6pwwMpZjYJvUjSR5715mP6VIq4rhAHV3lQIgMKwIEPni8f8KZplpD3Ts6tCUm2Qe/exec";
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbz3EVmnTXd43iaGwXGBeOBOxk6PV0WiHXx9BiV80x1wlJBB7D2evPfLpyR2-64z08OT/exec";
     const CLAVE = "2026";
     let isAdmin = false;
 
@@ -409,11 +400,11 @@
         {n: "RASTRILLO 2 HOJAS", s: 0}, {n: "RASTRILLO 3 HOJAS", s: 0}, {n: "RED COLA 2 LTS", s: 0},
         {n: "RITZ", s: 0}, {n: "ROSEL", s: 0}, {n: "SAL DE UVAS PICOT", s: 0}, {n: "SEDALMERK", s: 0},
         {n: "SHAMPOO CAPRICE", s: 15}, {n: "SHAMPOO PALMOLIVE", s: 0}, {n: "SHAMPOO PANTENE", s: 0},
-        {n: "SHAMPOO H & SH", s: 0}, {n: "SOPA MARUCHAN", s: 0}, {n: "SUERO ELECTROLIT", s: 0}, {n: "TALCO", s: 0}, {n: "TOALLA FEMENINA", s: 0},
-        {n: "TOALLA FEM NOCTURNA", s: 0}, {n: "ZACATE CHICO", s: 0}, {n: "ZACATE GRANDE", s: 0},
+        {n: "SHAMPOO H & SH", s: 0}, {n: "SOPA MARUCHAN", s: 0}, {n: "SUERO ELECTROLIT", s: 0}, {n: "TALCO", s: 0}, 
+        {n: "TOALLA FEMENINA", s: 0}, {n: "TOALLA FEM NOCTURNA", s: 0}, {n: "ZACATE CHICO", s: 0}, {n: "ZACATE GRANDE", s: 0},
         {n: "CABLE TIPO C", s: 0}, {n: "CUBO TIPO C", s: 0}, {n: "CABLE IPHONE", s: 0},
         {n: "CUBO IPHONE", s: 0}, {n: "PANTENE G", s: 0}, {n: "COLGATE G", s: 0}
-    ];
+    ].map(p => ({ ...p, c: 0, v: 0, f: p.s }));
 
     function CargarFecha() {
         const opciones = { day: '2-digit', month: 'short', year: 'numeric' };
@@ -428,7 +419,7 @@
             if (pass === CLAVE) {
                 isAdmin = true;
                 document.getElementById('mode-text').innerText = "Admin";
-                document.getElementById('mode-text').style.color = "#1a237e";
+                document.getElementById('mode-text').style.color = "#831843";
             } else {
                 alert("Clave incorrecta");
                 toggle.checked = false;
@@ -437,19 +428,21 @@
         } else {
             isAdmin = false;
             document.getElementById('mode-text').innerText = "Vendedor";
-            document.getElementById('mode-text').style.color = "#2563eb";
+            document.getElementById('mode-text').style.color = "#db2777";
         }
         render();
     }
 
-    function autoCalcular(i) {
-        if (!isAdmin) return;
-        const c = parseInt(document.getElementById(`c-${i}`)?.value) || 0;
-        const v = parseInt(document.getElementById(`v-${i}`)?.value) || 0;
-        const inputFisico = document.getElementById(`f-${i}`);
-        if (inputFisico) {
-            inputFisico.value = productos[i].s + c - v;
+    function actualizarValor(i, campo, valor) {
+        const valNum = parseInt(valor) || 0;
+        productos[i][campo] = valNum;
+
+        if (isAdmin && (campo === 'c' || campo === 'v')) {
+            productos[i].f = Math.max(0, productos[i].s + productos[i].c - productos[i].v);
+            const inputFisico = document.getElementById(`f-${i}`);
+            if (inputFisico) inputFisico.value = productos[i].f;
         }
+
         actualizarEstadisticas();
     }
 
@@ -458,18 +451,10 @@
         let totalVentas = 0;
         let totalDiferencia = 0;
 
-        productos.forEach((p, i) => {
+        productos.forEach((p) => {
             totalInicial += p.s;
-            const inputV = document.getElementById(`v-${i}`);
-            const inputF = document.getElementById(`f-${i}`);
-            const inputC = document.getElementById(`c-${i}`);
-
-            const v = inputV ? (parseInt(inputV.value) || 0) : 0;
-            const f = inputF ? (parseInt(inputF.value) || 0) : p.s;
-            const c = inputC ? (parseInt(inputC.value) || 0) : 0;
-
-            totalVentas += v;
-            totalDiferencia += (f - (p.s + c - v));
+            totalVentas += p.v;
+            totalDiferencia += (p.f - (p.s + p.c - p.v));
         });
 
         document.getElementById('stat-total').innerText = productos.length;
@@ -486,7 +471,6 @@
             thead.innerHTML = "<tr><th>Producto</th><th>Conteo Real ↕</th></tr>";
         }
         filtrarProductos();
-        actualizarEstadisticas();
     }
 
     function filtrarProductos() {
@@ -494,7 +478,6 @@
         const query = document.getElementById('search').value.toLowerCase();
         tbody.innerHTML = "";
 
-        // Se muestran TODOS los productos en una sola vista
         productos.forEach((p, i) => {
             if (p.n.toLowerCase().includes(query)) {
                 let row = tbody.insertRow();
@@ -502,16 +485,17 @@
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
                         <td>${p.s}</td>
-                        <td class="col-c"><input type="number" id="c-${i}" value="0" min="0" oninput="autoCalcular(${i})"></td>
-                        <td class="col-v"><input type="number" id="v-${i}" value="0" min="0" oninput="autoCalcular(${i})"></td>
-                        <td><input type="number" id="f-${i}" value="${p.s}"></td>`;
+                        <td class="col-c"><input type="number" id="c-${i}" value="${p.c}" min="0" oninput="actualizarValor(${i}, 'c', this.value)"></td>
+                        <td class="col-v"><input type="number" id="v-${i}" value="${p.v}" min="0" oninput="actualizarValor(${i}, 'v', this.value)"></td>
+                        <td><input type="number" id="f-${i}" value="${p.f}" min="0" oninput="actualizarValor(${i}, 'f', this.value)"></td>`;
                 } else {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
-                        <td><input type="number" id="f-${i}" placeholder="0" min="0"></td>`;
+                        <td><input type="number" id="f-${i}" value="${p.f !== 0 ? p.f : ''}" placeholder="0" min="0" oninput="actualizarValor(${i}, 'f', this.value)"></td>`;
                 }
             }
         });
+        actualizarEstadisticas();
     }
 
     async function enviar() {
@@ -519,28 +503,22 @@
         btn.disabled = true;
         btn.innerHTML = "Enviando... ⏳";
 
-        const data = productos.map((p, i) => {
-            const inputF = document.getElementById(`f-${i}`);
-            const inputC = document.getElementById(`c-${i}`);
-            const inputV = document.getElementById(`v-${i}`);
-
-            const f = inputF ? (parseInt(inputF.value) || 0) : p.s;
-            const c = (isAdmin && inputC) ? (parseInt(inputC.value) || 0) : 0;
-            const v = (isAdmin && inputV) ? (parseInt(inputV.value) || 0) : 0;
-
+        const data = productos.map((p) => {
+            const c = isAdmin ? p.c : 0;
+            const v = isAdmin ? p.v : 0;
             return {
                 rol: isAdmin ? "Admin" : "Vendedor",
                 nombre: p.n,
                 inicial: p.s,
                 compra: c,
                 venta: v,
-                fisico: f,
-                diferencia: f - (p.s + c - v)
+                fisico: p.f,
+                diferencia: p.f - (p.s + c - v)
             };
         });
 
         try {
-            await fetch("https://script.google.com/macros/s/AKfycbz3EVmnTXd43iaGwXGBeOBOxk6PV0WiHXx9BiV80x1wlJBB7D2evPfLpyR2-64z08OT/exec", { 
+            await fetch(URL_GAS, { 
                 method: "POST", 
                 mode: "no-cors",
                 headers: { "Content-Type": "text/plain" },

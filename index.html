@@ -1,540 +1,527 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventario Hostal Doña Aurora</title>
-    <style>
-        :root {
-            --banner-gradient: linear-gradient(90deg, #d946ef 0%, #ec4899 100%);
-            --btn-green: #e11d48;
-            --btn-green-hover: #be123c;
-            --th-bg: #fce7f3;
-            --th-text: #831843;
-            --bg: #fdf2f8;
-            --card-bg: #ffffff;
-            --border-color: #fbcfe8;
-            --text-dark: #371b28;
-            --text-muted: #9d174d;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario Hostal Doña Aurora</title>
+    <style>
+        :root {
+            --banner-gradient: linear-gradient(135deg, #0f2537 0%, #1b3b6f 100%);
+            --btn-action: #1b3b6f;
+            --btn-action-hover: #0f2537;
+            --accent-gold: #d4af37;
+            --th-bg: #e8f1f5;
+            --th-text: #0f2537;
+            --bg: #f4f7f9;
+            --card-bg: #ffffff;
+            --border-color: #d1e1e9;
+            --text-dark: #1f2937;
+        }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text-dark);
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-dark);
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+        }
 
-        .main-container {
-            width: 100%;
-            max-width: 920px;
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 16px;
-            box-shadow: 0 10px 30px rgba(219, 39, 119, 0.12);
-        }
+        .main-container {
+            width: 100%;
+            max-width: 980px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 10px 30px rgba(27, 59, 111, 0.1);
+        }
 
-        .banner {
-            background: var(--banner-gradient);
-            color: white;
-            padding: 16px 20px;
-            border-radius: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
+        .banner {
+            background: var(--banner-gradient);
+            color: white;
+            padding: 24px 20px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            position: relative;
+        }
 
-        .banner-center {
-            text-align: center;
-            flex-grow: 1;
-        }
+        .banner-logo-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-        .banner-center h1 {
-            font-size: 1.5em;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-        }
+        .company-logo {
+            width: 100%;
+            max-width: 380px;
+            height: auto;
+            max-height: 140px;
+            object-fit: contain;
+            background: transparent;
+            filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.3));
+        }
 
-        .banner-center p {
-            font-size: 0.85em;
-            opacity: 0.9;
-        }
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 0.8em;
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
 
-        .logout-btn {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 0.85em;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            opacity: 0.95;
-            font-weight: 600;
-        }
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
 
-        .toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
 
-        .search-container {
-            position: relative;
-            flex: 1;
-            min-width: 240px;
-        }
+        .search-container {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+        }
 
-        .search-container input {
-            width: 100%;
-            padding: 10px 16px 10px 38px;
-            border-radius: 25px;
-            border: 1px solid transparent;
-            background-color: #fce7f3;
-            font-size: 0.9em;
-            outline: none;
-            transition: all 0.2s;
-        }
+        .search-container input {
+            width: 100%;
+            padding: 10px 16px 10px 38px;
+            border-radius: 25px;
+            border: 1px solid var(--border-color);
+            background-color: #f8fafc;
+            font-size: 0.9em;
+            outline: none;
+            color: var(--text-dark);
+        }
 
-        .search-container input:focus {
-            background-color: #fff;
-            border-color: #ec4899;
-            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
-        }
+        .search-container input:focus {
+            border-color: var(--btn-action);
+            background-color: #fff;
+        }
 
-        .search-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #be185d;
-            font-size: 0.9em;
-        }
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
 
-        .date-display {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.85em;
-            font-weight: 600;
-            color: #831843;
-            background: #fbcfe8;
-            padding: 8px 14px;
-            border-radius: 20px;
-        }
+        .date-display {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: var(--th-text);
+            background: var(--th-bg);
+            padding: 8px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
 
-        .toggle-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.82em;
-            font-weight: 600;
-            color: #831843;
-        }
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82em;
+            font-weight: 600;
+            color: var(--th-text);
+        }
 
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 24px;
-        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
 
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+        .switch input { opacity: 0; width: 0; height: 0; }
 
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #f472b6;
-            transition: .3s;
-            border-radius: 24px;
-        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #94a3b8;
+            transition: .3s;
+            border-radius: 24px;
+        }
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
-        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px; width: 18px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
 
-        input:checked + .slider {
-            background-color: #be185d;
-        }
+        input:checked + .slider { background-color: var(--btn-action); }
+        input:checked + .slider:before { transform: translateX(20px); }
 
-        input:checked + .slider:before {
-            transform: translateX(20px);
-        }
+        .status-banner {
+            background: #f1f5f9;
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            font-size: 0.88em;
+            color: var(--th-text);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-        .mode-label {
-            font-weight: 700;
-            color: #db2777;
-        }
+        .badge-active {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
 
-        .content-card {
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 16px;
-            background: #fff;
-            box-shadow: 0 2px 10px rgba(219, 39, 119, 0.05);
-        }
+        .content-card {
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            background: #fff;
+        }
 
-        .card-title {
-            font-size: 1.15em;
-            font-weight: 700;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #831843;
-        }
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 60vh;
+            border-radius: 10px;
+        }
 
-        .table-wrapper {
-            overflow-x: auto;
-            max-height: 60vh;
-            overflow-y: auto;
-            border-radius: 10px;
-        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 4px 6px;
+        }
 
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 4px 6px;
-        }
+        th {
+            background: var(--th-bg);
+            color: var(--th-text);
+            padding: 10px;
+            font-size: 0.85em;
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+        }
 
-        th {
-            background: var(--th-bg);
-            color: var(--th-text);
-            padding: 10px 8px;
-            font-size: 0.82em;
-            font-weight: 700;
-            border-radius: 8px;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
+        td {
+            padding: 8px;
+            font-size: 0.88em;
+            text-align: center;
+            background: #f8fafc;
+            border-radius: 6px;
+        }
 
-        td {
-            padding: 8px 6px;
-            font-size: 0.88em;
-            text-align: center;
-            background: #fff5f8;
-            border-radius: 6px;
-        }
+        td.prod-name { text-align: left; font-weight: 600; padding-left: 12px; }
 
-        td.prod-name {
-            text-align: left;
-            font-weight: 500;
-            padding-left: 12px;
-            background: transparent;
-        }
+        input[type="number"] {
+            width: 65px;
+            padding: 6px 4px;
+            text-align: center;
+            font-size: 0.9em;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+        }
 
-        td.col-c { color: #059669; font-weight: 600; }
-        td.col-v { color: #e11d48; font-weight: 600; }
+        input[type="number"]:focus {
+            border-color: var(--btn-action);
+        }
 
-        input[type="number"] {
-            width: 58px;
-            padding: 6px 4px;
-            text-align: center;
-            font-size: 0.9em;
-            border: 1px solid #fbcfe8;
-            border-radius: 10px;
-            outline: none;
-            background: #fff;
-        }
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+        }
 
-        input[type="number"]:focus {
-            border-color: #ec4899;
-            box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.25);
-        }
+        .btn-enviar {
+            background: var(--btn-action);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(27, 59, 111, 0.2);
+            transition: background 0.2s;
+        }
 
-        .footer-bar {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 16px;
-            padding-top: 8px;
-            gap: 12px;
-        }
-
-        .stats {
-            display: flex;
-            gap: 16px;
-            font-size: 0.85em;
-            font-weight: 600;
-            color: #831843;
-            flex-wrap: wrap;
-        }
-
-        .btn-enviar {
-            background: var(--btn-green);
-            color: white;
-            border: none;
-            padding: 12px 22px;
-            border-radius: 25px;
-            font-size: 0.9em;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.35);
-            transition: all 0.2s;
-        }
-
-        .btn-enviar:hover {
-            background: var(--btn-green-hover);
-            transform: translateY(-1px);
-        }
-
-        .btn-enviar:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .signal-icon {
-            font-size: 0.8em;
-            opacity: 0.8;
-        }
-    </style>
+        .btn-enviar:hover {
+            background: var(--btn-action-hover);
+        }
+    </style>
 </head>
 <body>
 
 <div class="main-container">
-    <div class="banner">
-        <div style="width: 80px;"></div>
-        <div class="banner-center">
-            <h1>HOSTAL DOÑA AURORA</h1>
-            <p>Inventario Diario</p>
-        </div>
-        <button class="logout-btn" onclick="location.reload()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-            Cerrar Sesión
-        </button>
-    </div>
+    <div class="banner">
+        <div class="banner-logo-container">
+            <img src="https://lh3.googleusercontent.com/d/1prUXBfN44PWRGggwhEJAgQeltmvMS33k" alt="Logo Hostal Doña Aurora" class="company-logo" id="logo-img">
+        </div>
+        <button class="logout-btn" onclick="location.reload()">🔒 Salir</button>
+    </div>
 
-    <div class="toolbar">
-        <div class="search-container">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="search" placeholder="Buscar producto..." oninput="filtrarProductos()">
-        </div>
+    <div class="toolbar">
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search" placeholder="Buscar producto..." oninput="filtrarProductos()">
+        </div>
 
-        <div class="date-display">
-            📅 <span id="fecha-hoy">-- --- ----</span>
-        </div>
+        <div class="date-display">
+            📅 <span id="fecha-hoy">-- --- ----</span>
+        </div>
 
-        <div class="toggle-container">
-            <span>Modo Admin / Modo Vendedor</span>
-            <label class="switch">
-                <input type="checkbox" id="mode-toggle" onchange="toggleModoSwitch()">
-                <span class="slider"></span>
-            </label>
-            <span id="mode-text" class="mode-label">Vendedor</span>
-        </div>
-    </div>
+        <div class="toggle-container">
+            <span>Admin</span>
+            <label class="switch">
+                <input type="checkbox" id="mode-toggle" onchange="toggleModoSwitch()">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
 
-    <div class="content-card">
-        <div class="card-title">
-            📋 Conteo Físico Diario
-        </div>
+    <div class="status-banner">
+        <div><strong>Vista Actual:</strong> <span id="status-text">Cargando modo...</span></div>
+        <div id="status-badge" class="badge-active">--</div>
+    </div>
 
-        <div class="table-wrapper">
-            <table>
-                <thead id="thead"></thead>
-                <tbody id="tbody"></tbody>
-            </table>
-        </div>
-    </div>
+    <div class="content-card">
+        <div class="table-wrapper">
+            <table>
+                <thead id="thead"></thead>
+                <tbody id="tbody"></tbody>
+            </table>
+        </div>
+    </div>
 
-    <div class="footer-bar">
-        <div class="stats">
-            <div>Total Prod.: <strong id="stat-total">0</strong></div>
-            <div>Suma Inicial: <strong id="stat-inicial">0</strong></div>
-            <div>Ventas Hoy: <strong id="stat-ventas">0</strong></div>
-            <div>Diferencia Total: <strong id="stat-dif">0</strong></div>
-        </div>
-
-        <button id="btn-send" class="btn-enviar" onclick="enviar()">
-            Enviar a Google Sheets ↑
-            <span class="signal-icon">((•))</span>
-        </button>
-    </div>
+    <div class="footer-bar">
+        <div>Total productos: <strong id="stat-total">0</strong></div>
+        <button id="btn-send" class="btn-enviar" onclick="enviar()">Enviar a Sheets ↑</button>
+    </div>
 </div>
 
 <script>
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbz3EVmnTXd43iaGwXGBeOBOxk6PV0WiHXx9BiV80x1wlJBB7D2evPfLpyR2-64z08OT/exec";
-    const CLAVE = "2026";
-    let isAdmin = false;
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbz3EVmnTXd43iaGwXGBeOBOxk6PV0WiHXx9BiV80x1wlJBB7D2evPfLpyR2-64z08OT/exec";
+    const CLAVE = "2026";
+    let isAdmin = false;
 
-    const productos = [
-        {n: "AGUA 1 1/2", s: 0}, {n: "AGUA DE 1 LITRO", s: 0}, {n: "AGUA 1 1/2 SABOR", s: 0}, {n: "ALCOHOL", s: 0},
-        {n: "BOING 1/2", s: 0}, {n: "BUSCAPINA", s: 0}, {n: "CEPILLO DENTAL", s: 0}, {n: "CORTA UÑAS", s: 0},
-        {n: "CIGARROS", s: 0}, {n: "CONDON", s: 0}, {n: "COTONETES", s: 0}, {n: "CREMA HINDS", s: 0},
-        {n: "DESODORANTE HOMBRE", s: 0}, {n: "DESODORANTE MUJER", s: 0}, {n: "ENCENDEDOR", s: 0},
-        {n: "GEL CHICO", s: 0}, {n: "GEL GRANDE", s: 0}, {n: "IBUPROFENO", s: 0}, {n: "JABON PALMOLIVE", s: 0},
-        {n: "JABON ZEST", s: 0}, {n: "JARRITO 2 LITROS", s: 0}, {n: "LORATAINA", s: 0}, {n: "PALOMITAS", s: 0},
-        {n: "PAPEL HIGIENICO", s: 0}, {n: "PARACETAMOL", s: 0}, {n: "PASTA COLGATE", s: 0},
-        {n: "PASTA LUMINUS WHITE", s: 0}, {n: "PEPTO BISMOL", s: 0}, {n: "POMADA LABIOS", s: 0},
-        {n: "RASTRILLO 2 HOJAS", s: 0}, {n: "RASTRILLO 3 HOJAS", s: 0}, {n: "RED COLA 2 LTS", s: 0},
-        {n: "RITZ", s: 0}, {n: "ROSEL", s: 0}, {n: "SAL DE UVAS PICOT", s: 0}, {n: "SEDALMERK", s: 0},
-        {n: "SHAMPOO CAPRICE", s: 0}, {n: "SHAMPOO PALMOLIVE", s: 0}, {n: "SHAMPOO PANTENE", s: 0},
-        {n: "SHAMPOO H & SH", s: 0}, {n: "SOPA MARUCHAN", s: 0}, {n: "SUERO ELECTROLIT", s: 0}, {n: "TALCO", s: 0}, 
-        {n: "TOALLA FEMENINA", s: 0}, {n: "TOALLA FEM NOCTURNA", s: 0}, {n: "ZACATE CHICO", s: 0}, {n: "ZACATE GRANDE", s: 0},
-        {n: "CABLE TIPO C", s: 0}, {n: "CUBO TIPO C", s: 0}, {n: "CABLE IPHONE", s: 0},
-        {n: "CUBO IPHONE", s: 0}, {n: "PANTENE G", s: 0}, {n: "COLGATE G", s: 0}
-    ].map(p => ({ ...p, c: 0, v: 0, f: p.s }));
+    const listaNombres = [
+        "AGUA 1 1/2", "AGUA DE 1 LITRO", "AGUA 1 1/2 SABOR", "ALCOHOL",
+        "BOING 1/2", "BUSCAPINA", "CEPILLO DENTAL", "CORTA UÑAS",
+        "CIGARROS", "CONDON", "COTONETES", "CREMA HINDS",
+        "DESODORANTE HOMBRE", "DESODORANTE MUJER", "ENCENDEDOR",
+        "GEL CHICO", "GEL GRANDE", "IBUPROFENO", "JABON PALMOLIVE",
+        "JABON ZEST", "JARRITO 2 LITROS", "LORATAINA", "PALOMITAS",
+        "PAPEL HIGIENICO", "PARACETAMOL", "PASTA COLGATE",
+        "PASTA LUMINUS WHITE", "PEPTO BISMOL", "POMADA LABIOS",
+        "RASTRILLO 2 HOJAS", "RASTRILLO 3 HOJAS", "RED COLA 2 LTS",
+        "RITZ", "ROSEL", "SAL DE UVAS PICOT", "SEDALMERK",
+        "SHAMPOO CAPRICE", "SHAMPOO PALMOLIVE", "SHAMPOO PANTENE",
+        "SHAMPOO H & SH", "SOPA MARUCHAN", "SUERO ELECTROLIT", "TALCO", 
+        "TOALLA FEMENINA", "TOALLA FEM NOCTURNA", "ZACATE CHICO", "ZACATE GRANDE",
+        "CABLE TIPO C", "CUBO TIPO C", "CABLE IPHONE",
+        "CUBO IPHONE", "PANTENE G", "COLGATE G"
+    ];
 
-    function CargarFecha() {
-        const opciones = { day: '2-digit', month: 'short', year: 'numeric' };
-        const hoy = new Date().toLocaleDateString('es-ES', opciones).toUpperCase();
-        document.getElementById('fecha-hoy').innerText = hoy;
-    }
+    let productos = listaNombres.map(nombre => ({
+        n: nombre,
+        s: 0,
+        c: 0,
+        vMat: 0,
+        vNoc: 0,
+        vTotal: 0,
+        f: 0
+    }));
 
-    function toggleModoSwitch() {
-        const toggle = document.getElementById('mode-toggle');
-        if (toggle.checked) {
-            const pass = prompt("Clave de Administrador:");
-            if (pass === CLAVE) {
-                isAdmin = true;
-                document.getElementById('mode-text').innerText = "Admin";
-                document.getElementById('mode-text').style.color = "#831843";
-            } else {
-                alert("Clave incorrecta");
-                toggle.checked = false;
-                isAdmin = false;
-            }
-        } else {
-            isAdmin = false;
-            document.getElementById('mode-text').innerText = "Vendedor";
-            document.getElementById('mode-text').style.color = "#db2777";
-        }
-        render();
-    }
+    function CargarFecha() {
+        const opciones = { day: '2-digit', month: 'short', year: 'numeric' };
+        document.getElementById('fecha-hoy').innerText = new Date().toLocaleDateString('es-ES', opciones).toUpperCase();
+    }
 
-    function actualizarValor(i, campo, valor) {
-        const valNum = parseInt(valor) || 0;
-        productos[i][campo] = valNum;
+    // CORRECCIÓN REGLAS DE HORARIO
+    function obtenerFaseActual() {
+        if (isAdmin) return "ADMIN";
+        
+        const ahora = new Date();
+        const minsActuales = ahora.getHours() * 60 + ahora.getMinutes();
 
-        if (isAdmin && (campo === 'c' || campo === 'v')) {
-            productos[i].f = Math.max(0, productos[i].s + productos[i].c - productos[i].v);
-            const inputFisico = document.getElementById(`f-${i}`);
-            if (inputFisico) inputFisico.value = productos[i].f;
-        }
+        const min0530 = 5 * 60 + 30;   // 05:30 AM = 330 min
+        const min1830 = 18 * 60 + 30;  // 06:30 PM = 1110 min
 
-        actualizarEstadisticas();
-    }
+        // De 05:30 AM a 18:30 PM es Turno Matutino
+        if (minsActuales >= min0530 && minsActuales < min1830) {
+            return "MATUTINO";
+        } else {
+            // De 18:30 PM a 05:30 AM es Turno Nocturno + Conteo Físico
+            return "NOCTURNO_FISICO";
+        }
+    }
 
-    function actualizarEstadisticas() {
-        let totalInicial = 0;
-        let totalVentas = 0;
-        let totalDiferencia = 0;
+    function toggleModoSwitch() {
+        const toggle = document.getElementById('mode-toggle');
+        if (toggle.checked) {
+            const pass = prompt("Clave Admin:");
+            if (pass === CLAVE) {
+                isAdmin = true;
+            } else {
+                alert("Clave incorrecta");
+                toggle.checked = false;
+                isAdmin = false;
+            }
+        } else {
+            isAdmin = false;
+        }
+        render();
+    }
 
-        productos.forEach((p) => {
-            totalInicial += p.s;
-            totalVentas += p.v;
-            totalDiferencia += (p.f - (p.s + p.c - p.v));
-        });
+    function actualizarValor(i, campo, valor) {
+        productos[i][campo] = parseInt(valor) || 0;
+        productos[i].vTotal = productos[i].vMat + productos[i].vNoc;
+    }
 
-        document.getElementById('stat-total').innerText = productos.length;
-        document.getElementById('stat-inicial').innerText = totalInicial;
-        document.getElementById('stat-ventas').innerText = totalVentas;
-        document.getElementById('stat-dif').innerText = totalDiferencia;
-    }
+    function render() {
+        const fase = obtenerFaseActual();
+        const thead = document.getElementById('thead');
+        const statusText = document.getElementById('status-text');
+        const statusBadge = document.getElementById('status-badge');
 
-    function render() {
-        const thead = document.getElementById('thead');
-        if (isAdmin) {
-            thead.innerHTML = "<tr><th>Producto</th><th>Inicial ↕</th><th>+C ↕</th><th>-V ↕</th><th>Físico ↕</th></tr>";
-        } else {
-            thead.innerHTML = "<tr><th>Producto</th><th>Conteo Real ↕</th></tr>";
-        }
-        filtrarProductos();
-    }
+        if (fase === "ADMIN") {
+            statusText.innerText = "Modo Administrador (Edición completa)";
+            statusBadge.innerText = "ADMIN";
+            thead.innerHTML = "<tr><th>Producto</th><th>Inicial</th><th>+C</th><th>-V. Mat</th><th>-V. Noc</th><th>Total V.</th><th>Físico</th></tr>";
+        } else if (fase === "MATUTINO") {
+            statusText.innerText = "Captura de Ventas: Turno Matutino (05:30 hrs - 18:30 hrs)";
+            statusBadge.innerText = "TURNO MATUTINO";
+            thead.innerHTML = "<tr><th>Producto</th><th>Ventas Turno Matutino</th></tr>";
+        } else if (fase === "NOCTURNO_FISICO") {
+            statusText.innerText = "Captura de Ventas: Turno Nocturno y Conteo Físico (18:30 hrs - 05:30 hrs)";
+            statusBadge.innerText = "TURNO NOCTURNO + FÍSICO";
+            thead.innerHTML = "<tr><th>Producto</th><th>Ventas Turno Nocturno</th><th>Conteo Físico Final</th></tr>";
+        }
 
-    function filtrarProductos() {
-        const tbody = document.getElementById('tbody');
-        const query = document.getElementById('search').value.toLowerCase();
-        tbody.innerHTML = "";
+        filtrarProductos();
+    }
 
-        productos.forEach((p, i) => {
-            if (p.n.toLowerCase().includes(query)) {
-                let row = tbody.insertRow();
-                if (isAdmin) {
-                    row.innerHTML = `
-                        <td class="prod-name">${p.n}</td>
-                        <td>${p.s}</td>
-                        <td class="col-c"><input type="number" id="c-${i}" value="${p.c}" min="0" oninput="actualizarValor(${i}, 'c', this.value)"></td>
-                        <td class="col-v"><input type="number" id="v-${i}" value="${p.v}" min="0" oninput="actualizarValor(${i}, 'v', this.value)"></td>
-                        <td><input type="number" id="f-${i}" value="${p.f}" min="0" oninput="actualizarValor(${i}, 'f', this.value)"></td>`;
-                } else {
-                    row.innerHTML = `
-                        <td class="prod-name">${p.n}</td>
-                        <td><input type="number" id="f-${i}" value="${p.f !== 0 ? p.f : ''}" placeholder="0" min="0" oninput="actualizarValor(${i}, 'f', this.value)"></td>`;
-                }
-            }
-        });
-        actualizarEstadisticas();
-    }
+    function filtrarProductos() {
+        const tbody = document.getElementById('tbody');
+        const query = document.getElementById('search').value.toLowerCase();
+        const fase = obtenerFaseActual();
+        tbody.innerHTML = "";
 
-    async function enviar() {
-        const btn = document.getElementById('btn-send');
-        btn.disabled = true;
-        btn.innerHTML = "Enviando... ⏳";
+        productos.forEach((p, i) => {
+            if (p.n.toLowerCase().includes(query)) {
+                let row = tbody.insertRow();
+                
+                if (fase === "ADMIN") {
+                    row.innerHTML = `
+                        <td class="prod-name">${p.n}</td>
+                        <td><input type="number" value="${p.s}" oninput="actualizarValor(${i}, 's', this.value)"></td>
+                        <td><input type="number" value="${p.c}" oninput="actualizarValor(${i}, 'c', this.value)"></td>
+                        <td><input type="number" value="${p.vMat}" oninput="actualizarValor(${i}, 'vMat', this.value)"></td>
+                        <td><input type="number" value="${p.vNoc}" oninput="actualizarValor(${i}, 'vNoc', this.value)"></td>
+                        <td><strong>${p.vTotal}</strong></td>
+                        <td><input type="number" value="${p.f}" oninput="actualizarValor(${i}, 'f', this.value)"></td>`;
+                } else if (fase === "MATUTINO") {
+                    row.innerHTML = `
+                        <td class="prod-name">${p.n}</td>
+                        <td><input type="number" value="${p.vMat !== 0 ? p.vMat : ''}" placeholder="0" min="0" oninput="actualizarValor(${i}, 'vMat', this.value)"></td>`;
+                } else if (fase === "NOCTURNO_FISICO") {
+                    row.innerHTML = `
+                        <td class="prod-name">${p.n}</td>
+                        <td><input type="number" value="${p.vNoc !== 0 ? p.vNoc : ''}" placeholder="0" min="0" oninput="actualizarValor(${i}, 'vNoc', this.value)"></td>
+                        <td><input type="number" value="${p.f !== 0 ? p.f : ''}" placeholder="0" min="0" oninput="actualizarValor(${i}, 'f', this.value)"></td>`;
+                }
+            }
+        });
+        document.getElementById('stat-total').innerText = productos.length;
+    }
 
-        const data = productos.map((p) => {
-            const c = isAdmin ? p.c : 0;
-            const v = isAdmin ? p.v : 0;
-            return {
-                rol: isAdmin ? "Admin" : "Vendedor",
-                nombre: p.n,
-                inicial: p.s,
-                compra: c,
-                venta: v,
-                fisico: p.f,
-                diferencia: p.f - (p.s + c - v)
-            };
-        });
+    async function cargarDatosIniciales() {
+        try {
+            const res = await fetch(URL_GAS);
+            const data = await res.json();
+            if (Array.isArray(data) && data.length > 0) {
+                data.forEach(item => {
+                    let idx = productos.findIndex(p => p.n === item.nombre);
+                    if (idx !== -1) {
+                        productos[idx].s = parseInt(item.inicial) || 0;
+                        productos[idx].f = parseInt(item.fisico) || productos[idx].s;
+                    }
+                });
+                render();
+            }
+        } catch (e) {
+            console.log("Cargando inventario base predeterminado");
+        }
+    }
 
-        try {
-            await fetch(URL_GAS, { 
-                method: "POST", 
-                mode: "no-cors",
-                headers: { "Content-Type": "text/plain" },
-                body: JSON.stringify(data) 
-            });
-            alert("✅ ¡Datos enviados a Google Sheets correctamente!");
-            location.reload();
-        } catch (e) {
-            alert("Error de conexión al enviar");
-            btn.disabled = false;
-            btn.innerHTML = 'Enviar a Google Sheets ↑ <span class="signal-icon">((•))</span>';
-        }
-    }
+    async function enviar() {
+        const btn = document.getElementById('btn-send');
+        btn.disabled = true;
+        btn.innerText = "Enviando... ⏳";
 
-    CargarFecha();
-    render();
+        const data = productos.map(p => ({
+            rol: isAdmin ? "Admin" : "Vendedor",
+            fase: obtenerFaseActual(),
+            nombre: p.n,
+            inicial: p.s,
+            compra: p.c,
+            ventaMatutino: p.vMat,
+            ventaNocturno: p.vNoc,
+            ventaTotal: p.vMat + p.vNoc,
+            fisico: p.f,
+            diferencia: p.f - (p.s + p.c - (p.vMat + p.vNoc))
+        }));
+
+        try {
+            await fetch(URL_GAS, { 
+                method: "POST", 
+                mode: "no-cors",
+                headers: { "Content-Type": "text/plain" },
+                body: JSON.stringify(data) 
+            });
+            alert("✅ ¡Inventario guardado con éxito!");
+            location.reload();
+        } catch (e) {
+            alert("❌ Error al enviar datos");
+            btn.disabled = false;
+            btn.innerText = "Enviar a Sheets ↑";
+        }
+    }
+
+    CargarFecha();
+    render();
+    cargarDatosIniciales();
+    setInterval(render, 60000);
 </script>
 </body>
 </html>

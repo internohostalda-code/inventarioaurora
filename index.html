@@ -1,540 +1,540 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventario Hostal Doña Aurora</title>
-    <style>
-        :root {
-            --banner-gradient: linear-gradient(90deg, #d946ef 0%, #ec4899 100%);
-            --btn-green: #e11d48;
-            --btn-green-hover: #be123c;
-            --th-bg: #fce7f3;
-            --th-text: #831843;
-            --bg: #fdf2f8;
-            --card-bg: #ffffff;
-            --border-color: #fbcfe8;
-            --text-dark: #371b28;
-            --text-muted: #9d174d;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario Hostal Doña Aurora</title>
+    <style>
+        :root {
+            --banner-gradient: linear-gradient(90deg, #d946ef 0%, #ec4899 100%);
+            --btn-green: #e11d48;
+            --btn-green-hover: #be123c;
+            --th-bg: #fce7f3;
+            --th-text: #831843;
+            --bg: #fdf2f8;
+            --card-bg: #ffffff;
+            --border-color: #fbcfe8;
+            --text-dark: #371b28;
+            --text-muted: #9d174d;
+        }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text-dark);
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-dark);
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+        }
 
-        .main-container {
-            width: 100%;
-            max-width: 920px;
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 16px;
-            box-shadow: 0 10px 30px rgba(219, 39, 119, 0.12);
-        }
+        .main-container {
+            width: 100%;
+            max-width: 920px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 10px 30px rgba(219, 39, 119, 0.12);
+        }
 
-        .banner {
-            background: var(--banner-gradient);
-            color: white;
-            padding: 16px 20px;
-            border-radius: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
+        .banner {
+            background: var(--banner-gradient);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
 
-        .banner-center {
-            text-align: center;
-            flex-grow: 1;
-        }
+        .banner-center {
+            text-align: center;
+            flex-grow: 1;
+        }
 
-        .banner-center h1 {
-            font-size: 1.5em;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-        }
+        .banner-center h1 {
+            font-size: 1.5em;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
 
-        .banner-center p {
-            font-size: 0.85em;
-            opacity: 0.9;
-        }
+        .banner-center p {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
 
-        .logout-btn {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 0.85em;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            opacity: 0.95;
-            font-weight: 600;
-        }
+        .logout-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 0.85em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            opacity: 0.95;
+            font-weight: 600;
+        }
 
-        .toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
 
-        .search-container {
-            position: relative;
-            flex: 1;
-            min-width: 240px;
-        }
+        .search-container {
+            position: relative;
+            flex: 1;
+            min-width: 240px;
+        }
 
-        .search-container input {
-            width: 100%;
-            padding: 10px 16px 10px 38px;
-            border-radius: 25px;
-            border: 1px solid transparent;
-            background-color: #fce7f3;
-            font-size: 0.9em;
-            outline: none;
-            transition: all 0.2s;
-        }
+        .search-container input {
+            width: 100%;
+            padding: 10px 16px 10px 38px;
+            border-radius: 25px;
+            border: 1px solid transparent;
+            background-color: #fce7f3;
+            font-size: 0.9em;
+            outline: none;
+            transition: all 0.2s;
+        }
 
-        .search-container input:focus {
-            background-color: #fff;
-            border-color: #ec4899;
-            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
-        }
+        .search-container input:focus {
+            background-color: #fff;
+            border-color: #ec4899;
+            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
+        }
 
-        .search-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #be185d;
-            font-size: 0.9em;
-        }
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #be185d;
+            font-size: 0.9em;
+        }
 
-        .date-display {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.85em;
-            font-weight: 600;
-            color: #831843;
-            background: #fbcfe8;
-            padding: 8px 14px;
-            border-radius: 20px;
-        }
+        .date-display {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #831843;
+            background: #fbcfe8;
+            padding: 8px 14px;
+            border-radius: 20px;
+        }
 
-        .toggle-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.82em;
-            font-weight: 600;
-            color: #831843;
-        }
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82em;
+            font-weight: 600;
+            color: #831843;
+        }
 
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 24px;
-        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
 
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
 
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #f472b6;
-            transition: .3s;
-            border-radius: 24px;
-        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #f472b6;
+            transition: .3s;
+            border-radius: 24px;
+        }
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
-        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
 
-        input:checked + .slider {
-            background-color: #be185d;
-        }
+        input:checked + .slider {
+            background-color: #be185d;
+        }
 
-        input:checked + .slider:before {
-            transform: translateX(20px);
-        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
 
-        .mode-label {
-            font-weight: 700;
-            color: #db2777;
-        }
+        .mode-label {
+            font-weight: 700;
+            color: #db2777;
+        }
 
-        .content-card {
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 16px;
-            background: #fff;
-            box-shadow: 0 2px 10px rgba(219, 39, 119, 0.05);
-        }
+        .content-card {
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(219, 39, 119, 0.05);
+        }
 
-        .card-title {
-            font-size: 1.15em;
-            font-weight: 700;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #831843;
-        }
+        .card-title {
+            font-size: 1.15em;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #831843;
+        }
 
-        .table-wrapper {
-            overflow-x: auto;
-            max-height: 60vh;
-            overflow-y: auto;
-            border-radius: 10px;
-        }
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 60vh;
+            overflow-y: auto;
+            border-radius: 10px;
+        }
 
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 4px 6px;
-        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 4px 6px;
+        }
 
-        th {
-            background: var(--th-bg);
-            color: var(--th-text);
-            padding: 10px 8px;
-            font-size: 0.82em;
-            font-weight: 700;
-            border-radius: 8px;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
+        th {
+            background: var(--th-bg);
+            color: var(--th-text);
+            padding: 10px 8px;
+            font-size: 0.82em;
+            font-weight: 700;
+            border-radius: 8px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
 
-        td {
-            padding: 8px 6px;
-            font-size: 0.88em;
-            text-align: center;
-            background: #fff5f8;
-            border-radius: 6px;
-        }
+        td {
+            padding: 8px 6px;
+            font-size: 0.88em;
+            text-align: center;
+            background: #fff5f8;
+            border-radius: 6px;
+        }
 
-        td.prod-name {
-            text-align: left;
-            font-weight: 500;
-            padding-left: 12px;
-            background: transparent;
-        }
+        td.prod-name {
+            text-align: left;
+            font-weight: 500;
+            padding-left: 12px;
+            background: transparent;
+        }
 
-        td.col-c { color: #059669; font-weight: 600; }
-        td.col-v { color: #e11d48; font-weight: 600; }
+        td.col-c { color: #059669; font-weight: 600; }
+        td.col-v { color: #e11d48; font-weight: 600; }
 
-        input[type="number"] {
-            width: 58px;
-            padding: 6px 4px;
-            text-align: center;
-            font-size: 0.9em;
-            border: 1px solid #fbcfe8;
-            border-radius: 10px;
-            outline: none;
-            background: #fff;
-        }
+        input[type="number"] {
+            width: 58px;
+            padding: 6px 4px;
+            text-align: center;
+            font-size: 0.9em;
+            border: 1px solid #fbcfe8;
+            border-radius: 10px;
+            outline: none;
+            background: #fff;
+        }
 
-        input[type="number"]:focus {
-            border-color: #ec4899;
-            box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.25);
-        }
+        input[type="number"]:focus {
+            border-color: #ec4899;
+            box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.25);
+        }
 
-        .footer-bar {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 16px;
-            padding-top: 8px;
-            gap: 12px;
-        }
+        .footer-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 8px;
+            gap: 12px;
+        }
 
-        .stats {
-            display: flex;
-            gap: 16px;
-            font-size: 0.85em;
-            font-weight: 600;
-            color: #831843;
-            flex-wrap: wrap;
-        }
+        .stats {
+            display: flex;
+            gap: 16px;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #831843;
+            flex-wrap: wrap;
+        }
 
-        .btn-enviar {
-            background: var(--btn-green);
-            color: white;
-            border: none;
-            padding: 12px 22px;
-            border-radius: 25px;
-            font-size: 0.9em;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.35);
-            transition: all 0.2s;
-        }
+        .btn-enviar {
+            background: var(--btn-green);
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.35);
+            transition: all 0.2s;
+        }
 
-        .btn-enviar:hover {
-            background: var(--btn-green-hover);
-            transform: translateY(-1px);
-        }
+        .btn-enviar:hover {
+            background: var(--btn-green-hover);
+            transform: translateY(-1px);
+        }
 
-        .btn-enviar:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .btn-enviar:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
 
-        .signal-icon {
-            font-size: 0.8em;
-            opacity: 0.8;
-        }
-    </style>
+        .signal-icon {
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
 
 <div class="main-container">
-    <div class="banner">
-        <div style="width: 80px;"></div>
-        <div class="banner-center">
-            <h1>HOSTAL DOÑA AURORA</h1>
-            <p>Inventario Diario</p>
-        </div>
-        <button class="logout-btn" onclick="location.reload()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-            Cerrar Sesión
-        </button>
-    </div>
+    <div class="banner">
+        <div style="width: 80px;"></div>
+        <div class="banner-center">
+            <h1>HOSTAL DOÑA AURORA</h1>
+            <p>Inventario Diario</p>
+        </div>
+        <button class="logout-btn" onclick="location.reload()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            Cerrar Sesión
+        </button>
+    </div>
 
-    <div class="toolbar">
-        <div class="search-container">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="search" placeholder="Buscar producto..." oninput="filtrarProductos()">
-        </div>
+    <div class="toolbar">
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search" placeholder="Buscar producto..." oninput="filtrarProductos()">
+        </div>
 
-        <div class="date-display">
-            📅 <span id="fecha-hoy">-- --- ----</span>
-        </div>
+        <div class="date-display">
+            📅 <span id="fecha-hoy">-- --- ----</span>
+        </div>
 
-        <div class="toggle-container">
-            <span>Modo Admin / Modo Vendedor</span>
-            <label class="switch">
-                <input type="checkbox" id="mode-toggle" onchange="toggleModoSwitch()">
-                <span class="slider"></span>
-            </label>
-            <span id="mode-text" class="mode-label">Vendedor</span>
-        </div>
-    </div>
+        <div class="toggle-container">
+            <span>Modo Admin / Modo Vendedor</span>
+            <label class="switch">
+                <input type="checkbox" id="mode-toggle" onchange="toggleModoSwitch()">
+                <span class="slider"></span>
+            </label>
+            <span id="mode-text" class="mode-label">Vendedor</span>
+        </div>
+    </div>
 
-    <div class="content-card">
-        <div class="card-title">
-            📋 Conteo Físico Diario
-        </div>
+    <div class="content-card">
+        <div class="card-title">
+            📋 Conteo Físico Diario
+        </div>
 
-        <div class="table-wrapper">
-            <table>
-                <thead id="thead"></thead>
-                <tbody id="tbody"></tbody>
-            </table>
-        </div>
-    </div>
+        <div class="table-wrapper">
+            <table>
+                <thead id="thead"></thead>
+                <tbody id="tbody"></tbody>
+            </table>
+        </div>
+    </div>
 
-    <div class="footer-bar">
-        <div class="stats">
-            <div>Total Prod.: <strong id="stat-total">0</strong></div>
-            <div>Suma Inicial: <strong id="stat-inicial">0</strong></div>
-            <div>Ventas Hoy: <strong id="stat-ventas">0</strong></div>
-            <div>Diferencia Total: <strong id="stat-dif">0</strong></div>
-        </div>
+    <div class="footer-bar">
+        <div class="stats">
+            <div>Total Prod.: <strong id="stat-total">0</strong></div>
+            <div>Suma Inicial: <strong id="stat-inicial">0</strong></div>
+            <div>Ventas Hoy: <strong id="stat-ventas">0</strong></div>
+            <div>Diferencia Total: <strong id="stat-dif">0</strong></div>
+        </div>
 
-        <button id="btn-send" class="btn-enviar" onclick="enviar()">
-            Enviar a Google Sheets ↑
-            <span class="signal-icon">((•))</span>
-        </button>
-    </div>
+        <button id="btn-send" class="btn-enviar" onclick="enviar()">
+            Enviar a Google Sheets ↑
+            <span class="signal-icon">((•))</span>
+        </button>
+    </div>
 </div>
 
 <script>
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbz3EVmnTXd43iaGwXGBeOBOxk6PV0WiHXx9BiV80x1wlJBB7D2evPfLpyR2-64z08OT/exec";
-    const CLAVE = "2026";
-    let isAdmin = false;
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbz3EVmnTXd43iaGwXGBeOBOxk6PV0WiHXx9BiV80x1wlJBB7D2evPfLpyR2-64z08OT/exec";
+    const CLAVE = "2026";
+    let isAdmin = false;
 
-    const productos = [
-        {n: "AGUA 1 1/2", s: 0}, {n: "AGUA DE 1 LITRO", s: 0}, {n: "AGUA 1 1/2 SABOR", s: 0}, {n: "ALCOHOL", s: 0},
-        {n: "BOING 1/2", s: 0}, {n: "BUSCAPINA", s: 0}, {n: "CEPILLO DENTAL", s: 0}, {n: "CORTA UÑAS", s: 0},
-        {n: "CIGARROS", s: 0}, {n: "CONDON", s: 0}, {n: "COTONETES", s: 0}, {n: "CREMA HINDS", s: 0},
-        {n: "DESODORANTE HOMBRE", s: 0}, {n: "DESODORANTE MUJER", s: 0}, {n: "ENCENDEDOR", s: 0},
-        {n: "GEL CHICO", s: 0}, {n: "GEL GRANDE", s: 0}, {n: "IBUPROFENO", s: 0}, {n: "JABON PALMOLIVE", s: 0},
-        {n: "JABON ZEST", s: 0}, {n: "JARRITO 2 LITROS", s: 0}, {n: "LORATAINA", s: 0}, {n: "PALOMITAS", s: 0},
-        {n: "PAPEL HIGIENICO", s: 0}, {n: "PARACETAMOL", s: 0}, {n: "PASTA COLGATE", s: 0},
-        {n: "PASTA LUMINUS WHITE", s: 0}, {n: "PEPTO BISMOL", s: 0}, {n: "POMADA LABIOS", s: 0},
-        {n: "RASTRILLO 2 HOJAS", s: 0}, {n: "RASTRILLO 3 HOJAS", s: 0}, {n: "RED COLA 2 LTS", s: 0},
-        {n: "RITZ", s: 0}, {n: "ROSEL", s: 0}, {n: "SAL DE UVAS PICOT", s: 0}, {n: "SEDALMERK", s: 0},
-        {n: "SHAMPOO CAPRICE", s: 0}, {n: "SHAMPOO PALMOLIVE", s: 0}, {n: "SHAMPOO PANTENE", s: 0},
-        {n: "SHAMPOO H & SH", s: 0}, {n: "SOPA MARUCHAN", s: 0}, {n: "SUERO ELECTROLIT", s: 0}, {n: "TALCO", s: 0}, 
-        {n: "TOALLA FEMENINA", s: 0}, {n: "TOALLA FEM NOCTURNA", s: 0}, {n: "ZACATE CHICO", s: 0}, {n: "ZACATE GRANDE", s: 0},
-        {n: "CABLE TIPO C", s: 0}, {n: "CUBO TIPO C", s: 0}, {n: "CABLE IPHONE", s: 0},
-        {n: "CUBO IPHONE", s: 0}, {n: "PANTENE G", s: 0}, {n: "COLGATE G", s: 0}
-    ].map(p => ({ ...p, c: 0, v: 0, f: p.s }));
+    const productos = [
+        {n: "AGUA 1 1/2", s: 0}, {n: "AGUA DE 1 LITRO", s: 0}, {n: "AGUA 1 1/2 SABOR", s: 0}, {n: "ALCOHOL", s: 0},
+        {n: "BOING 1/2", s: 0}, {n: "BUSCAPINA", s: 0}, {n: "CEPILLO DENTAL", s: 0}, {n: "CORTA UÑAS", s: 0},
+        {n: "CIGARROS", s: 0}, {n: "CONDON", s: 0}, {n: "COTONETES", s: 0}, {n: "CREMA HINDS", s: 0},
+        {n: "DESODORANTE HOMBRE", s: 0}, {n: "DESODORANTE MUJER", s: 0}, {n: "ENCENDEDOR", s: 0},
+        {n: "GEL CHICO", s: 0}, {n: "GEL GRANDE", s: 0}, {n: "IBUPROFENO", s: 0}, {n: "JABON PALMOLIVE", s: 0},
+        {n: "JABON ZEST", s: 0}, {n: "JARRITO 2 LITROS", s: 0}, {n: "LORATAINA", s: 0}, {n: "PALOMITAS", s: 0},
+        {n: "PAPEL HIGIENICO", s: 0}, {n: "PARACETAMOL", s: 0}, {n: "PASTA COLGATE", s: 0},
+        {n: "PASTA LUMINUS WHITE", s: 0}, {n: "PEPTO BISMOL", s: 0}, {n: "POMADA LABIOS", s: 0},
+        {n: "RASTRILLO 2 HOJAS", s: 0}, {n: "RASTRILLO 3 HOJAS", s: 0}, {n: "RED COLA 2 LTS", s: 0},
+        {n: "RITZ", s: 0}, {n: "ROSEL", s: 0}, {n: "SAL DE UVAS PICOT", s: 0}, {n: "SEDALMERK", s: 0},
+        {n: "SHAMPOO CAPRICE", s: 0}, {n: "SHAMPOO PALMOLIVE", s: 0}, {n: "SHAMPOO PANTENE", s: 0},
+        {n: "SHAMPOO H & SH", s: 0}, {n: "SOPA MARUCHAN", s: 0}, {n: "SUERO ELECTROLIT", s: 0}, {n: "TALCO", s: 0}, 
+        {n: "TOALLA FEMENINA", s: 0}, {n: "TOALLA FEM NOCTURNA", s: 0}, {n: "ZACATE CHICO", s: 0}, {n: "ZACATE GRANDE", s: 0},
+        {n: "CABLE TIPO C", s: 0}, {n: "CUBO TIPO C", s: 0}, {n: "CABLE IPHONE", s: 0},
+        {n: "CUBO IPHONE", s: 0}, {n: "PANTENE G", s: 0}, {n: "COLGATE G", s: 0}
+    ].map(p => ({ ...p, c: 0, v: 0, f: p.s }));
 
-    function CargarFecha() {
-        const opciones = { day: '2-digit', month: 'short', year: 'numeric' };
-        const hoy = new Date().toLocaleDateString('es-ES', opciones).toUpperCase();
-        document.getElementById('fecha-hoy').innerText = hoy;
-    }
+    function CargarFecha() {
+        const opciones = { day: '2-digit', month: 'short', year: 'numeric' };
+        const hoy = new Date().toLocaleDateString('es-ES', opciones).toUpperCase();
+        document.getElementById('fecha-hoy').innerText = hoy;
+    }
 
-    function toggleModoSwitch() {
-        const toggle = document.getElementById('mode-toggle');
-        if (toggle.checked) {
-            const pass = prompt("Clave de Administrador:");
-            if (pass === CLAVE) {
-                isAdmin = true;
-                document.getElementById('mode-text').innerText = "Admin";
-                document.getElementById('mode-text').style.color = "#831843";
-            } else {
-                alert("Clave incorrecta");
-                toggle.checked = false;
-                isAdmin = false;
-            }
-        } else {
-            isAdmin = false;
-            document.getElementById('mode-text').innerText = "Vendedor";
-            document.getElementById('mode-text').style.color = "#db2777";
-        }
-        render();
-    }
+    function toggleModoSwitch() {
+        const toggle = document.getElementById('mode-toggle');
+        if (toggle.checked) {
+            const pass = prompt("Clave de Administrador:");
+            if (pass === CLAVE) {
+                isAdmin = true;
+                document.getElementById('mode-text').innerText = "Admin";
+                document.getElementById('mode-text').style.color = "#831843";
+            } else {
+                alert("Clave incorrecta");
+                toggle.checked = false;
+                isAdmin = false;
+            }
+        } else {
+            isAdmin = false;
+            document.getElementById('mode-text').innerText = "Vendedor";
+            document.getElementById('mode-text').style.color = "#db2777";
+        }
+        render();
+    }
 
-    function actualizarValor(i, campo, valor) {
-        const valNum = parseInt(valor) || 0;
-        productos[i][campo] = valNum;
+    function actualizarValor(i, campo, valor) {
+        const valNum = parseInt(valor) || 0;
+        productos[i][campo] = valNum;
 
-        if (isAdmin && (campo === 'c' || campo === 'v')) {
-            productos[i].f = Math.max(0, productos[i].s + productos[i].c - productos[i].v);
-            const inputFisico = document.getElementById(`f-${i}`);
-            if (inputFisico) inputFisico.value = productos[i].f;
-        }
+        if (isAdmin && (campo === 'c' || campo === 'v')) {
+            productos[i].f = Math.max(0, productos[i].s + productos[i].c - productos[i].v);
+            const inputFisico = document.getElementById(`f-${i}`);
+            if (inputFisico) inputFisico.value = productos[i].f;
+        }
 
-        actualizarEstadisticas();
-    }
+        actualizarEstadisticas();
+    }
 
-    function actualizarEstadisticas() {
-        let totalInicial = 0;
-        let totalVentas = 0;
-        let totalDiferencia = 0;
+    function actualizarEstadisticas() {
+        let totalInicial = 0;
+        let totalVentas = 0;
+        let totalDiferencia = 0;
 
-        productos.forEach((p) => {
-            totalInicial += p.s;
-            totalVentas += p.v;
-            totalDiferencia += (p.f - (p.s + p.c - p.v));
-        });
+        productos.forEach((p) => {
+            totalInicial += p.s;
+            totalVentas += p.v;
+            totalDiferencia += (p.f - (p.s + p.c - p.v));
+        });
 
-        document.getElementById('stat-total').innerText = productos.length;
-        document.getElementById('stat-inicial').innerText = totalInicial;
-        document.getElementById('stat-ventas').innerText = totalVentas;
-        document.getElementById('stat-dif').innerText = totalDiferencia;
-    }
+        document.getElementById('stat-total').innerText = productos.length;
+        document.getElementById('stat-inicial').innerText = totalInicial;
+        document.getElementById('stat-ventas').innerText = totalVentas;
+        document.getElementById('stat-dif').innerText = totalDiferencia;
+    }
 
-    function render() {
-        const thead = document.getElementById('thead');
-        if (isAdmin) {
-            thead.innerHTML = "<tr><th>Producto</th><th>Inicial ↕</th><th>+C ↕</th><th>-V ↕</th><th>Físico ↕</th></tr>";
-        } else {
-            thead.innerHTML = "<tr><th>Producto</th><th>Conteo Real ↕</th></tr>";
-        }
-        filtrarProductos();
-    }
+    function render() {
+        const thead = document.getElementById('thead');
+        if (isAdmin) {
+            thead.innerHTML = "<tr><th>Producto</th><th>Inicial ↕</th><th>+C ↕</th><th>-V ↕</th><th>Físico ↕</th></tr>";
+        } else {
+            thead.innerHTML = "<tr><th>Producto</th><th>Conteo Real ↕</th></tr>";
+        }
+        filtrarProductos();
+    }
 
-    function filtrarProductos() {
-        const tbody = document.getElementById('tbody');
-        const query = document.getElementById('search').value.toLowerCase();
-        tbody.innerHTML = "";
+    function filtrarProductos() {
+        const tbody = document.getElementById('tbody');
+        const query = document.getElementById('search').value.toLowerCase();
+        tbody.innerHTML = "";
 
-        productos.forEach((p, i) => {
-            if (p.n.toLowerCase().includes(query)) {
-                let row = tbody.insertRow();
-                if (isAdmin) {
-                    row.innerHTML = `
-                        <td class="prod-name">${p.n}</td>
-                        <td>${p.s}</td>
-                        <td class="col-c"><input type="number" id="c-${i}" value="${p.c}" min="0" oninput="actualizarValor(${i}, 'c', this.value)"></td>
-                        <td class="col-v"><input type="number" id="v-${i}" value="${p.v}" min="0" oninput="actualizarValor(${i}, 'v', this.value)"></td>
-                        <td><input type="number" id="f-${i}" value="${p.f}" min="0" oninput="actualizarValor(${i}, 'f', this.value)"></td>`;
-                } else {
-                    row.innerHTML = `
-                        <td class="prod-name">${p.n}</td>
-                        <td><input type="number" id="f-${i}" value="${p.f !== 0 ? p.f : ''}" placeholder="0" min="0" oninput="actualizarValor(${i}, 'f', this.value)"></td>`;
-                }
-            }
-        });
-        actualizarEstadisticas();
-    }
+        productos.forEach((p, i) => {
+            if (p.n.toLowerCase().includes(query)) {
+                let row = tbody.insertRow();
+                if (isAdmin) {
+                    row.innerHTML = `
+                        <td class="prod-name">${p.n}</td>
+                        <td>${p.s}</td>
+                        <td class="col-c"><input type="number" id="c-${i}" value="${p.c}" min="0" oninput="actualizarValor(${i}, 'c', this.value)"></td>
+                        <td class="col-v"><input type="number" id="v-${i}" value="${p.v}" min="0" oninput="actualizarValor(${i}, 'v', this.value)"></td>
+                        <td><input type="number" id="f-${i}" value="${p.f}" min="0" oninput="actualizarValor(${i}, 'f', this.value)"></td>`;
+                } else {
+                    row.innerHTML = `
+                        <td class="prod-name">${p.n}</td>
+                        <td><input type="number" id="f-${i}" value="${p.f !== 0 ? p.f : ''}" placeholder="0" min="0" oninput="actualizarValor(${i}, 'f', this.value)"></td>`;
+                }
+            }
+        });
+        actualizarEstadisticas();
+    }
 
-    async function enviar() {
-        const btn = document.getElementById('btn-send');
-        btn.disabled = true;
-        btn.innerHTML = "Enviando... ⏳";
+    async function enviar() {
+        const btn = document.getElementById('btn-send');
+        btn.disabled = true;
+        btn.innerHTML = "Enviando... ⏳";
 
-        const data = productos.map((p) => {
-            const c = isAdmin ? p.c : 0;
-            const v = isAdmin ? p.v : 0;
-            return {
-                rol: isAdmin ? "Admin" : "Vendedor",
-                nombre: p.n,
-                inicial: p.s,
-                compra: c,
-                venta: v,
-                fisico: p.f,
-                diferencia: p.f - (p.s + c - v)
-            };
-        });
+        const data = productos.map((p) => {
+            const c = isAdmin ? p.c : 0;
+            const v = isAdmin ? p.v : 0;
+            return {
+                rol: isAdmin ? "Admin" : "Vendedor",
+                nombre: p.n,
+                inicial: p.s,
+                compra: c,
+                venta: v,
+                fisico: p.f,
+                diferencia: p.f - (p.s + c - v)
+            };
+        });
 
-        try {
-            await fetch(URL_GAS, { 
-                method: "POST", 
-                mode: "no-cors",
-                headers: { "Content-Type": "text/plain" },
-                body: JSON.stringify(data) 
-            });
-            alert("✅ ¡Datos enviados a Google Sheets correctamente!");
-            location.reload();
-        } catch (e) {
-            alert("Error de conexión al enviar");
-            btn.disabled = false;
-            btn.innerHTML = 'Enviar a Google Sheets ↑ <span class="signal-icon">((•))</span>';
-        }
-    }
+        try {
+            await fetch(URL_GAS, { 
+                method: "POST", 
+                mode: "no-cors",
+                headers: { "Content-Type": "text/plain" },
+                body: JSON.stringify(data) 
+            });
+            alert("✅ ¡Datos enviados a Google Sheets correctamente!");
+            location.reload();
+        } catch (e) {
+            alert("Error de conexión al enviar");
+            btn.disabled = false;
+            btn.innerHTML = 'Enviar a Google Sheets ↑ <span class="signal-icon">((•))</span>';
+        }
+    }
 
-    CargarFecha();
-    render();
+    CargarFecha();
+    render();
 </script>
 </body>
 </html>

@@ -16,13 +16,11 @@
             --card-bg: #ffffff;
             --border-color: #d1e1e9;
             --text-dark: #1f2937;
+            --danger: #ef4444;
+            --success: #10b981;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -67,7 +65,6 @@
             height: auto;
             max-height: 140px;
             object-fit: contain;
-            background: transparent;
             filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.3));
         }
 
@@ -79,18 +76,10 @@
             padding: 8px 14px;
             border-radius: 20px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-weight: 600;
-            transition: all 0.2s ease;
             position: absolute;
             right: 20px;
             top: 20px;
-        }
-
-        .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
+            font-weight: 600;
         }
 
         .toolbar {
@@ -102,12 +91,7 @@
             margin-bottom: 16px;
         }
 
-        .search-container {
-            position: relative;
-            flex: 1;
-            min-width: 200px;
-        }
-
+        .search-container { position: relative; flex: 1; min-width: 200px; }
         .search-container input {
             width: 100%;
             padding: 10px 16px 10px 38px;
@@ -116,21 +100,9 @@
             background-color: #f8fafc;
             font-size: 0.9em;
             outline: none;
-            color: var(--text-dark);
         }
 
-        .search-container input:focus {
-            border-color: var(--btn-action);
-            background-color: #fff;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #64748b;
-        }
+        .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #64748b; }
 
         .date-display {
             font-size: 0.85em;
@@ -151,56 +123,43 @@
             color: var(--th-text);
         }
 
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 24px;
-        }
-
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-
         .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #94a3b8;
-            transition: .3s;
-            border-radius: 24px;
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #94a3b8; transition: .3s; border-radius: 24px;
         }
-
         .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px; width: 18px;
-            left: 3px; bottom: 3px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
+            position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+            background-color: white; transition: .3s; border-radius: 50%;
         }
-
         input:checked + .slider { background-color: var(--btn-action); }
         input:checked + .slider:before { transform: translateX(20px); }
 
         .status-banner {
             background: #f1f5f9;
             border: 1px solid var(--border-color);
-            padding: 10px 14px;
+            padding: 12px 16px;
             border-radius: 12px;
             margin-bottom: 12px;
             font-size: 0.88em;
-            color: var(--th-text);
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .badge-active {
-            background: #e0f2fe;
-            color: #0369a1;
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-weight: 700;
+            background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 8px; font-weight: 700;
+        }
+        .badge-blocked {
+            background: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 8px; font-weight: 700;
+        }
+
+        .extra-btn {
+            background: #f59e0b; color: white; border: none; padding: 6px 12px;
+            border-radius: 12px; font-size: 0.8em; font-weight: 700; cursor: pointer;
         }
 
         .content-card {
@@ -210,74 +169,28 @@
             background: #fff;
         }
 
-        .table-wrapper {
-            overflow-x: auto;
-            max-height: 60vh;
-            border-radius: 10px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 4px 6px;
-        }
-
-        th {
-            background: var(--th-bg);
-            color: var(--th-text);
-            padding: 10px;
-            font-size: 0.85em;
-            font-weight: 700;
-            position: sticky;
-            top: 0;
-        }
-
-        td {
-            padding: 8px;
-            font-size: 0.88em;
-            text-align: center;
-            background: #f8fafc;
-            border-radius: 6px;
-        }
-
+        .table-wrapper { overflow-x: auto; max-height: 55vh; border-radius: 10px; }
+        table { width: 100%; border-collapse: separate; border-spacing: 4px 6px; }
+        th { background: var(--th-bg); color: var(--th-text); padding: 10px; font-size: 0.85em; font-weight: 700; position: sticky; top: 0; }
+        td { padding: 8px; font-size: 0.88em; text-align: center; background: #f8fafc; border-radius: 6px; }
         td.prod-name { text-align: left; font-weight: 600; padding-left: 12px; }
 
         input[type="number"] {
-            width: 65px;
-            padding: 6px 4px;
-            text-align: center;
-            font-size: 0.9em;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            outline: none;
+            width: 65px; padding: 6px 4px; text-align: center; font-size: 0.9em;
+            border: 1px solid var(--border-color); border-radius: 8px; outline: none;
         }
 
-        input[type="number"]:focus {
-            border-color: var(--btn-action);
+        .message-box {
+            text-align: center; padding: 40px 20px; color: #64748b; font-weight: 600;
         }
 
-        .footer-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 16px;
-        }
-
+        .footer-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
         .btn-enviar {
-            background: var(--btn-action);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-weight: 700;
-            cursor: pointer;
+            background: var(--btn-action); color: white; border: none; padding: 12px 24px;
+            border-radius: 25px; font-weight: 700; cursor: pointer;
             box-shadow: 0 4px 12px rgba(27, 59, 111, 0.2);
-            transition: background 0.2s;
         }
-
-        .btn-enviar:hover {
-            background: var(--btn-action-hover);
-        }
+        .btn-enviar:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; }
     </style>
 </head>
 <body>
@@ -285,7 +198,7 @@
 <div class="main-container">
     <div class="banner">
         <div class="banner-logo-container">
-            <img src="https://lh3.googleusercontent.com/d/1prUXBfN44PWRGggwhEJAgQeltmvMS33k" alt="Logo Hostal Doña Aurora" class="company-logo" id="logo-img">
+            <img src="https://lh3.googleusercontent.com/d/1prUXBfN44PWRGggwhEJAgQeltmvMS33k" alt="Logo Hostal Doña Aurora" class="company-logo">
         </div>
         <button class="logout-btn" onclick="location.reload()">🔒 Salir</button>
     </div>
@@ -310,16 +223,20 @@
     </div>
 
     <div class="status-banner">
-        <div><strong>Vista Actual:</strong> <span id="status-text">Cargando modo...</span></div>
-        <div id="status-badge" class="badge-active">--</div>
+        <div><strong>Vista:</strong> <span id="status-text">Cargando...</span></div>
+        <div style="display:flex; gap:8px; align-items:center;">
+            <button id="btn-extra" class="extra-btn" style="display:none;" onclick="abrirHorarioExtraordinario()">🔓 Horario Extra</button>
+            <div id="status-badge" class="badge-active">--</div>
+        </div>
     </div>
 
     <div class="content-card">
         <div class="table-wrapper">
-            <table>
+            <table id="main-table">
                 <thead id="thead"></thead>
                 <tbody id="tbody"></tbody>
             </table>
+            <div id="msg-blocked" class="message-box" style="display:none;"></div>
         </div>
     </div>
 
@@ -333,6 +250,11 @@
     const URL_GAS = "https://script.google.com/macros/s/AKfycbz3EVmnTXd43iaGwXGBeOBOxk6PV0WiHXx9BiV80x1wlJBB7D2evPfLpyR2-64z08OT/exec";
     const CLAVE = "2026";
     let isAdmin = false;
+    let horarioExtraordinario = false;
+
+    // Control de estado de capturas previas (Servidor / Memoria local)
+    let capturaMatutinaRealizada = false;
+    let capturaVespertinaRealizada = false;
 
     const listaNombres = [
         "AGUA 1 1/2", "AGUA DE 1 LITRO", "AGUA 1 1/2 SABOR", "ALCOHOL",
@@ -353,13 +275,7 @@
     ];
 
     let productos = listaNombres.map(nombre => ({
-        n: nombre,
-        s: 0,
-        c: 0,
-        vMat: 0,
-        vNoc: 0,
-        vTotal: 0,
-        f: 0
+        n: nombre, s: 0, c: 0, vMat: 0, vNoc: 0, vTotal: 0, f: 0
     }));
 
     function CargarFecha() {
@@ -367,23 +283,38 @@
         document.getElementById('fecha-hoy').innerText = new Date().toLocaleDateString('es-ES', opciones).toUpperCase();
     }
 
-    // CORRECCIÓN REGLAS DE HORARIO
+    // EVALUACIÓN DE REGLAS Y HORARIOS
     function obtenerFaseActual() {
         if (isAdmin) return "ADMIN";
-        
+        if (horarioExtraordinario) return "HORARIO_EXTRAORDINARIO";
+
         const ahora = new Date();
-        const minsActuales = ahora.getHours() * 60 + ahora.getMinutes();
+        const mins = ahora.getHours() * 60 + ahora.getMinutes();
 
-        const min0530 = 5 * 60 + 30;   // 05:30 AM = 330 min
-        const min1830 = 18 * 60 + 30;  // 06:30 PM = 1110 min
+        const min1800 = 18 * 60;      // 18:00 hrs
+        const min1830 = 18 * 60 + 30; // 18:30 hrs
+        const min0600 = 6 * 60;       // 06:00 hrs
+        const min0630 = 6 * 60 + 30;  // 06:30 hrs
 
-        // De 05:30 AM a 18:30 PM es Turno Matutino
-        if (minsActuales >= min0530 && minsActuales < min1830) {
-            return "MATUTINO";
-        } else {
-            // De 18:30 PM a 05:30 AM es Turno Nocturno + Conteo Físico
-            return "NOCTURNO_FISICO";
+        // 1. Ventana Venta Matutina (18:00 a 18:30 hrs)
+        if (mins >= min1800 && mins < min1830) {
+            return "VENTA_MATUTINA";
         }
+
+        // 2. Ventana Venta Vespertina (06:00 a 06:30 hrs)
+        if (mins >= min0600 && mins < min0630) {
+            if (!capturaMatutinaRealizada) {
+                return "BLOQUEADO_MATUTINA_PENDIENTE";
+            }
+            return "VENTA_VESPERTINA";
+        }
+
+        // 3. Ventana Conteo Físico (Disponible si ambas ventas fueron capturadas)
+        if (capturaMatutinaRealizada && capturaVespertinaRealizada) {
+            return "CONTEO_FISICO";
+        }
+
+        return "BLOQUEADO_FUERA_DE_HORARIO";
     }
 
     function toggleModoSwitch() {
@@ -399,8 +330,20 @@
             }
         } else {
             isAdmin = false;
+            horarioExtraordinario = false;
         }
         render();
+    }
+
+    function abrirHorarioExtraordinario() {
+        const pass = prompt("Ingrese clave Admin para abrir Horario Extraordinario:");
+        if (pass === CLAVE) {
+            horarioExtraordinario = true;
+            alert("🔓 Horario extraordinario activado.");
+            render();
+        } else {
+            alert("Clave incorrecta.");
+        }
     }
 
     function actualizarValor(i, campo, valor) {
@@ -413,19 +356,59 @@
         const thead = document.getElementById('thead');
         const statusText = document.getElementById('status-text');
         const statusBadge = document.getElementById('status-badge');
+        const btnSend = document.getElementById('btn-send');
+        const btnExtra = document.getElementById('btn-extra');
+        const mainTable = document.getElementById('main-table');
+        const msgBlocked = document.getElementById('msg-blocked');
 
-        if (fase === "ADMIN") {
-            statusText.innerText = "Modo Administrador (Edición completa)";
+        mainTable.style.display = "table";
+        msgBlocked.style.display = "none";
+        btnSend.disabled = false;
+        btnExtra.style.display = "none";
+
+        if (fase === "ADMIN" || fase === "HORARIO_EXTRAORDINARIO") {
+            statusText.innerText = fase === "ADMIN" ? "Modo Administración Completo" : "Edición bajo Horario Extraordinario";
             statusBadge.innerText = "ADMIN";
-            thead.innerHTML = "<tr><th>Producto</th><th>Inicial</th><th>+C</th><th>-V. Mat</th><th>-V. Noc</th><th>Total V.</th><th>Físico</th></tr>";
-        } else if (fase === "MATUTINO") {
-            statusText.innerText = "Captura de Ventas: Turno Matutino (05:30 hrs - 18:30 hrs)";
-            statusBadge.innerText = "TURNO MATUTINO";
+            statusBadge.className = "badge-active";
+            thead.innerHTML = "<tr><th>Producto</th><th>Inicial</th><th>+C</th><th>-V. Mat</th><th>-V. Ves (Noc)</th><th>Total V.</th><th>Físico</th></tr>";
+        } 
+        else if (fase === "VENTA_MATUTINA") {
+            statusText.innerText = "Captura Venta Matutina (Disponible: 18:00 - 18:30 hrs)";
+            statusBadge.innerText = "VENTA MATUTINA";
+            statusBadge.className = "badge-active";
             thead.innerHTML = "<tr><th>Producto</th><th>Ventas Turno Matutino</th></tr>";
-        } else if (fase === "NOCTURNO_FISICO") {
-            statusText.innerText = "Captura de Ventas: Turno Nocturno y Conteo Físico (18:30 hrs - 05:30 hrs)";
-            statusBadge.innerText = "TURNO NOCTURNO + FÍSICO";
-            thead.innerHTML = "<tr><th>Producto</th><th>Ventas Turno Nocturno</th><th>Conteo Físico Final</th></tr>";
+        } 
+        else if (fase === "VENTA_VESPERTINA") {
+            statusText.innerText = "Captura Venta Vespertina (Disponible: 06:00 - 06:30 hrs)";
+            statusBadge.innerText = "VENTA VESPERTINA";
+            statusBadge.className = "badge-active";
+            thead.innerHTML = "<tr><th>Producto</th><th>Ventas Turno Vespertino</th></tr>";
+        } 
+        else if (fase === "CONTEO_FISICO") {
+            statusText.innerText = "Captura de Inventario Físico (Ventas previas completadas)";
+            statusBadge.innerText = "CONTEO FÍSICO";
+            statusBadge.className = "badge-active";
+            thead.innerHTML = "<tr><th>Producto</th><th>Conteo Físico Final</th></tr>";
+        } 
+        else if (fase === "BLOQUEADO_MATUTINA_PENDIENTE") {
+            statusText.innerText = "Captura bloqueada";
+            statusBadge.innerText = "MATUTINO PENDIENTE";
+            statusBadge.className = "badge-blocked";
+            mainTable.style.display = "none";
+            msgBlocked.style.display = "block";
+            msgBlocked.innerHTML = "⚠️ <strong>No se puede capturar el turno vespertino.</strong><br>La venta del turno matutino no fue realizada o capturada previamente.<br>Solicite abrir un horario extraordinario.";
+            btnSend.disabled = true;
+            btnExtra.style.display = "inline-block";
+        } 
+        else if (fase === "BLOQUEADO_FUERA_DE_HORARIO") {
+            statusText.innerText = "Captura fuera de horario de corte";
+            statusBadge.innerText = "FUERA DE HORARIO";
+            statusBadge.className = "badge-blocked";
+            mainTable.style.display = "none";
+            msgBlocked.style.display = "block";
+            msgBlocked.innerHTML = "⏰ <strong>Sistema Bloqueado.</strong><br>Horarios permitidos para captura:<br>- Venta Matutina: 18:00 a 18:30 hrs<br>- Venta Vespertina: 06:00 a 06:30 hrs";
+            btnSend.disabled = true;
+            btnExtra.style.display = "inline-block";
         }
 
         filtrarProductos();
@@ -441,7 +424,7 @@
             if (p.n.toLowerCase().includes(query)) {
                 let row = tbody.insertRow();
                 
-                if (fase === "ADMIN") {
+                if (fase === "ADMIN" || fase === "HORARIO_EXTRAORDINARIO") {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
                         <td><input type="number" value="${p.s}" oninput="actualizarValor(${i}, 's', this.value)"></td>
@@ -450,14 +433,17 @@
                         <td><input type="number" value="${p.vNoc}" oninput="actualizarValor(${i}, 'vNoc', this.value)"></td>
                         <td><strong>${p.vTotal}</strong></td>
                         <td><input type="number" value="${p.f}" oninput="actualizarValor(${i}, 'f', this.value)"></td>`;
-                } else if (fase === "MATUTINO") {
+                } else if (fase === "VENTA_MATUTINA") {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
                         <td><input type="number" value="${p.vMat !== 0 ? p.vMat : ''}" placeholder="0" min="0" oninput="actualizarValor(${i}, 'vMat', this.value)"></td>`;
-                } else if (fase === "NOCTURNO_FISICO") {
+                } else if (fase === "VENTA_VESPERTINA") {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.vNoc !== 0 ? p.vNoc : ''}" placeholder="0" min="0" oninput="actualizarValor(${i}, 'vNoc', this.value)"></td>
+                        <td><input type="number" value="${p.vNoc !== 0 ? p.vNoc : ''}" placeholder="0" min="0" oninput="actualizarValor(${i}, 'vNoc', this.value)"></td>`;
+                } else if (fase === "CONTEO_FISICO") {
+                    row.innerHTML = `
+                        <td class="prod-name">${p.n}</td>
                         <td><input type="number" value="${p.f !== 0 ? p.f : ''}" placeholder="0" min="0" oninput="actualizarValor(${i}, 'f', this.value)"></td>`;
                 }
             }
@@ -465,22 +451,29 @@
         document.getElementById('stat-total').innerText = productos.length;
     }
 
-    async function cargarDatosIniciales() {
+    async function cargarEstadoServidor() {
         try {
             const res = await fetch(URL_GAS);
             const data = await res.json();
-            if (Array.isArray(data) && data.length > 0) {
-                data.forEach(item => {
-                    let idx = productos.findIndex(p => p.n === item.nombre);
-                    if (idx !== -1) {
-                        productos[idx].s = parseInt(item.inicial) || 0;
-                        productos[idx].f = parseInt(item.fisico) || productos[idx].s;
-                    }
-                });
+            if (data) {
+                capturaMatutinaRealizada = data.matutinaCapturada || false;
+                capturaVespertinaRealizada = data.vespertinaCapturada || false;
+
+                if (Array.isArray(data.items)) {
+                    data.items.forEach(item => {
+                        let idx = productos.findIndex(p => p.n === item.nombre);
+                        if (idx !== -1) {
+                            productos[idx].s = parseInt(item.inicial) || 0;
+                            productos[idx].vMat = parseInt(item.ventaMatutino) || 0;
+                            productos[idx].vNoc = parseInt(item.ventaNocturno) || 0;
+                            productos[idx].f = parseInt(item.fisico) || productos[idx].s;
+                        }
+                    });
+                }
                 render();
             }
         } catch (e) {
-            console.log("Cargando inventario base predeterminado");
+            console.log("No se pudo obtener el estado previo del servidor");
         }
     }
 
@@ -489,9 +482,11 @@
         btn.disabled = true;
         btn.innerText = "Enviando... ⏳";
 
+        const fase = obtenerFaseActual();
+
         const data = productos.map(p => ({
             rol: isAdmin ? "Admin" : "Vendedor",
-            fase: obtenerFaseActual(),
+            fase: fase,
             nombre: p.n,
             inicial: p.s,
             compra: p.c,
@@ -509,10 +504,14 @@
                 headers: { "Content-Type": "text/plain" },
                 body: JSON.stringify(data) 
             });
-            alert("✅ ¡Inventario guardado con éxito!");
+
+            if (fase === "VENTA_MATUTINA") capturaMatutinaRealizada = true;
+            if (fase === "VENTA_VESPERTINA") capturaVespertinaRealizada = true;
+
+            alert("✅ ¡Captura guardada correctamente!");
             location.reload();
         } catch (e) {
-            alert("❌ Error al enviar datos");
+            alert("❌ Error al enviar los datos.");
             btn.disabled = false;
             btn.innerText = "Enviar a Sheets ↑";
         }
@@ -520,8 +519,8 @@
 
     CargarFecha();
     render();
-    cargarDatosIniciales();
-    setInterval(render, 60000);
+    cargarEstadoServidor();
+    setInterval(render, 30000); // Reevalúa horarios cada 30 segundos
 </script>
 </body>
 </html>

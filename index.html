@@ -243,7 +243,7 @@
 </div>
 
 <script>
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbxbooKzyf169k_YBmFpfIQDFbpX8lfuJhNNhCWfQylXPiY9v4i1J5QaofCUrWgBaG2i/exec";
+    const URL_GAS = "https://script.google.com/macros/s/AKfycby5kDqjjoXhnGCmYwLcOzYNxm33FoK2DQyGPs5lhsut_Cc6ZociTaPTqP4RHhtl4zNm/exec";
     const CLAVE = "2026";
     let isAdmin = false;
     let horarioExtraordinario = false;
@@ -252,6 +252,7 @@
     let capturaMatutinaRealizada = localStorage.getItem('capturaMatutina') === 'true';
     let capturaVespertinaRealizada = localStorage.getItem('capturaVespertina') === 'true';
 
+    // Lista de productos con los cambios aplicados
     const listaNombres = [
         "AGUA 1 1/2", "AGUA GALON", "AGUA 1 1/2 SABOR", "ALCOHOL",
         "BOING 1/2", "BUSCAPINA", "CEPILLO DENTAL", "CORTA UÑAS",
@@ -267,10 +268,9 @@
         "SHAMPOO H & SH", "SOPA MARUCHAN", "SUERO ELECTROLIT", "TALCO", 
         "TOALLA FEMENINA", "TOALLA FEM NOCTURNA", "ZACATE CHICO", "ZACATE GRANDE",
         "CABLE TIPO C", "CUBO TIPO C", "CABLE IPHONE",
-        "CARGADOR IPHONE", "PANTENE G", "COLGATE G"
+        "CARGADOR DE IPHONE", "PANTENE G", "COLGATE G"
     ];
 
-    // Estructura limpia para capturas (todos los valores inician nulos/vacíos)
     let productos = listaNombres.map(nombre => ({
         n: nombre, s: '', c: '', vMat: '', vNoc: '', vTotal: 0, f: ''
     }));
@@ -305,10 +305,8 @@
         const ahora = new Date();
         const mins = ahora.getHours() * 60 + ahora.getMinutes();
 
-        // Ventana Corte Matutino: 18:00 - 18:30 hrs
         if (mins >= 18 * 60 && mins < 18 * 60 + 30) return "VENTA_MATUTINA";
 
-        // Ventana Corte Vespertino: 06:00 - 06:30 hrs
         if (mins >= 6 * 60 && mins < 6 * 60 + 30) {
             return capturaMatutinaRealizada ? "VENTA_VESPERTINA" : "BLOQUEADO_MATUTINA_PENDIENTE";
         }
@@ -316,12 +314,13 @@
         return "BLOQUEADO_FUERA_DE_HORARIO";
     }
 
-    function toggleModoSwitch() {
+    async function toggleModoSwitch() {
         const toggle = document.getElementById('mode-toggle');
         if (toggle.checked) {
             const pass = prompt("Clave Admin:");
             if (pass === CLAVE) {
                 isAdmin = true;
+                await cargarEstadoServidor();
             } else {
                 alert("Clave incorrecta");
                 toggle.checked = false;
@@ -330,6 +329,9 @@
         } else {
             isAdmin = false;
             horarioExtraordinario = false;
+            productos.forEach(p => {
+                p.s = ''; p.c = ''; p.vMat = ''; p.vNoc = ''; p.vTotal = 0; p.f = '';
+            });
         }
         render();
     }
@@ -339,20 +341,19 @@
         if (pass === CLAVE) {
             horarioExtraordinario = true;
             alert("🔓 Horario extraordinario activado.");
-            render();
+            cargarEstadoServidor();
         } else {
             alert("Clave incorrecta.");
         }
     }
 
-    // Validación estricta: bloquea negativos y el 0
     function validarEntrada(input, i, campo) {
         if (input.value.includes('-')) {
             input.value = input.value.replace(/-/g, '');
         }
 
         let val = parseInt(input.value);
-        if (isNaN(val) || val <= 0) {
+        if (isNaN(val) || val < 0) {
             input.value = '';
             productos[i][campo] = '';
         } else {
@@ -386,7 +387,7 @@
             thead.innerHTML = "<tr><th>Producto</th><th>Cantidad Comprada</th></tr>";
         }
         else if (fase === "ADMIN" || fase === "HORARIO_EXTRAORDINARIO") {
-            statusText.innerText = fase === "ADMIN" ? "Modo Administración Completo" : "Edición bajo Horario Extraordinario";
+            statusText.innerText = fase === "ADMIN" ? "Modo Administración - Consulta y Edición de BD" : "Edición bajo Horario Extraordinario";
             statusBadge.innerText = "ADMIN";
             statusBadge.className = "badge-active";
             thead.innerHTML = "<tr><th>Producto</th><th>Inicial</th><th>+Compra</th><th>-V. Mat</th><th>-V. Ves</th><th>Total V.</th><th>Físico</th></tr>";
@@ -446,28 +447,28 @@
                 if (fase === "COMPRA") {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.c}" placeholder="0" min="1" step="1" oninput="validarEntrada(this, ${i}, 'c')"></td>`;
+                        <td><input type="number" value="${p.c}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'c')"></td>`;
                 } else if (fase === "ADMIN" || fase === "HORARIO_EXTRAORDINARIO") {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.s}" placeholder="0" min="1" oninput="validarEntrada(this, ${i}, 's')"></td>
-                        <td><input type="number" value="${p.c}" placeholder="0" min="1" oninput="validarEntrada(this, ${i}, 'c')"></td>
-                        <td><input type="number" value="${p.vMat}" placeholder="0" min="1" oninput="validarEntrada(this, ${i}, 'vMat')"></td>
-                        <td><input type="number" value="${p.vNoc}" placeholder="0" min="1" oninput="validarEntrada(this, ${i}, 'vNoc')"></td>
+                        <td><input type="number" value="${p.s}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 's')"></td>
+                        <td><input type="number" value="${p.c}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'c')"></td>
+                        <td><input type="number" value="${p.vMat}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'vMat')"></td>
+                        <td><input type="number" value="${p.vNoc}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'vNoc')"></td>
                         <td><strong>${p.vTotal}</strong></td>
-                        <td><input type="number" value="${p.f}" placeholder="0" min="1" oninput="validarEntrada(this, ${i}, 'f')"></td>`;
+                        <td><input type="number" value="${p.f}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'f')"></td>`;
                 } else if (fase === "VENTA_MATUTINA") {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.vMat}" placeholder="0" min="1" step="1" oninput="validarEntrada(this, ${i}, 'vMat')"></td>`;
+                        <td><input type="number" value="${p.vMat}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'vMat')"></td>`;
                 } else if (fase === "VENTA_VESPERTINA") {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.vNoc}" placeholder="0" min="1" step="1" oninput="validarEntrada(this, ${i}, 'vNoc')"></td>`;
+                        <td><input type="number" value="${p.vNoc}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'vNoc')"></td>`;
                 } else if (fase === "CONTEO_FISICO") {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.f}" placeholder="0" min="1" step="1" oninput="validarEntrada(this, ${i}, 'f')"></td>`;
+                        <td><input type="number" value="${p.f}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'f')"></td>`;
                 }
             }
         });
@@ -486,6 +487,20 @@
                 if (typeof data.vespertinaCapturada !== 'undefined') {
                     capturaVespertinaRealizada = data.vespertinaCapturada;
                     localStorage.setItem('capturaVespertina', capturaVespertinaRealizada);
+                }
+                
+                if (data.items && data.items.length > 0 && (isAdmin || horarioExtraordinario)) {
+                    data.items.forEach(itemServidor => {
+                        let localItem = productos.find(p => p.n === itemServidor.nombre);
+                        if (localItem) {
+                            localItem.s = itemServidor.inicial;
+                            localItem.c = itemServidor.compra;
+                            localItem.vMat = itemServidor.ventaMatutino;
+                            localItem.vNoc = itemServidor.ventaNocturno;
+                            localItem.vTotal = itemServidor.ventaTotal;
+                            localItem.f = itemServidor.fisico;
+                        }
+                    });
                 }
                 render();
             }
@@ -514,11 +529,11 @@
             rol: isAdmin ? "Admin" : "Vendedor",
             fase: fase,
             nombre: p.n,
-            inicial: p.s,
-            compra: p.c,
-            ventaMatutino: p.vMat,
-            ventaNocturno: p.vNoc,
-            fisico: p.f
+            inicial: p.s !== '' ? p.s : 0,
+            compra: p.c !== '' ? p.c : 0,
+            ventaMatutino: p.vMat !== '' ? p.vMat : 0,
+            ventaNocturno: p.vNoc !== '' ? p.vNoc : 0,
+            fisico: p.f !== '' ? p.f : 0
         }));
 
         try {
@@ -529,7 +544,7 @@
                 body: JSON.stringify(data) 
             });
 
-            alert("✅ ¡Captura guardada correctamente!");
+            alert("✅ ¡Datos e inventario actualizados en la base de datos!");
             location.reload();
         } catch (e) {
             alert("❌ Error al enviar los datos.");

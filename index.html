@@ -243,9 +243,9 @@
 </div>
 
 <script>
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbxqkCtLlWWyQEkCy7zbMoYQYNlVpQXsvSI_xSI_YgUqd3VQvNg6MFGX3hBXHQtf2RF0/exec";
+    const URL_GAS = "REEMPLAZAR_CON_TU_URL_DE_APPS_SCRIPT";
     const CLAVE = "2026";
-    const CLAVE_COMPRAS = "2710";
+    const CLAVE_COMPRAS = "2710"; // PIN asignado a Alejandra Paredes
 
     let isAdmin = false;
     let horarioExtraordinario = false;
@@ -290,7 +290,7 @@
                 btn.style.background = "#ef4444";
                 btn.innerText = "✖ Cancelar Compras";
                 render();
-            } else if (pass !== null) {
+            } else if (pass !== null && pass !== "") {
                 alert("🔒 PIN incorrecto. Acceso denegado.");
             }
         } else {
@@ -329,6 +329,7 @@
             const pass = prompt("Clave Admin:");
             if (pass === CLAVE) {
                 isAdmin = true;
+                modoCompra = false; // Desactiva modo compras si entra a Admin
                 await cargarEstadoServidor();
             } else {
                 alert("Clave incorrecta");
@@ -574,7 +575,6 @@
     CargarFecha();
     render();
     cargarEstadoServidor();
-    setInterval(render, 30000);
 </script>
 </body>
 </html>

@@ -150,12 +150,8 @@
             gap: 8px;
         }
 
-        .badge-active {
-            background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 8px; font-weight: 700;
-        }
-        .badge-blocked {
-            background: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 8px; font-weight: 700;
-        }
+        .badge-active { background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 8px; font-weight: 700; }
+        .badge-blocked { background: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 8px; font-weight: 700; }
 
         .extra-btn {
             background: #f59e0b; color: white; border: none; padding: 6px 12px;
@@ -180,9 +176,7 @@
             border: 1px solid var(--border-color); border-radius: 8px; outline: none;
         }
 
-        .message-box {
-            text-align: center; padding: 40px 20px; color: #64748b; font-weight: 600;
-        }
+        .message-box { text-align: center; padding: 40px 20px; color: #64748b; font-weight: 600; }
 
         .footer-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
         .btn-enviar {
@@ -212,6 +206,8 @@
         <div class="date-display">
             📅 <span id="fecha-hoy">-- --- ----</span>
         </div>
+
+        <button id="btn-modo-compra" class="extra-btn" style="background:#10b981;" onclick="activarModoCompra()">➕ Registrar Compras</button>
 
         <div class="toggle-container">
             <span>Admin</span>
@@ -247,14 +243,14 @@
 </div>
 
 <script>
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbz3EVmnTXd43iaGwXGBeOBOxk6PV0WiHXx9BiV80x1wlJBB7D2evPfLpyR2-64z08OT/exec";
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbxDjYwkJs7n6m-j7GNmPR7fNzndMlqHKD9ZTn2Z_pvYdNH-1Q-FIfuoIXf6717WZQ/exec";
     const CLAVE = "2026";
     let isAdmin = false;
     let horarioExtraordinario = false;
+    let modoCompra = false;
 
-    // Control de estado de capturas previas (Servidor / Memoria local)
-    let capturaMatutinaRealizada = false;
-    let capturaVespertinaRealizada = false;
+    let capturaMatutinaRealizada = localStorage.getItem('capturaMatutina') === 'true';
+    let capturaVespertinaRealizada = localStorage.getItem('capturaVespertina') === 'true';
 
     const listaNombres = [
         "AGUA 1 1/2", "AGUA DE 1 LITRO", "AGUA 1 1/2 SABOR", "ALCOHOL",
@@ -283,35 +279,37 @@
         document.getElementById('fecha-hoy').innerText = new Date().toLocaleDateString('es-ES', opciones).toUpperCase();
     }
 
-    // EVALUACIÓN DE REGLAS Y HORARIOS
+    function activarModoCompra() {
+        modoCompra = !modoCompra;
+        const btn = document.getElementById('btn-modo-compra');
+        if (modoCompra) {
+            btn.style.background = "#ef4444";
+            btn.innerText = "✖ Cancelar Compras";
+        } else {
+            btn.style.background = "#10b981";
+            btn.innerText = "➕ Registrar Compras";
+        }
+        render();
+    }
+
     function obtenerFaseActual() {
+        if (modoCompra) return "COMPRA";
         if (isAdmin) return "ADMIN";
         if (horarioExtraordinario) return "HORARIO_EXTRAORDINARIO";
+
+        if (capturaMatutinaRealizada && capturaVespertinaRealizada) {
+            return "CONTEO_FISICO";
+        }
 
         const ahora = new Date();
         const mins = ahora.getHours() * 60 + ahora.getMinutes();
 
-        const min1800 = 18 * 60;      // 18:00 hrs
-        const min1830 = 18 * 60 + 30; // 18:30 hrs
-        const min0600 = 6 * 60;       // 06:00 hrs
-        const min0630 = 6 * 60 + 30;  // 06:30 hrs
+        // Ventana Corte Matutino: 18:00 - 18:30 hrs
+        if (mins >= 18 * 60 && mins < 18 * 60 + 30) return "VENTA_MATUTINA";
 
-        // 1. Ventana Venta Matutina (18:00 a 18:30 hrs)
-        if (mins >= min1800 && mins < min1830) {
-            return "VENTA_MATUTINA";
-        }
-
-        // 2. Ventana Venta Vespertina (06:00 a 06:30 hrs)
-        if (mins >= min0600 && mins < min0630) {
-            if (!capturaMatutinaRealizada) {
-                return "BLOQUEADO_MATUTINA_PENDIENTE";
-            }
-            return "VENTA_VESPERTINA";
-        }
-
-        // 3. Ventana Conteo Físico (Disponible si ambas ventas fueron capturadas)
-        if (capturaMatutinaRealizada && capturaVespertinaRealizada) {
-            return "CONTEO_FISICO";
+        // Ventana Corte Vespertino: 06:00 - 06:30 hrs (día siguiente)
+        if (mins >= 6 * 60 && mins < 6 * 60 + 30) {
+            return capturaMatutinaRealizada ? "VENTA_VESPERTINA" : "BLOQUEADO_MATUTINA_PENDIENTE";
         }
 
         return "BLOQUEADO_FUERA_DE_HORARIO";
@@ -366,11 +364,17 @@
         btnSend.disabled = false;
         btnExtra.style.display = "none";
 
-        if (fase === "ADMIN" || fase === "HORARIO_EXTRAORDINARIO") {
+        if (fase === "COMPRA") {
+            statusText.innerText = "Modo Registro de Compras (Entradas de Almacén)";
+            statusBadge.innerText = "COMPRAS";
+            statusBadge.className = "badge-active";
+            thead.innerHTML = "<tr><th>Producto</th><th>Cantidad Comprada</th></tr>";
+        }
+        else if (fase === "ADMIN" || fase === "HORARIO_EXTRAORDINARIO") {
             statusText.innerText = fase === "ADMIN" ? "Modo Administración Completo" : "Edición bajo Horario Extraordinario";
             statusBadge.innerText = "ADMIN";
             statusBadge.className = "badge-active";
-            thead.innerHTML = "<tr><th>Producto</th><th>Inicial</th><th>+C</th><th>-V. Mat</th><th>-V. Ves (Noc)</th><th>Total V.</th><th>Físico</th></tr>";
+            thead.innerHTML = "<tr><th>Producto</th><th>Inicial</th><th>+Compra</th><th>-V. Mat</th><th>-V. Ves</th><th>Total V.</th><th>Físico</th></tr>";
         } 
         else if (fase === "VENTA_MATUTINA") {
             statusText.innerText = "Captura Venta Matutina (Disponible: 18:00 - 18:30 hrs)";
@@ -385,7 +389,7 @@
             thead.innerHTML = "<tr><th>Producto</th><th>Ventas Turno Vespertino</th></tr>";
         } 
         else if (fase === "CONTEO_FISICO") {
-            statusText.innerText = "Captura de Inventario Físico (Ventas previas completadas)";
+            statusText.innerText = "Captura de Inventario Físico (Desbloqueado tras completar ventas)";
             statusBadge.innerText = "CONTEO FÍSICO";
             statusBadge.className = "badge-active";
             thead.innerHTML = "<tr><th>Producto</th><th>Conteo Físico Final</th></tr>";
@@ -396,7 +400,7 @@
             statusBadge.className = "badge-blocked";
             mainTable.style.display = "none";
             msgBlocked.style.display = "block";
-            msgBlocked.innerHTML = "⚠️ <strong>No se puede capturar el turno vespertino.</strong><br>La venta del turno matutino no fue realizada o capturada previamente.<br>Solicite abrir un horario extraordinario.";
+            msgBlocked.innerHTML = "⚠️ <strong>No se puede capturar el turno vespertino.</strong><br>La venta del turno matutino no fue realizada previa al corte.<br>Pida apoyo a Admin para abrir un horario extraordinario.";
             btnSend.disabled = true;
             btnExtra.style.display = "inline-block";
         } 
@@ -406,7 +410,7 @@
             statusBadge.className = "badge-blocked";
             mainTable.style.display = "none";
             msgBlocked.style.display = "block";
-            msgBlocked.innerHTML = "⏰ <strong>Sistema Bloqueado.</strong><br>Horarios permitidos para captura:<br>- Venta Matutina: 18:00 a 18:30 hrs<br>- Venta Vespertina: 06:00 a 06:30 hrs";
+            msgBlocked.innerHTML = "⏰ <strong>Sistema Bloqueado.</strong><br>Horarios de corte:<br>- Venta Matutina: 18:00 a 18:30 hrs<br>- Venta Vespertina: 06:00 a 06:30 hrs<br><em>Usa '➕ Registrar Compras' para ingresar productos comprados en cualquier momento.</em>";
             btnSend.disabled = true;
             btnExtra.style.display = "inline-block";
         }
@@ -424,7 +428,11 @@
             if (p.n.toLowerCase().includes(query)) {
                 let row = tbody.insertRow();
                 
-                if (fase === "ADMIN" || fase === "HORARIO_EXTRAORDINARIO") {
+                if (fase === "COMPRA") {
+                    row.innerHTML = `
+                        <td class="prod-name">${p.n}</td>
+                        <td><input type="number" value="${p.c !== 0 ? p.c : ''}" placeholder="0" min="0" oninput="actualizarValor(${i}, 'c', this.value)"></td>`;
+                } else if (fase === "ADMIN" || fase === "HORARIO_EXTRAORDINARIO") {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
                         <td><input type="number" value="${p.s}" oninput="actualizarValor(${i}, 's', this.value)"></td>
@@ -456,14 +464,21 @@
             const res = await fetch(URL_GAS);
             const data = await res.json();
             if (data) {
-                capturaMatutinaRealizada = data.matutinaCapturada || false;
-                capturaVespertinaRealizada = data.vespertinaCapturada || false;
+                if (typeof data.matutinaCapturada !== 'undefined') {
+                    capturaMatutinaRealizada = data.matutinaCapturada;
+                    localStorage.setItem('capturaMatutina', capturaMatutinaRealizada);
+                }
+                if (typeof data.vespertinaCapturada !== 'undefined') {
+                    capturaVespertinaRealizada = data.vespertinaCapturada;
+                    localStorage.setItem('capturaVespertina', capturaVespertinaRealizada);
+                }
 
                 if (Array.isArray(data.items)) {
                     data.items.forEach(item => {
                         let idx = productos.findIndex(p => p.n === item.nombre);
                         if (idx !== -1) {
                             productos[idx].s = parseInt(item.inicial) || 0;
+                            productos[idx].c = parseInt(item.compra) || 0;
                             productos[idx].vMat = parseInt(item.ventaMatutino) || 0;
                             productos[idx].vNoc = parseInt(item.ventaNocturno) || 0;
                             productos[idx].f = parseInt(item.fisico) || productos[idx].s;
@@ -473,7 +488,8 @@
                 render();
             }
         } catch (e) {
-            console.log("No se pudo obtener el estado previo del servidor");
+            console.log("Cargando vista local...");
+            render();
         }
     }
 
@@ -484,6 +500,15 @@
 
         const fase = obtenerFaseActual();
 
+        if (fase === "VENTA_MATUTINA") {
+            capturaMatutinaRealizada = true;
+            localStorage.setItem('capturaMatutina', 'true');
+        }
+        if (fase === "VENTA_VESPERTINA") {
+            capturaVespertinaRealizada = true;
+            localStorage.setItem('capturaVespertina', 'true');
+        }
+
         const data = productos.map(p => ({
             rol: isAdmin ? "Admin" : "Vendedor",
             fase: fase,
@@ -492,9 +517,7 @@
             compra: p.c,
             ventaMatutino: p.vMat,
             ventaNocturno: p.vNoc,
-            ventaTotal: p.vMat + p.vNoc,
-            fisico: p.f,
-            diferencia: p.f - (p.s + p.c - (p.vMat + p.vNoc))
+            fisico: p.f
         }));
 
         try {
@@ -504,9 +527,6 @@
                 headers: { "Content-Type": "text/plain" },
                 body: JSON.stringify(data) 
             });
-
-            if (fase === "VENTA_MATUTINA") capturaMatutinaRealizada = true;
-            if (fase === "VENTA_VESPERTINA") capturaVespertinaRealizada = true;
 
             alert("✅ ¡Captura guardada correctamente!");
             location.reload();
@@ -520,7 +540,7 @@
     CargarFecha();
     render();
     cargarEstadoServidor();
-    setInterval(render, 30000); // Reevalúa horarios cada 30 segundos
+    setInterval(render, 30000);
 </script>
 </body>
 </html>

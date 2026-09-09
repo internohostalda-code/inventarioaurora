@@ -172,7 +172,7 @@
         td.prod-name { text-align: left; font-weight: 600; padding-left: 12px; }
 
         input[type="number"] {
-            width: 65px; padding: 6px 4px; text-align: center; font-size: 0.9em;
+            width: 75px; padding: 6px 4px; text-align: center; font-size: 0.9em;
             border: 1px solid var(--border-color); border-radius: 8px; outline: none;
         }
 
@@ -243,7 +243,7 @@
 </div>
 
 <script>
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbxDjYwkJs7n6m-j7GNmPR7fNzndMlqHKD9ZTn2Z_pvYdNH-1Q-FIfuoIXf6717WZQ/exec";
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbxbooKzyf169k_YBmFpfIQDFbpX8lfuJhNNhCWfQylXPiY9v4i1J5QaofCUrWgBaG2i/exec";
     const CLAVE = "2026";
     let isAdmin = false;
     let horarioExtraordinario = false;
@@ -270,8 +270,9 @@
         "CUBO IPHONE", "PANTENE G", "COLGATE G"
     ];
 
+    // Estructura limpia para capturas (todos los valores inician nulos/vacíos)
     let productos = listaNombres.map(nombre => ({
-        n: nombre, s: 0, c: 0, vMat: 0, vNoc: 0, vTotal: 0, f: 0
+        n: nombre, s: '', c: '', vMat: '', vNoc: '', vTotal: 0, f: ''
     }));
 
     function CargarFecha() {
@@ -307,7 +308,7 @@
         // Ventana Corte Matutino: 18:00 - 18:30 hrs
         if (mins >= 18 * 60 && mins < 18 * 60 + 30) return "VENTA_MATUTINA";
 
-        // Ventana Corte Vespertino: 06:00 - 06:30 hrs (día siguiente)
+        // Ventana Corte Vespertino: 06:00 - 06:30 hrs
         if (mins >= 6 * 60 && mins < 6 * 60 + 30) {
             return capturaMatutinaRealizada ? "VENTA_VESPERTINA" : "BLOQUEADO_MATUTINA_PENDIENTE";
         }
@@ -344,9 +345,23 @@
         }
     }
 
-    function actualizarValor(i, campo, valor) {
-        productos[i][campo] = parseInt(valor) || 0;
-        productos[i].vTotal = productos[i].vMat + productos[i].vNoc;
+    // Validación estricta: bloquea negativos y el 0
+    function validarEntrada(input, i, campo) {
+        if (input.value.includes('-')) {
+            input.value = input.value.replace(/-/g, '');
+        }
+
+        let val = parseInt(input.value);
+        if (isNaN(val) || val <= 0) {
+            input.value = '';
+            productos[i][campo] = '';
+        } else {
+            productos[i][campo] = val;
+        }
+
+        let vMat = parseInt(productos[i].vMat) || 0;
+        let vNoc = parseInt(productos[i].vNoc) || 0;
+        productos[i].vTotal = vMat + vNoc;
     }
 
     function render() {
@@ -389,7 +404,7 @@
             thead.innerHTML = "<tr><th>Producto</th><th>Ventas Turno Vespertino</th></tr>";
         } 
         else if (fase === "CONTEO_FISICO") {
-            statusText.innerText = "Captura de Inventario Físico (Desbloqueado tras completar ventas)";
+            statusText.innerText = "Captura de Inventario Físico Final (A ciegas)";
             statusBadge.innerText = "CONTEO FÍSICO";
             statusBadge.className = "badge-active";
             thead.innerHTML = "<tr><th>Producto</th><th>Conteo Físico Final</th></tr>";
@@ -431,28 +446,28 @@
                 if (fase === "COMPRA") {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.c !== 0 ? p.c : ''}" placeholder="0" min="0" oninput="actualizarValor(${i}, 'c', this.value)"></td>`;
+                        <td><input type="number" value="${p.c}" placeholder="0" min="1" step="1" oninput="validarEntrada(this, ${i}, 'c')"></td>`;
                 } else if (fase === "ADMIN" || fase === "HORARIO_EXTRAORDINARIO") {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.s}" oninput="actualizarValor(${i}, 's', this.value)"></td>
-                        <td><input type="number" value="${p.c}" oninput="actualizarValor(${i}, 'c', this.value)"></td>
-                        <td><input type="number" value="${p.vMat}" oninput="actualizarValor(${i}, 'vMat', this.value)"></td>
-                        <td><input type="number" value="${p.vNoc}" oninput="actualizarValor(${i}, 'vNoc', this.value)"></td>
+                        <td><input type="number" value="${p.s}" placeholder="0" min="1" oninput="validarEntrada(this, ${i}, 's')"></td>
+                        <td><input type="number" value="${p.c}" placeholder="0" min="1" oninput="validarEntrada(this, ${i}, 'c')"></td>
+                        <td><input type="number" value="${p.vMat}" placeholder="0" min="1" oninput="validarEntrada(this, ${i}, 'vMat')"></td>
+                        <td><input type="number" value="${p.vNoc}" placeholder="0" min="1" oninput="validarEntrada(this, ${i}, 'vNoc')"></td>
                         <td><strong>${p.vTotal}</strong></td>
-                        <td><input type="number" value="${p.f}" oninput="actualizarValor(${i}, 'f', this.value)"></td>`;
+                        <td><input type="number" value="${p.f}" placeholder="0" min="1" oninput="validarEntrada(this, ${i}, 'f')"></td>`;
                 } else if (fase === "VENTA_MATUTINA") {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.vMat !== 0 ? p.vMat : ''}" placeholder="0" min="0" oninput="actualizarValor(${i}, 'vMat', this.value)"></td>`;
+                        <td><input type="number" value="${p.vMat}" placeholder="0" min="1" step="1" oninput="validarEntrada(this, ${i}, 'vMat')"></td>`;
                 } else if (fase === "VENTA_VESPERTINA") {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.vNoc !== 0 ? p.vNoc : ''}" placeholder="0" min="0" oninput="actualizarValor(${i}, 'vNoc', this.value)"></td>`;
+                        <td><input type="number" value="${p.vNoc}" placeholder="0" min="1" step="1" oninput="validarEntrada(this, ${i}, 'vNoc')"></td>`;
                 } else if (fase === "CONTEO_FISICO") {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.f !== 0 ? p.f : ''}" placeholder="0" min="0" oninput="actualizarValor(${i}, 'f', this.value)"></td>`;
+                        <td><input type="number" value="${p.f}" placeholder="0" min="1" step="1" oninput="validarEntrada(this, ${i}, 'f')"></td>`;
                 }
             }
         });
@@ -472,23 +487,9 @@
                     capturaVespertinaRealizada = data.vespertinaCapturada;
                     localStorage.setItem('capturaVespertina', capturaVespertinaRealizada);
                 }
-
-                if (Array.isArray(data.items)) {
-                    data.items.forEach(item => {
-                        let idx = productos.findIndex(p => p.n === item.nombre);
-                        if (idx !== -1) {
-                            productos[idx].s = parseInt(item.inicial) || 0;
-                            productos[idx].c = parseInt(item.compra) || 0;
-                            productos[idx].vMat = parseInt(item.ventaMatutino) || 0;
-                            productos[idx].vNoc = parseInt(item.ventaNocturno) || 0;
-                            productos[idx].f = parseInt(item.fisico) || productos[idx].s;
-                        }
-                    });
-                }
                 render();
             }
         } catch (e) {
-            console.log("Cargando vista local...");
             render();
         }
     }

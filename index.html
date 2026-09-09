@@ -243,8 +243,10 @@
 </div>
 
 <script>
-    const URL_GAS = "https://script.google.com/macros/s/AKfycby5kDqjjoXhnGCmYwLcOzYNxm33FoK2DQyGPs5lhsut_Cc6ZociTaPTqP4RHhtl4zNm/exec";
+    const URL_GAS = "REEMPLAZAR_CON_TU_URL_DE_APPS_SCRIPT";
     const CLAVE = "2026";
+    const CLAVE_COMPRAS = "2710";
+
     let isAdmin = false;
     let horarioExtraordinario = false;
     let modoCompra = false;
@@ -252,7 +254,6 @@
     let capturaMatutinaRealizada = localStorage.getItem('capturaMatutina') === 'true';
     let capturaVespertinaRealizada = localStorage.getItem('capturaVespertina') === 'true';
 
-    // Lista de productos con los cambios aplicados
     const listaNombres = [
         "AGUA 1 1/2", "AGUA GALON", "AGUA 1 1/2 SABOR", "ALCOHOL",
         "BOING 1/2", "BUSCAPINA", "CEPILLO DENTAL", "CORTA UÑAS",
@@ -281,16 +282,24 @@
     }
 
     function activarModoCompra() {
-        modoCompra = !modoCompra;
-        const btn = document.getElementById('btn-modo-compra');
-        if (modoCompra) {
-            btn.style.background = "#ef4444";
-            btn.innerText = "✖ Cancelar Compras";
+        if (!modoCompra) {
+            const pass = prompt("Acceso a Compras (Alejandra Paredes) - Ingrese PIN:");
+            if (pass === CLAVE_COMPRAS) {
+                modoCompra = true;
+                const btn = document.getElementById('btn-modo-compra');
+                btn.style.background = "#ef4444";
+                btn.innerText = "✖ Cancelar Compras";
+                render();
+            } else if (pass !== null) {
+                alert("🔒 PIN incorrecto. Acceso denegado.");
+            }
         } else {
+            modoCompra = false;
+            const btn = document.getElementById('btn-modo-compra');
             btn.style.background = "#10b981";
             btn.innerText = "➕ Registrar Compras";
+            render();
         }
-        render();
     }
 
     function obtenerFaseActual() {
@@ -381,7 +390,7 @@
         btnExtra.style.display = "none";
 
         if (fase === "COMPRA") {
-            statusText.innerText = "Modo Registro de Compras (Entradas de Almacén)";
+            statusText.innerText = "Modo Registro de Compras (Alejandra Paredes)";
             statusBadge.innerText = "COMPRAS";
             statusBadge.className = "badge-active";
             thead.innerHTML = "<tr><th>Producto</th><th>Cantidad Comprada</th></tr>";
@@ -526,7 +535,7 @@
         }
 
         const data = productos.map(p => ({
-            rol: isAdmin ? "Admin" : "Vendedor",
+            rol: isAdmin ? "Admin" : (fase === "COMPRA" ? "Alejandra Paredes" : "Vendedor"),
             fase: fase,
             nombre: p.n,
             inicial: p.s !== '' ? p.s : 0,
@@ -544,7 +553,16 @@
                 body: JSON.stringify(data) 
             });
 
-            alert("✅ ¡Datos e inventario actualizados en la base de datos!");
+            if (fase === "VENTA_MATUTINA") {
+                alert("✅ ¡Captura enviada con éxito!\n\nMuchas gracias Sra. Liliana por realizar la captura del turno matutino.");
+            } else if (fase === "VENTA_VESPERTINA") {
+                alert("✅ ¡Captura enviada con éxito!\n\nMuchas gracias Sr. Alberto Melchor por realizar la captura del turno vespertino.");
+            } else if (fase === "COMPRA") {
+                alert("✅ ¡Compras registradas con éxito por Alejandra Paredes!");
+            } else {
+                alert("✅ ¡Datos e inventario actualizados en la base de datos!");
+            }
+
             location.reload();
         } catch (e) {
             alert("❌ Error al enviar los datos.");

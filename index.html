@@ -253,6 +253,7 @@
 
     let capturaMatutinaRealizada = localStorage.getItem('capturaMatutina') === 'true';
     let capturaVespertinaRealizada = localStorage.getItem('capturaVespertina') === 'true';
+    let capturaFisicaRealizada = localStorage.getItem('capturaFisica') === 'true';
 
     const listaNombres = [
         "AGUA 1 1/2", "AGUA GALON", "AGUA 1 1/2 SABOR", "ALCOHOL",
@@ -277,8 +278,8 @@
     }));
 
     function CargarFecha() {
-        const opciones = { day: '2-digit', month: 'short', year: 'numeric' };
-        document.getElementById('fecha-hoy').innerText = new Date().toLocaleDateString('es-ES', opciones).toUpperCase();
+        const opciones = { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'America/Mexico_City' };
+        document.getElementById('fecha-hoy').innerText = new Date().toLocaleDateString('es-MX', opciones).toUpperCase();
     }
 
     function activarModoCompra() {
@@ -307,15 +308,22 @@
         if (isAdmin) return "ADMIN";
         if (horarioExtraordinario) return "HORARIO_EXTRAORDINARIO";
 
+        // Obtención estricta de hora y minuto local de México (CDMX)
+        const cdmxDateStr = new Date().toLocaleString("en-US", { timeZone: "America/Mexico_City" });
+        const cdmxDate = new Date(cdmxDateStr);
+        const mins = cdmxDate.getHours() * 60 + cdmxDate.getMinutes();
+
+        // 1. Conteo físico final si ya se completaron ambas ventas
         if (capturaMatutinaRealizada && capturaVespertinaRealizada) {
             return "CONTEO_FISICO";
         }
 
-        const ahora = new Date();
-        const mins = ahora.getHours() * 60 + ahora.getMinutes();
+        // 2. Turno Matutino: Disponible de 18:00 a 18:30 (1080 a 1110 minutos)
+        if (mins >= 18 * 60 && mins < 18 * 60 + 30) {
+            return capturaMatutinaRealizada ? "CONTEO_FISICO" : "VENTA_MATUTINA";
+        }
 
-        if (mins >= 18 * 60 && mins < 18 * 60 + 30) return "VENTA_MATUTINA";
-
+        // 3. Turno Vespertino: Disponible de 06:00 a 06:30 (360 a 390 minutos)
         if (mins >= 6 * 60 && mins < 6 * 60 + 30) {
             return capturaMatutinaRealizada ? "VENTA_VESPERTINA" : "BLOQUEADO_MATUTINA_PENDIENTE";
         }
@@ -329,7 +337,7 @@
             const pass = prompt("Clave Admin:");
             if (pass === CLAVE) {
                 isAdmin = true;
-                modoCompra = false; // Desactiva modo compras si entra a Admin
+                modoCompra = false;
                 await cargarEstadoServidor();
             } else {
                 alert("Clave incorrecta");
@@ -533,6 +541,10 @@
         if (fase === "VENTA_VESPERTINA") {
             capturaVespertinaRealizada = true;
             localStorage.setItem('capturaVespertina', 'true');
+        }
+        if (fase === "CONTEO_FISICO") {
+            capturaFisicaRealizada = true;
+            localStorage.setItem('capturaFisica', 'true');
         }
 
         const data = productos.map(p => ({

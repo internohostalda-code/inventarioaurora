@@ -20,7 +20,11 @@
             --success: #10b981;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -91,7 +95,12 @@
             margin-bottom: 16px;
         }
 
-        .search-container { position: relative; flex: 1; min-width: 200px; }
+        .search-container {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+        }
+
         .search-container input {
             width: 100%;
             padding: 10px 16px 10px 38px;
@@ -102,7 +111,13 @@
             outline: none;
         }
 
-        .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #64748b; }
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
 
         .date-display {
             font-size: 0.85em;
@@ -123,18 +138,50 @@
             color: var(--th-text);
         }
 
-        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
         .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #94a3b8; transition: .3s; border-radius: 24px;
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #94a3b8;
+            transition: .3s;
+            border-radius: 24px;
         }
+
         .slider:before {
-            position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
-            background-color: white; transition: .3s; border-radius: 50%;
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
         }
-        input:checked + .slider { background-color: var(--btn-action); }
-        input:checked + .slider:before { transform: translateX(20px); }
+
+        input:checked + .slider {
+            background-color: var(--btn-action);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
 
         .status-banner {
             background: #f1f5f9;
@@ -150,12 +197,31 @@
             gap: 8px;
         }
 
-        .badge-active { background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 8px; font-weight: 700; }
-        .badge-blocked { background: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 8px; font-weight: 700; }
+        .badge-active {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .badge-blocked {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
 
         .extra-btn {
-            background: #f59e0b; color: white; border: none; padding: 6px 12px;
-            border-radius: 12px; font-size: 0.8em; font-weight: 700; cursor: pointer;
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 700;
+            cursor: pointer;
         }
 
         .content-card {
@@ -165,26 +231,83 @@
             background: #fff;
         }
 
-        .table-wrapper { overflow-x: auto; max-height: 55vh; border-radius: 10px; }
-        table { width: 100%; border-collapse: separate; border-spacing: 4px 6px; }
-        th { background: var(--th-bg); color: var(--th-text); padding: 10px; font-size: 0.85em; font-weight: 700; position: sticky; top: 0; }
-        td { padding: 8px; font-size: 0.88em; text-align: center; background: #f8fafc; border-radius: 6px; }
-        td.prod-name { text-align: left; font-weight: 600; padding-left: 12px; }
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 55vh;
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 4px 6px;
+        }
+
+        th {
+            background: var(--th-bg);
+            color: var(--th-text);
+            padding: 10px;
+            font-size: 0.85em;
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        td {
+            padding: 8px;
+            font-size: 0.88em;
+            text-align: center;
+            background: #f8fafc;
+            border-radius: 6px;
+        }
+
+        td.prod-name {
+            text-align: left;
+            font-weight: 600;
+            padding-left: 12px;
+        }
 
         input[type="number"] {
-            width: 75px; padding: 6px 4px; text-align: center; font-size: 0.9em;
-            border: 1px solid var(--border-color); border-radius: 8px; outline: none;
+            width: 75px;
+            padding: 6px 4px;
+            text-align: center;
+            font-size: 0.9em;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
         }
 
-        .message-box { text-align: center; padding: 40px 20px; color: #64748b; font-weight: 600; }
+        .message-box {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+            font-weight: 600;
+        }
 
-        .footer-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+        }
+
         .btn-enviar {
-            background: var(--btn-action); color: white; border: none; padding: 12px 24px;
-            border-radius: 25px; font-weight: 700; cursor: pointer;
+            background: var(--btn-action);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
             box-shadow: 0 4px 12px rgba(27, 59, 111, 0.2);
         }
-        .btn-enviar:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; }
+
+        .btn-enviar:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
     </style>
 </head>
 <body>
@@ -243,350 +366,269 @@
 </div>
 
 <script>
-    const URL_GAS = "https://script.google.com/macros/library/d/1v6TwDGDLTQXRwEC23kZo_Di5MKKVcF7iFtUnSTjjnTgrExrlZzDVQINZ/18";
-    const CLAVE = "2026";
-    const CLAVE_COMPRAS = "2710"; // PIN asignado a Alejandra Paredes
+    // URL de Web App configurada con tu ID de Google Apps Script
+    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycby8w7J0bwtXVnGXrRfmlk2Kq-VrhW1Ur5-I8iFnQbgfcmX6GXbQ75wQdyhtBSmmYhQ/exec";
 
-    let isAdmin = false;
-    let horarioExtraordinario = false;
-    let modoCompra = false;
+    let estadoSistema = {};
+    let productos = [];
+    let vistaActual = ""; // 'matutina', 'vespertina', 'conteo', 'compras'
+    let esModoAdmin = false;
 
-    let capturaMatutinaRealizada = localStorage.getItem('capturaMatutina') === 'true';
-    let capturaVespertinaRealizada = localStorage.getItem('capturaVespertina') === 'true';
-    let capturaFisicaRealizada = localStorage.getItem('capturaFisica') === 'true';
+    document.addEventListener("DOMContentLoaded", function () {
+        inicializarSistema();
+    });
 
-    const listaNombres = [
-        "AGUA 1 1/2", "AGUA GALON", "AGUA 1 1/2 SABOR", "ALCOHOL",
-        "BOING 1/2", "BUSCAPINA", "CEPILLO DENTAL", "CORTA UÑAS",
-        "CIGARROS", "CONDON", "COTONETES", "CREMA HINDS",
-        "DESODORANTE HOMBRE", "DESODORANTE MUJER", "ENCENDEDOR",
-        "GEL CHICO", "GEL GRANDE", "IBUPROFENO", "JABON PALMOLIVE",
-        "JABON ZEST", "JARRITO 2 LITROS", "LORATAINA", "PALOMITAS",
-        "PAPEL HIGIENICO", "PARACETAMOL", "PASTA COLGATE",
-        "PASTA LUMINUS WHITE", "PEPTO BISMOL", "POMADA LABIOS",
-        "RASTRILLO 2 HOJAS", "RASTRILLO 3 HOJAS", "RED COLA 2 LTS",
-        "RITZ", "ROSEL", "SAL DE UVAS PICOT", "SEDALMERK",
-        "SHAMPOO CAPRICE", "SHAMPOO PALMOLIVE", "SHAMPOO PANTENE",
-        "SHAMPOO H & SH", "SOPA MARUCHAN", "SUERO ELECTROLIT", "TALCO", 
-        "TOALLA FEMENINA", "TOALLA FEM NOCTURNA", "ZACATE CHICO", "ZACATE GRANDE",
-        "CABLE TIPO C", "CUBO TIPO C", "CABLE IPHONE",
-        "CARGADOR DE IPHONE", "PANTENE G", "COLGATE G"
-    ];
+    async function inicializarSistema() {
+        try {
+            const res = await fetch(`${URL_SCRIPT}?action=obtenerEstado`);
+            estadoSistema = await res.json();
 
-    let productos = listaNombres.map(nombre => ({
-        n: nombre, s: '', c: '', vMat: '', vNoc: '', vTotal: 0, f: ''
-    }));
-
-    function CargarFecha() {
-        const opciones = { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'America/Mexico_City' };
-        document.getElementById('fecha-hoy').innerText = new Date().toLocaleDateString('es-MX', opciones).toUpperCase();
-    }
-
-    function activarModoCompra() {
-        if (!modoCompra) {
-            const pass = prompt("Acceso a Compras (Alejandra Paredes) - Ingrese PIN:");
-            if (pass === CLAVE_COMPRAS) {
-                modoCompra = true;
-                const btn = document.getElementById('btn-modo-compra');
-                btn.style.background = "#ef4444";
-                btn.innerText = "✖ Cancelar Compras";
-                render();
-            } else if (pass !== null && pass !== "") {
-                alert("🔒 PIN incorrecto. Acceso denegado.");
-            }
-        } else {
-            modoCompra = false;
-            const btn = document.getElementById('btn-modo-compra');
-            btn.style.background = "#10b981";
-            btn.innerText = "➕ Registrar Compras";
-            render();
-        }
-    }
-
-    function obtenerFaseActual() {
-        if (modoCompra) return "COMPRA";
-        if (isAdmin) return "ADMIN";
-        if (horarioExtraordinario) return "HORARIO_EXTRAORDINARIO";
-
-        // Obtención estricta de hora y minuto local de México (CDMX)
-        const cdmxDateStr = new Date().toLocaleString("en-US", { timeZone: "America/Mexico_City" });
-        const cdmxDate = new Date(cdmxDateStr);
-        const mins = cdmxDate.getHours() * 60 + cdmxDate.getMinutes();
-
-        // 1. Conteo físico final si ya se completaron ambas ventas
-        if (capturaMatutinaRealizada && capturaVespertinaRealizada) {
-            return "CONTEO_FISICO";
-        }
-
-        // 2. Turno Matutino: Disponible de 18:00 a 18:30 (1080 a 1110 minutos)
-        if (mins >= 18 * 60 && mins < 18 * 60 + 30) {
-            return capturaMatutinaRealizada ? "CONTEO_FISICO" : "VENTA_MATUTINA";
-        }
-
-        // 3. Turno Vespertino: Disponible de 06:00 a 06:30 (360 a 390 minutos)
-        if (mins >= 6 * 60 && mins < 6 * 60 + 30) {
-            return capturaMatutinaRealizada ? "VENTA_VESPERTINA" : "BLOQUEADO_MATUTINA_PENDIENTE";
-        }
-
-        return "BLOQUEADO_FUERA_DE_HORARIO";
-    }
-
-    async function toggleModoSwitch() {
-        const toggle = document.getElementById('mode-toggle');
-        if (toggle.checked) {
-            const pass = prompt("Clave Admin:");
-            if (pass === CLAVE) {
-                isAdmin = true;
-                modoCompra = false;
-                await cargarEstadoServidor();
+            // Formatear fecha en cabecera
+            if (estadoSistema.fecha) {
+                document.getElementById("fecha-hoy").innerText = estadoSistema.fecha;
             } else {
-                alert("Clave incorrecta");
-                toggle.checked = false;
-                isAdmin = false;
+                document.getElementById("fecha-hoy").innerText = new Date().toLocaleDateString("es-MX");
             }
+
+            // Auto-limpieza automática de caché en navegador
+            const fechaLocal = localStorage.getItem("fechaUltimaCaptura");
+            const versionLocal = localStorage.getItem("versionApp");
+
+            if (fechaLocal !== estadoSistema.fecha || versionLocal !== estadoSistema.versionApp) {
+                localStorage.clear();
+                localStorage.setItem("fechaUltimaCaptura", estadoSistema.fecha);
+                localStorage.setItem("versionApp", estadoSistema.versionApp);
+                console.log("Caché borrada automáticamente por actualización de versión o cambio de día.");
+            }
+
+            evaluarAccesoYSectores();
+        } catch (err) {
+            console.error("Error al conectar con Google Sheets:", err);
+            mostrarMensajeBloqueo("No se pudo conectar con la base de datos. Verifica la conexión o los permisos de la Web App.");
+        }
+    }
+
+    function evaluarAccesoYSectores() {
+        const ahora = new Date();
+        const horaActual = ahora.getHours() + (ahora.getMinutes() / 60);
+
+        // Ventanas de captura: Matutino (06:00 - 06:30) | Vespertino (18:00 - 18:30)
+        const esHorarioMatutino = horaActual >= 6.0 && horaActual <= 6.5;
+        const esHorarioVespertino = horaActual >= 18.0 && horaActual <= 18.5;
+
+        const matutinaLista = localStorage.getItem("capturaMatutina") === "true" || estadoSistema.capturaMatutina;
+        const vespertinaLista = localStorage.getItem("capturaVespertina") === "true" || estadoSistema.capturaVespertina;
+
+        // REGLA 1: Bloqueo si el inventario final ya se cerró
+        if (estadoSistema.inventarioCerrado && !esModoAdmin) {
+            mostrarMensajeBloqueo("El inventario final ya ha sido capturado y cerrado. Se abrirá hasta el siguiente turno.");
+            return;
+        }
+
+        // REGLA 2: Abrir Conteo Físico SI Y SOLO SI están capturados ambos turnos
+        if (matutinaLista && vespertinaLista) {
+            cargarVista("conteo");
+            return;
+        }
+
+        // REGLA 3: Evaluación de turnos y horarios de captura
+        if (!matutinaLista) {
+            if (esHorarioMatutino || esModoAdmin) {
+                cargarVista("matutina");
+            } else {
+                mostrarMensajeBloqueo("Fuera de horario. La captura matutina se habilita de 06:00 a 06:30 hrs.");
+                document.getElementById("btn-extra").style.display = "inline-block";
+            }
+        } else if (!vespertinaLista) {
+            if (esHorarioVespertino || esModoAdmin) {
+                cargarVista("vespertina");
+            } else {
+                mostrarMensajeBloqueo("Fuera de horario. La captura vespertina se habilita de 18:00 a 18:30 hrs.");
+                document.getElementById("btn-extra").style.display = "inline-block";
+            }
+        }
+    }
+
+    async function cargarVista(modo) {
+        vistaActual = modo;
+        ocultarBloqueo();
+
+        const badge = document.getElementById("status-badge");
+        const statusText = document.getElementById("status-text");
+
+        if (modo === "matutina") {
+            statusText.innerText = "Captura Matutina (Entradas/Salidas)";
+            badge.innerText = "Turno Mañana";
+            badge.className = "badge-active";
+        } else if (modo === "vespertina") {
+            statusText.innerText = "Captura Vespertina (Entradas/Salidas)";
+            badge.innerText = "Turno Tarde";
+            badge.className = "badge-active";
+        } else if (modo === "conteo") {
+            statusText.innerText = "Conteo Físico Final";
+            badge.innerText = "Cierre de Inventario";
+            badge.className = "badge-active";
+        } else if (modo === "compras") {
+            statusText.innerText = "Registro Extraordinario de Compras";
+            badge.innerText = "Modo Compras";
+            badge.className = "badge-active";
+        }
+
+        try {
+            const res = await fetch(`${URL_SCRIPT}?action=obtenerProductos&vista=${modo}`);
+            productos = await res.json();
+            renderizarTabla(productos);
+        } catch (e) {
+            console.error("Error al obtener los productos:", e);
+            alert("Ocurrió un error al cargar la lista de productos.");
+        }
+    }
+
+    function renderizarTabla(lista) {
+        const thead = document.getElementById("thead");
+        const tbody = document.getElementById("tbody");
+
+        thead.innerHTML = "";
+        tbody.innerHTML = "";
+
+        document.getElementById("stat-total").innerText = lista.length;
+
+        if (vistaActual === "conteo") {
+            thead.innerHTML = `
+                <tr>
+                    <th>Producto</th>
+                    <th>Teórico</th>
+                    <th>Conteo Físico</th>
+                </tr>
+            `;
+
+            lista.forEach((p, idx) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td class="prod-name">${p.nombre}</td>
+                    <td>${p.teorico !== undefined ? p.teorico : 0}</td>
+                    <td>
+                        <input type="number" min="0" id="input-${idx}" value="${p.fisico !== undefined ? p.fisico : ''}" placeholder="0">
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
         } else {
-            isAdmin = false;
-            horarioExtraordinario = false;
-            productos.forEach(p => {
-                p.s = ''; p.c = ''; p.vMat = ''; p.vNoc = ''; p.vTotal = 0; p.f = '';
+            thead.innerHTML = `
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                </tr>
+            `;
+
+            lista.forEach((p, idx) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td class="prod-name">${p.nombre}</td>
+                    <td>
+                        <input type="number" min="0" id="input-${idx}" value="${p.cantidad !== undefined ? p.cantidad : ''}" placeholder="0">
+                    </td>
+                `;
+                tbody.appendChild(tr);
             });
         }
-        render();
-    }
-
-    function abrirHorarioExtraordinario() {
-        const pass = prompt("Ingrese clave Admin para abrir Horario Extraordinario:");
-        if (pass === CLAVE) {
-            horarioExtraordinario = true;
-            alert("🔓 Horario extraordinario activado.");
-            cargarEstadoServidor();
-        } else {
-            alert("Clave incorrecta.");
-        }
-    }
-
-    function validarEntrada(input, i, campo) {
-        if (input.value.includes('-')) {
-            input.value = input.value.replace(/-/g, '');
-        }
-
-        let val = parseInt(input.value);
-        if (isNaN(val) || val < 0) {
-            input.value = '';
-            productos[i][campo] = '';
-        } else {
-            productos[i][campo] = val;
-        }
-
-        let vMat = parseInt(productos[i].vMat) || 0;
-        let vNoc = parseInt(productos[i].vNoc) || 0;
-        productos[i].vTotal = vMat + vNoc;
-    }
-
-    function render() {
-        const fase = obtenerFaseActual();
-        const thead = document.getElementById('thead');
-        const statusText = document.getElementById('status-text');
-        const statusBadge = document.getElementById('status-badge');
-        const btnSend = document.getElementById('btn-send');
-        const btnExtra = document.getElementById('btn-extra');
-        const mainTable = document.getElementById('main-table');
-        const msgBlocked = document.getElementById('msg-blocked');
-
-        mainTable.style.display = "table";
-        msgBlocked.style.display = "none";
-        btnSend.disabled = false;
-        btnExtra.style.display = "none";
-
-        if (fase === "COMPRA") {
-            statusText.innerText = "Modo Registro de Compras (Alejandra Paredes)";
-            statusBadge.innerText = "COMPRAS";
-            statusBadge.className = "badge-active";
-            thead.innerHTML = "<tr><th>Producto</th><th>Cantidad Comprada</th></tr>";
-        }
-        else if (fase === "ADMIN" || fase === "HORARIO_EXTRAORDINARIO") {
-            statusText.innerText = fase === "ADMIN" ? "Modo Administración - Consulta y Edición de BD" : "Edición bajo Horario Extraordinario";
-            statusBadge.innerText = "ADMIN";
-            statusBadge.className = "badge-active";
-            thead.innerHTML = "<tr><th>Producto</th><th>Inicial</th><th>+Compra</th><th>-V. Mat</th><th>-V. Ves</th><th>Total V.</th><th>Físico</th></tr>";
-        } 
-        else if (fase === "VENTA_MATUTINA") {
-            statusText.innerText = "Captura Venta Matutina (Disponible: 18:00 - 18:30 hrs)";
-            statusBadge.innerText = "VENTA MATUTINA";
-            statusBadge.className = "badge-active";
-            thead.innerHTML = "<tr><th>Producto</th><th>Ventas Turno Matutino</th></tr>";
-        } 
-        else if (fase === "VENTA_VESPERTINA") {
-            statusText.innerText = "Captura Venta Vespertina (Disponible: 06:00 - 06:30 hrs)";
-            statusBadge.innerText = "VENTA VESPERTINA";
-            statusBadge.className = "badge-active";
-            thead.innerHTML = "<tr><th>Producto</th><th>Ventas Turno Vespertino</th></tr>";
-        } 
-        else if (fase === "CONTEO_FISICO") {
-            statusText.innerText = "Captura de Inventario Físico Final (A ciegas)";
-            statusBadge.innerText = "CONTEO FÍSICO";
-            statusBadge.className = "badge-active";
-            thead.innerHTML = "<tr><th>Producto</th><th>Conteo Físico Final</th></tr>";
-        } 
-        else if (fase === "BLOQUEADO_MATUTINA_PENDIENTE") {
-            statusText.innerText = "Captura bloqueada";
-            statusBadge.innerText = "MATUTINO PENDIENTE";
-            statusBadge.className = "badge-blocked";
-            mainTable.style.display = "none";
-            msgBlocked.style.display = "block";
-            msgBlocked.innerHTML = "⚠️ <strong>No se puede capturar el turno vespertino.</strong><br>La venta del turno matutino no fue realizada previa al corte.<br>Pida apoyo a Admin para abrir un horario extraordinario.";
-            btnSend.disabled = true;
-            btnExtra.style.display = "inline-block";
-        } 
-        else if (fase === "BLOQUEADO_FUERA_DE_HORARIO") {
-            statusText.innerText = "Captura fuera de horario de corte";
-            statusBadge.innerText = "FUERA DE HORARIO";
-            statusBadge.className = "badge-blocked";
-            mainTable.style.display = "none";
-            msgBlocked.style.display = "block";
-            msgBlocked.innerHTML = "⏰ <strong>Sistema Bloqueado.</strong><br>Horarios de corte:<br>- Venta Matutina: 18:00 a 18:30 hrs<br>- Venta Vespertina: 06:00 a 06:30 hrs<br><em>Usa '➕ Registrar Compras' para ingresar productos comprados en cualquier momento.</em>";
-            btnSend.disabled = true;
-            btnExtra.style.display = "inline-block";
-        }
-
-        filtrarProductos();
     }
 
     function filtrarProductos() {
-        const tbody = document.getElementById('tbody');
-        const query = document.getElementById('search').value.toLowerCase();
-        const fase = obtenerFaseActual();
-        tbody.innerHTML = "";
-
-        productos.forEach((p, i) => {
-            if (p.n.toLowerCase().includes(query)) {
-                let row = tbody.insertRow();
-                
-                if (fase === "COMPRA") {
-                    row.innerHTML = `
-                        <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.c}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'c')"></td>`;
-                } else if (fase === "ADMIN" || fase === "HORARIO_EXTRAORDINARIO") {
-                    row.innerHTML = `
-                        <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.s}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 's')"></td>
-                        <td><input type="number" value="${p.c}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'c')"></td>
-                        <td><input type="number" value="${p.vMat}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'vMat')"></td>
-                        <td><input type="number" value="${p.vNoc}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'vNoc')"></td>
-                        <td><strong>${p.vTotal}</strong></td>
-                        <td><input type="number" value="${p.f}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'f')"></td>`;
-                } else if (fase === "VENTA_MATUTINA") {
-                    row.innerHTML = `
-                        <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.vMat}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'vMat')"></td>`;
-                } else if (fase === "VENTA_VESPERTINA") {
-                    row.innerHTML = `
-                        <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.vNoc}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'vNoc')"></td>`;
-                } else if (fase === "CONTEO_FISICO") {
-                    row.innerHTML = `
-                        <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.f}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'f')"></td>`;
-                }
-            }
-        });
-        document.getElementById('stat-total').innerText = productos.length;
+        const query = document.getElementById("search").value.toLowerCase().trim();
+        const productosFiltrados = productos.filter(p => p.nombre.toLowerCase().includes(query));
+        renderizarTabla(productosFiltrados);
     }
 
-    async function cargarEstadoServidor() {
-        try {
-            const res = await fetch(URL_GAS);
-            const data = await res.json();
-            if (data) {
-                if (typeof data.matutinaCapturada !== 'undefined') {
-                    capturaMatutinaRealizada = data.matutinaCapturada;
-                    localStorage.setItem('capturaMatutina', capturaMatutinaRealizada);
-                }
-                if (typeof data.vespertinaCapturada !== 'undefined') {
-                    capturaVespertinaRealizada = data.vespertinaCapturada;
-                    localStorage.setItem('capturaVespertina', capturaVespertinaRealizada);
-                }
-                
-                if (data.items && data.items.length > 0 && (isAdmin || horarioExtraordinario)) {
-                    data.items.forEach(itemServidor => {
-                        let localItem = productos.find(p => p.n === itemServidor.nombre);
-                        if (localItem) {
-                            localItem.s = itemServidor.inicial;
-                            localItem.c = itemServidor.compra;
-                            localItem.vMat = itemServidor.ventaMatutino;
-                            localItem.vNoc = itemServidor.ventaNocturno;
-                            localItem.vTotal = itemServidor.ventaTotal;
-                            localItem.f = itemServidor.fisico;
-                        }
-                    });
-                }
-                render();
-            }
-        } catch (e) {
-            render();
+    function toggleModoSwitch() {
+        esModoAdmin = document.getElementById("mode-toggle").checked;
+        evaluarAccesoYSectores();
+    }
+
+    function activarModoCompra() {
+        cargarVista("compras");
+    }
+
+    function abrirHorarioExtraordinario() {
+        const clave = prompt("Ingresa la clave de autorización para habilitar horario extraordinario:");
+        if (clave === "1234") {
+            esModoAdmin = true;
+            document.getElementById("mode-toggle").checked = true;
+            evaluarAccesoYSectores();
+        } else if (clave !== null) {
+            alert("Clave de autorización incorrecta.");
         }
     }
 
     async function enviar() {
-        const btn = document.getElementById('btn-send');
-        btn.disabled = true;
-        btn.innerText = "Enviando... ⏳";
+        const btnSend = document.getElementById("btn-send");
+        btnSend.disabled = true;
+        btnSend.innerText = "Enviando a Sheets...";
 
-        const fase = obtenerFaseActual();
-
-        if (fase === "VENTA_MATUTINA") {
-            capturaMatutinaRealizada = true;
-            localStorage.setItem('capturaMatutina', 'true');
-        }
-        if (fase === "VENTA_VESPERTINA") {
-            capturaVespertinaRealizada = true;
-            localStorage.setItem('capturaVespertina', 'true');
-        }
-        if (fase === "CONTEO_FISICO") {
-            capturaFisicaRealizada = true;
-            localStorage.setItem('capturaFisica', 'true');
-        }
-
-        const data = productos.map(p => ({
-            rol: isAdmin ? "Admin" : (fase === "COMPRA" ? "Alejandra Paredes" : "Vendedor"),
-            fase: fase,
-            nombre: p.n,
-            inicial: p.s !== '' ? p.s : 0,
-            compra: p.c !== '' ? p.c : 0,
-            ventaMatutino: p.vMat !== '' ? p.vMat : 0,
-            ventaNocturno: p.vNoc !== '' ? p.vNoc : 0,
-            fisico: p.f !== '' ? p.f : 0
-        }));
+        const datosEnviar = productos.map((p, idx) => {
+            const inputEl = document.getElementById(`input-${idx}`);
+            const valor = inputEl ? parseFloat(inputEl.value) || 0 : 0;
+            return {
+                id: p.id || p.nombre,
+                nombre: p.nombre,
+                valor: valor
+            };
+        });
 
         try {
-            await fetch(URL_GAS, { 
-                method: "POST", 
-                mode: "no-cors",
-                headers: { "Content-Type": "text/plain" },
-                body: JSON.stringify(data) 
+            const response = await fetch(URL_SCRIPT, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "text/plain;charset=utf-8"
+                },
+                body: JSON.stringify({
+                    action: "guardarCaptura",
+                    vista: vistaActual,
+                    datos: datosEnviar
+                })
             });
 
-            if (fase === "VENTA_MATUTINA") {
-                alert("✅ ¡Captura enviada con éxito!\n\nMuchas gracias Sra. Liliana por realizar la captura del turno matutino.");
-            } else if (fase === "VENTA_VESPERTINA") {
-                alert("✅ ¡Captura enviada con éxito!\n\nMuchas gracias Sr. Alberto Melchor por realizar la captura del turno vespertino.");
-            } else if (fase === "COMPRA") {
-                alert("✅ ¡Compras registradas con éxito por Alejandra Paredes!");
-            } else {
-                alert("✅ ¡Datos e inventario actualizados en la base de datos!");
-            }
+            const res = await response.json();
 
-            location.reload();
+            if (res.status === "success") {
+                alert("¡Datos guardados correctamente en Google Sheets!");
+                if (vistaActual === "matutina") {
+                    localStorage.setItem("capturaMatutina", "true");
+                } else if (vistaActual === "vespertina") {
+                    localStorage.setItem("capturaVespertina", "true");
+                }
+                location.reload();
+            } else {
+                alert("Error al guardar en Sheets: " + res.message);
+            }
         } catch (e) {
-            alert("❌ Error al enviar los datos.");
-            btn.disabled = false;
-            btn.innerText = "Enviar a Sheets ↑";
+            console.error("Error al enviar la información:", e);
+            alert("Ocurrió un error de conexión al enviar los datos.");
+        } finally {
+            btnSend.disabled = false;
+            btnSend.innerText = "Enviar a Sheets ↑";
         }
     }
 
-    CargarFecha();
-    render();
-    cargarEstadoServidor();
+    function mostrarMensajeBloqueo(texto) {
+        document.getElementById("main-table").style.display = "none";
+        const msg = document.getElementById("msg-blocked");
+        msg.style.display = "block";
+        msg.innerText = texto;
+
+        document.getElementById("status-text").innerText = "Acceso Restringido";
+        const badge = document.getElementById("status-badge");
+        badge.innerText = "Bloqueado";
+        badge.className = "badge-blocked";
+        document.getElementById("btn-send").style.display = "none";
+    }
+
+    function ocultarBloqueo() {
+        document.getElementById("main-table").style.display = "table";
+        document.getElementById("msg-blocked").style.display = "none";
+        document.getElementById("btn-send").style.display = "block";
+        document.getElementById("btn-extra").style.display = "none";
+    }
 </script>
 </body>
 </html>

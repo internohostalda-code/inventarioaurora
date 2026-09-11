@@ -8,20 +8,22 @@
         :root {
             --banner-gradient: linear-gradient(135deg, #0f2537 0%, #1b3b6f 100%);
             --btn-action: #1b3b6f;
+            --btn-action-hover: #0f2537;
+            --accent-gold: #d4af37;
             --th-bg: #e8f1f5;
             --th-text: #0f2537;
             --bg: #f4f7f9;
             --card-bg: #ffffff;
             --border-color: #d1e1e9;
             --text-dark: #1f2937;
-            --badge-green: #e0f2fe;
-            --badge-green-text: #0369a1;
+            --danger: #ef4444;
+            --success: #10b981;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg);
             color: var(--text-dark);
             padding: 15px;
@@ -31,7 +33,7 @@
 
         .main-container {
             width: 100%;
-            max-width: 980px;
+            max-width: 1080px;
             background: var(--card-bg);
             border-radius: 20px;
             padding: 16px;
@@ -41,7 +43,7 @@
         .banner {
             background: var(--banner-gradient);
             color: white;
-            padding: 20px;
+            padding: 24px 20px;
             border-radius: 14px;
             display: flex;
             justify-content: space-between;
@@ -50,20 +52,33 @@
             position: relative;
         }
 
+        .banner-logo-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         .company-logo {
-            max-width: 280px;
+            width: 100%;
+            max-width: 380px;
             height: auto;
-            max-height: 80px;
+            max-height: 140px;
             object-fit: contain;
+            filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.3));
         }
 
         .logout-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
-            padding: 6px 12px;
-            border-radius: 15px;
+            font-size: 0.8em;
+            padding: 8px 14px;
+            border-radius: 20px;
             cursor: pointer;
+            position: absolute;
+            right: 20px;
+            top: 20px;
             font-weight: 600;
         }
 
@@ -76,132 +91,152 @@
             margin-bottom: 16px;
         }
 
+        .search-container { position: relative; flex: 1; min-width: 200px; }
         .search-container input {
-            padding: 8px 14px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            outline: none;
             width: 100%;
-            max-width: 250px;
+            padding: 10px 16px 10px 38px;
+            border-radius: 25px;
+            border: 1px solid var(--border-color);
+            background-color: #f8fafc;
+            font-size: 0.9em;
+            outline: none;
         }
+
+        .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #64748b; }
 
         .date-display {
             font-size: 0.85em;
             font-weight: 600;
+            color: var(--th-text);
             background: var(--th-bg);
-            padding: 6px 12px;
-            border-radius: 15px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
         }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82em;
+            font-weight: 600;
+            color: var(--th-text);
+        }
+
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #94a3b8; transition: .3s; border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+            background-color: white; transition: .3s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--btn-action); }
+        input:checked + .slider:before { transform: translateX(20px); }
 
         .status-banner {
             background: #f1f5f9;
             border: 1px solid var(--border-color);
-            padding: 10px 14px;
-            border-radius: 10px;
+            padding: 12px 16px;
+            border-radius: 12px;
             margin-bottom: 12px;
+            font-size: 0.88em;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
-        .badge {
-            background: var(--badge-green);
-            color: var(--badge-green-text);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 0.8em;
+        .badge-active { background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 8px; font-weight: 700; }
+        .badge-blocked { background: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 8px; font-weight: 700; }
+
+        .extra-btn {
+            background: #f59e0b; color: white; border: none; padding: 6px 12px;
+            border-radius: 12px; font-size: 0.8em; font-weight: 700; cursor: pointer;
         }
 
-        .table-wrapper {
-            overflow-x: auto;
-            max-height: 55vh;
+        .content-card {
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 16px;
+            padding: 16px;
+            background: #fff;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+        .table-wrapper { overflow-x: auto; max-height: 55vh; border-radius: 10px; }
+        table { width: 100%; border-collapse: separate; border-spacing: 4px 6px; }
+        th { background: var(--th-bg); color: var(--th-text); padding: 10px; font-size: 0.85em; font-weight: 700; position: sticky; top: 0; }
+        td { padding: 8px; font-size: 0.88em; text-align: center; background: #f8fafc; border-radius: 6px; }
+        td.prod-name { text-align: left; font-weight: 600; padding-left: 12px; }
 
-        th {
-            background: var(--th-bg);
-            color: var(--th-text);
-            padding: 10px;
-            position: sticky;
-            top: 0;
-            font-size: 0.9em;
-        }
-
-        td {
-            padding: 8px;
-            border-bottom: 1px solid var(--border-color);
-            text-align: center;
-        }
-
-        td.prod-name { text-align: left; padding-left: 12px; font-weight: 600; }
+        .dif-ok { color: #10b981; font-weight: 700; }
+        .dif-bad { color: #ef4444; font-weight: 700; }
 
         input[type="number"] {
-            width: 70px;
-            padding: 5px;
-            text-align: center;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
+            width: 70px; padding: 6px 4px; text-align: center; font-size: 0.9em;
+            border: 1px solid var(--border-color); border-radius: 8px; outline: none;
         }
 
-        .footer-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 16px;
-        }
+        .message-box { text-align: center; padding: 40px 20px; color: #64748b; font-weight: 600; }
 
+        .footer-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
         .btn-enviar {
-            background: var(--btn-action);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-weight: 700;
-            cursor: pointer;
+            background: var(--btn-action); color: white; border: none; padding: 12px 24px;
+            border-radius: 25px; font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(27, 59, 111, 0.2);
         }
-
-        .btn-enviar:disabled { background: #cbd5e1; cursor: not-allowed; }
+        .btn-enviar:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; }
     </style>
 </head>
 <body>
 
 <div class="main-container">
     <div class="banner">
-        <img src="https://lh3.googleusercontent.com/d/1prUXBfN44PWRGggwhEJAgQeltmvMS33k" alt="Logo" class="company-logo">
+        <div class="banner-logo-container">
+            <img src="https://lh3.googleusercontent.com/d/1prUXBfN44PWRGggwhEJAgQeltmvMS33k" alt="Logo Hostal Doña Aurora" class="company-logo">
+        </div>
         <button class="logout-btn" onclick="location.reload()">🔒 Salir</button>
     </div>
 
     <div class="toolbar">
         <div class="search-container">
+            <span class="search-icon">🔍</span>
             <input type="text" id="search" placeholder="Buscar producto..." oninput="filtrarProductos()">
         </div>
-        <div class="date-display">📅 <span id="fecha-hoy">--/--</span></div>
+
+        <div class="date-display">
+            📅 <span id="fecha-hoy">-- --- ----</span>
+        </div>
+
+        <button id="btn-modo-compra" class="extra-btn" style="background:#10b981;" onclick="activarModoCompra()">➕ Registrar Compras</button>
+
+        <div class="toggle-container">
+            <span>Admin</span>
+            <label class="switch">
+                <input type="checkbox" id="mode-toggle" onchange="toggleModoSwitch()">
+                <span class="slider"></span>
+            </label>
+        </div>
     </div>
 
     <div class="status-banner">
         <div><strong>Vista:</strong> <span id="status-text">Cargando...</span></div>
-        <div id="status-badge" class="badge">--</div>
+        <div style="display:flex; gap:8px; align-items:center;">
+            <button id="btn-extra" class="extra-btn" style="display:none;" onclick="abrirHorarioExtraordinario()">🔓 Horario Extra</button>
+            <div id="status-badge" class="badge-active">--</div>
+        </div>
     </div>
 
-    <div class="table-wrapper">
-        <table id="main-table">
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                </tr>
-            </thead>
-            <tbody id="tbody">
-                <tr><td colspan="2">Cargando lista de productos...</td></tr>
-            </tbody>
-        </table>
+    <div class="content-card">
+        <div class="table-wrapper">
+            <table id="main-table">
+                <thead id="thead"></thead>
+                <tbody id="tbody"></tbody>
+            </table>
+            <div id="msg-blocked" class="message-box" style="display:none;"></div>
+        </div>
     </div>
 
     <div class="footer-bar">
@@ -211,121 +246,373 @@
 </div>
 
 <script>
-    // URL de tu Web App de Google Apps Script
-    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxbsG9JyJV8xHUXfbYIoEXbsqVmBUoRrAgZ-65YXY0ymea1wVZv9PPiqs_e5pkP-4ey/exec";
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbwrR4KQ20N2VHkR15o3WxAfbApRaF9rpoZEQp7dYtnLO8j0iDBnICEgZuK0niszSj6n/exec";
+    const CLAVE = "2026";
+    const CLAVE_COMPRAS = "2710";
 
-    let productos = [];
-    let vistaActual = "matutina";
+    let isAdmin = false;
+    let horarioExtraordinario = false;
+    let modoCompra = false;
 
-    document.addEventListener("DOMContentLoaded", () => {
-        inicializar();
-    });
+    const hoyStr = new Date().toISOString().split('T')[0];
+    const fechaGuardada = localStorage.getItem('fechaUltimaCaptura');
 
-    async function inicializar() {
-        try {
-            const resEstado = await fetch(`${URL_SCRIPT}?action=obtenerEstado`);
-            const estado = await resEstado.json();
-            
-            if (estado.fecha) {
-                document.getElementById("fecha-hoy").innerText = estado.fecha;
+    if (fechaGuardada !== hoyStr) {
+        localStorage.setItem('capturaMatutina', 'false');
+        localStorage.setItem('capturaVespertina', 'false');
+        localStorage.setItem('fechaUltimaCaptura', hoyStr);
+    }
+
+    let capturaMatutinaRealizada = localStorage.getItem('capturaMatutina') === 'true';
+    let capturaVespertinaRealizada = localStorage.getItem('capturaVespertina') === 'true';
+
+    const listaNombres = [
+        "AGUA 1 1/2", "AGUA GALON", "AGUA 1 1/2 SABOR", "ALCOHOL",
+        "BOING 1/2", "BUSCAPINA", "CEPILLO DENTAL", "CORTA UÑAS",
+        "CIGARROS", "CONDON", "COTONETES", "CREMA HINDS",
+        "DESODORANTE HOMBRE", "DESODORANTE MUJER", "ENCENDEDOR",
+        "GEL CHICO", "GEL GRANDE", "IBUPROFENO", "JABON PALMOLIVE",
+        "JABON ZEST", "JARRITO 2 LITROS", "LORATAINA", "PALOMITAS",
+        "PAPEL HIGIENICO", "PARACETAMOL", "PASTA COLGATE",
+        "PASTA LUMINUS WHITE", "PEPTO BISMOL", "POMADA LABIOS",
+        "RASTRILLO 2 HOJAS", "RASTRILLO 3 HOJAS", "RED COLA 2 LTS",
+        "RITZ", "ROSEL", "SAL DE UVAS PICOT", "SEDALMERK",
+        "SHAMPOO CAPRICE", "SHAMPOO PALMOLIVE", "SHAMPOO PANTENE",
+        "SHAMPOO H & SH", "SOPA MARUCHAN", "SUERO ELECTROLIT", "TALCO", 
+        "TOALLA FEMENINA", "TOALLA FEM NOCTURNA", "ZACATE CHICO", "ZACATE GRANDE",
+        "CABLE TIPO C", "CUBO TIPO C", "CABLE IPHONE",
+        "CARGADOR DE IPHONE", "PANTENE G", "COLGATE G"
+    ];
+
+    let productos = listaNombres.map(nombre => ({
+        n: nombre, s: '', c: '', vMat: '', vNoc: '', vTotal: 0, f: '', dif: 0
+    }));
+
+    function CargarFecha() {
+        const opciones = { day: '2-digit', month: 'short', year: 'numeric' };
+        document.getElementById('fecha-hoy').innerText = new Date().toLocaleDateString('es-ES', opciones).toUpperCase();
+    }
+
+    function activarModoCompra() {
+        if (!modoCompra) {
+            const pass = prompt("Acceso a Compras (Alejandra Paredes) - Ingrese PIN:");
+            if (pass === CLAVE_COMPRAS) {
+                modoCompra = true;
+                const btn = document.getElementById('btn-modo-compra');
+                btn.style.background = "#ef4444";
+                btn.innerText = "✖ Cancelar Compras";
+                render();
+            } else if (pass !== null && pass !== "") {
+                alert("🔒 PIN incorrecto. Acceso denegado.");
             }
-
-            document.getElementById("status-text").innerText = "Captura Matutina";
-            document.getElementById("status-badge").innerText = "Turno Mañana";
-
-            await cargarProductos();
-        } catch (e) {
-            console.error("Error al inicializar:", e);
-            document.getElementById("tbody").innerHTML = `<tr><td colspan="2" style="color:red;">Error de conexión con la base de datos.</td></tr>`;
+        } else {
+            modoCompra = false;
+            const btn = document.getElementById('btn-modo-compra');
+            btn.style.background = "#10b981";
+            btn.innerText = "➕ Registrar Compras";
+            render();
         }
     }
 
-    async function cargarProductos() {
-        try {
-            const res = await fetch(`${URL_SCRIPT}?action=obtenerProductos&vista=${vistaActual}`);
-            const data = await res.json();
+    function obtenerFaseActual() {
+        if (modoCompra) return "COMPRA";
+        if (isAdmin) return "ADMIN";
+        if (horarioExtraordinario) return "HORARIO_EXTRAORDINARIO";
 
-            if (Array.isArray(data)) {
-                productos = data;
-                renderizarTabla(productos);
+        if (capturaMatutinaRealizada && capturaVespertinaRealizada) {
+            return "CONTEO_FISICO";
+        }
+
+        const ahora = new Date();
+        const mins = ahora.getHours() * 60 + ahora.getMinutes();
+
+        if (mins >= 18 * 60 && mins < 18 * 60 + 30) {
+            return capturaMatutinaRealizada ? "CONTEO_FISICO" : "VENTA_MATUTINA";
+        }
+
+        if (mins >= 6 * 60 && mins < 6 * 60 + 30) {
+            return capturaMatutinaRealizada ? "VENTA_VESPERTINA" : "BLOQUEADO_MATUTINA_PENDIENTE";
+        }
+
+        return "BLOQUEADO_FUERA_DE_HORARIO";
+    }
+
+    async function toggleModoSwitch() {
+        const toggle = document.getElementById('mode-toggle');
+        if (toggle.checked) {
+            const pass = prompt("Clave Admin:");
+            if (pass === CLAVE) {
+                isAdmin = true;
+                modoCompra = false;
+                await cargarEstadoServidor();
             } else {
-                alert("Error al cargar productos: " + (data.message || "Respuesta inválida"));
-                document.getElementById("tbody").innerHTML = `<tr><td colspan="2" style="color:red;">Error al cargar la lista.</td></tr>`;
+                alert("Clave incorrecta");
+                toggle.checked = false;
+                isAdmin = false;
             }
-        } catch (e) {
-            console.error("Error obteniendo productos:", e);
-            alert("Ocurrió un error al cargar la lista de productos.");
+        } else {
+            isAdmin = false;
+            horarioExtraordinario = false;
+            productos.forEach(p => {
+                p.s = ''; p.c = ''; p.vMat = ''; p.vNoc = ''; p.vTotal = 0; p.f = ''; p.dif = 0;
+            });
+        }
+        render();
+    }
+
+    function abrirHorarioExtraordinario() {
+        const pass = prompt("Ingrese clave Admin para abrir Horario Extraordinario:");
+        if (pass === CLAVE) {
+            horarioExtraordinario = true;
+            alert("🔓 Horario extraordinario activado.");
+            cargarEstadoServidor();
+        } else {
+            alert("Clave incorrecta.");
         }
     }
 
-    function renderizarTabla(lista) {
-        const tbody = document.getElementById("tbody");
-        tbody.innerHTML = "";
+    function calcularDiferencia(p) {
+        let s = parseInt(p.s) || 0;
+        let c = parseInt(p.c) || 0;
+        let vMat = parseInt(p.vMat) || 0;
+        let vNoc = parseInt(p.vNoc) || 0;
+        let f = parseInt(p.f) || 0;
+        let vTotal = vMat + vNoc;
 
-        document.getElementById("stat-total").innerText = lista.length;
+        let esperado = (s + c) - vTotal;
+        return f - esperado;
+    }
 
-        if (lista.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="2">No se encontraron productos.</td></tr>`;
-            return;
+    function validarEntrada(input, i, campo) {
+        if (input.value.includes('-')) {
+            input.value = input.value.replace(/-/g, '');
         }
 
-        lista.forEach((p, idx) => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td class="prod-name">${p.nombre}</td>
-                <td>
-                    <input type="number" min="0" id="input-${idx}" placeholder="0">
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
+        let val = parseInt(input.value);
+        if (isNaN(val) || val < 0) {
+            input.value = '';
+            productos[i][campo] = '';
+        } else {
+            productos[i][campo] = val;
+        }
+
+        let vMat = parseInt(productos[i].vMat) || 0;
+        let vNoc = parseInt(productos[i].vNoc) || 0;
+        productos[i].vTotal = vMat + vNoc;
+
+        productos[i].dif = calcularDiferencia(productos[i]);
+        
+        // Actualizar la celda de diferencia visualmente en modo Admin
+        const difTd = document.getElementById(`dif-${i}`);
+        if (difTd) {
+            difTd.innerText = productos[i].dif;
+            difTd.className = productos[i].dif === 0 ? 'dif-ok' : 'dif-bad';
+        }
+    }
+
+    function render() {
+        const fase = obtenerFaseActual();
+        const thead = document.getElementById('thead');
+        const statusText = document.getElementById('status-text');
+        const statusBadge = document.getElementById('status-badge');
+        const btnSend = document.getElementById('btn-send');
+        const btnExtra = document.getElementById('btn-extra');
+        const mainTable = document.getElementById('main-table');
+        const msgBlocked = document.getElementById('msg-blocked');
+
+        mainTable.style.display = "table";
+        msgBlocked.style.display = "none";
+        btnSend.disabled = false;
+        btnExtra.style.display = "none";
+
+        if (fase === "COMPRA") {
+            statusText.innerText = "Modo Registro de Compras (Alejandra Paredes)";
+            statusBadge.innerText = "COMPRAS";
+            statusBadge.className = "badge-active";
+            thead.innerHTML = "<tr><th>Producto</th><th>Cantidad Comprada</th></tr>";
+        }
+        else if (fase === "ADMIN" || fase === "HORARIO_EXTRAORDINARIO") {
+            statusText.innerText = fase === "ADMIN" ? "Modo Administración - Consulta y Edición de BD" : "Edición bajo Horario Extraordinario";
+            statusBadge.innerText = "ADMIN";
+            statusBadge.className = "badge-active";
+            thead.innerHTML = "<tr><th>Producto</th><th>Inicial</th><th>+Compra</th><th>-V. Mat</th><th>-V. Ves</th><th>Total V.</th><th>Físico</th><th>Diferencia</th></tr>";
+        } 
+        else if (fase === "VENTA_MATUTINA") {
+            statusText.innerText = "Captura Venta Matutina (Disponible: 18:00 - 18:30 hrs)";
+            statusBadge.innerText = "VENTA MATUTINA";
+            statusBadge.className = "badge-active";
+            thead.innerHTML = "<tr><th>Producto</th><th>Ventas Turno Matutino</th></tr>";
+        } 
+        else if (fase === "VENTA_VESPERTINA") {
+            statusText.innerText = "Captura Venta Vespertina (Disponible: 06:00 - 06:30 hrs)";
+            statusBadge.innerText = "VENTA VESPERTINA";
+            statusBadge.className = "badge-active";
+            thead.innerHTML = "<tr><th>Producto</th><th>Ventas Turno Vespertino</th></tr>";
+        } 
+        else if (fase === "CONTEO_FISICO") {
+            statusText.innerText = "Captura de Inventario Físico Final (A ciegas)";
+            statusBadge.innerText = "CONTEO FÍSICO";
+            statusBadge.className = "badge-active";
+            thead.innerHTML = "<tr><th>Producto</th><th>Conteo Físico Final</th></tr>";
+        } 
+        else if (fase === "BLOQUEADO_MATUTINA_PENDIENTE") {
+            statusText.innerText = "Captura bloqueada";
+            statusBadge.innerText = "MATUTINO PENDIENTE";
+            statusBadge.className = "badge-blocked";
+            mainTable.style.display = "none";
+            msgBlocked.style.display = "block";
+            msgBlocked.innerHTML = "⚠️ <strong>No se puede capturar el turno vespertino.</strong><br>La venta del turno matutino no fue realizada previa al corte.<br>Pida apoyo a Admin para abrir un horario extraordinario.";
+            btnSend.disabled = true;
+            btnExtra.style.display = "inline-block";
+        } 
+        else if (fase === "BLOQUEADO_FUERA_DE_HORARIO") {
+            statusText.innerText = "Captura fuera de horario de corte";
+            statusBadge.innerText = "FUERA DE HORARIO";
+            statusBadge.className = "badge-blocked";
+            mainTable.style.display = "none";
+            msgBlocked.style.display = "block";
+            msgBlocked.innerHTML = "⏰ <strong>Sistema Bloqueado.</strong><br>Horarios de corte:<br>- Venta Matutina: 18:00 a 18:30 hrs<br>- Venta Vespertina: 06:00 a 06:30 hrs<br><em>Usa '➕ Registrar Compras' para ingresar productos comprados en cualquier momento.</em>";
+            btnSend.disabled = true;
+            btnExtra.style.display = "inline-block";
+        }
+
+        filtrarProductos();
     }
 
     function filtrarProductos() {
-        const q = document.getElementById("search").value.toLowerCase().trim();
-        const filtrados = productos.filter(p => p.nombre.toLowerCase().includes(q));
-        renderizarTabla(filtrados);
+        const tbody = document.getElementById('tbody');
+        const query = document.getElementById('search').value.toLowerCase();
+        const fase = obtenerFaseActual();
+        tbody.innerHTML = "";
+
+        productos.forEach((p, i) => {
+            if (p.n.toLowerCase().includes(query)) {
+                let row = tbody.insertRow();
+                
+                if (fase === "COMPRA") {
+                    row.innerHTML = `
+                        <td class="prod-name">${p.n}</td>
+                        <td><input type="number" value="${p.c}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'c')"></td>`;
+                } else if (fase === "ADMIN" || fase === "HORARIO_EXTRAORDINARIO") {
+                    let difClass = p.dif === 0 ? 'dif-ok' : 'dif-bad';
+                    row.innerHTML = `
+                        <td class="prod-name">${p.n}</td>
+                        <td><input type="number" value="${p.s}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 's')"></td>
+                        <td><input type="number" value="${p.c}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'c')"></td>
+                        <td><input type="number" value="${p.vMat}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'vMat')"></td>
+                        <td><input type="number" value="${p.vNoc}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'vNoc')"></td>
+                        <td><strong>${p.vTotal}</strong></td>
+                        <td><input type="number" value="${p.f}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'f')"></td>
+                        <td id="dif-${i}" class="${difClass}">${p.dif}</td>`;
+                } else if (fase === "VENTA_MATUTINA") {
+                    row.innerHTML = `
+                        <td class="prod-name">${p.n}</td>
+                        <td><input type="number" value="${p.vMat}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'vMat')"></td>`;
+                } else if (fase === "VENTA_VESPERTINA") {
+                    row.innerHTML = `
+                        <td class="prod-name">${p.n}</td>
+                        <td><input type="number" value="${p.vNoc}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'vNoc')"></td>`;
+                } else if (fase === "CONTEO_FISICO") {
+                    row.innerHTML = `
+                        <td class="prod-name">${p.n}</td>
+                        <td><input type="number" value="${p.f}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'f')"></td>`;
+                }
+            }
+        });
+        document.getElementById('stat-total').innerText = productos.length;
+    }
+
+    async function cargarEstadoServidor() {
+        try {
+            const res = await fetch(URL_GAS);
+            const data = await res.json();
+            if (data) {
+                if (typeof data.matutinaCapturada !== 'undefined') {
+                    capturaMatutinaRealizada = data.matutinaCapturada;
+                    localStorage.setItem('capturaMatutina', capturaMatutinaRealizada);
+                }
+                if (typeof data.vespertinaCapturada !== 'undefined') {
+                    capturaVespertinaRealizada = data.vespertinaCapturada;
+                    localStorage.setItem('capturaVespertina', capturaVespertinaRealizada);
+                }
+                
+                if (data.items && data.items.length > 0 && (isAdmin || horarioExtraordinario)) {
+                    data.items.forEach(itemServidor => {
+                        let localItem = productos.find(p => p.n === itemServidor.nombre);
+                        if (localItem) {
+                            localItem.s = itemServidor.inicial !== undefined ? itemServidor.inicial : '';
+                            localItem.c = itemServidor.compra !== undefined ? itemServidor.compra : '';
+                            localItem.vMat = itemServidor.ventaMatutino !== undefined ? itemServidor.ventaMatutino : '';
+                            localItem.vNoc = itemServidor.ventaNocturno !== undefined ? itemServidor.ventaNocturno : '';
+                            localItem.vTotal = itemServidor.ventaTotal || 0;
+                            localItem.f = itemServidor.fisico !== undefined ? itemServidor.fisico : '';
+                            localItem.dif = itemServidor.diferencia !== undefined ? itemServidor.diferencia : 0;
+                        }
+                    });
+                }
+                render();
+            }
+        } catch (e) {
+            render();
+        }
     }
 
     async function enviar() {
-        const btnSend = document.getElementById("btn-send");
-        btnSend.disabled = true;
-        btnSend.innerText = "Enviando...";
+        const btn = document.getElementById('btn-send');
+        btn.disabled = true;
+        btn.innerText = "Enviando... ⏳";
 
-        const datosEnviar = productos.map((p, idx) => {
-            const el = document.getElementById(`input-${idx}`);
-            return {
-                nombre: p.nombre,
-                valor: el ? parseFloat(el.value) || 0 : 0
-            };
-        });
+        const fase = obtenerFaseActual();
+
+        if (fase === "VENTA_MATUTINA") {
+            capturaMatutinaRealizada = true;
+            localStorage.setItem('capturaMatutina', 'true');
+        }
+        if (fase === "VENTA_VESPERTINA") {
+            capturaVespertinaRealizada = true;
+            localStorage.setItem('capturaVespertina', 'true');
+        }
+
+        const data = productos.map(p => ({
+            rol: isAdmin ? "Admin" : (fase === "COMPRA" ? "Alejandra Paredes" : "Vendedor"),
+            fase: fase,
+            nombre: p.n,
+            inicial: p.s,
+            compra: p.c,
+            ventaMatutino: p.vMat,
+            ventaNocturno: p.vNoc,
+            fisico: p.f
+        }));
 
         try {
-            const res = await fetch(URL_SCRIPT, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain;charset=utf-8" },
-                body: JSON.stringify({
-                    action: "guardarCaptura",
-                    vista: vistaActual,
-                    datos: datosEnviar
-                })
+            await fetch(URL_GAS, { 
+                method: "POST", 
+                mode: "no-cors",
+                headers: { "Content-Type": "text/plain" },
+                body: JSON.stringify(data) 
             });
 
-            const result = await res.json();
-            if (result.status === "success") {
-                alert("¡Datos guardados correctamente!");
-                location.reload();
+            if (fase === "VENTA_MATUTINA") {
+                alert("✅ ¡Captura enviada con éxito!\n\nMuchas gracias Sra. Liliana por realizar la captura del turno matutino.");
+            } else if (fase === "VENTA_VESPERTINA") {
+                alert("✅ ¡Captura enviada con éxito!\n\nMuchas gracias Sr. Alberto Melchor por realizar la captura del turno vespertino.");
+            } else if (fase === "COMPRA") {
+                alert("✅ ¡Compras registradas con éxito por Alejandra Paredes!");
             } else {
-                alert("Error al guardar: " + result.message);
+                alert("✅ ¡Datos e inventario actualizados en la base de datos!");
             }
+
+            location.reload();
         } catch (e) {
-            console.error("Error al enviar:", e);
-            alert("Error de conexión al enviar los datos.");
-        } finally {
-            btnSend.disabled = false;
-            btnSend.innerText = "Enviar a Sheets ↑";
+            alert("❌ Error al enviar los datos.");
+            btn.disabled = false;
+            btn.innerText = "Enviar a Sheets ↑";
         }
     }
+
+    CargarFecha();
+    render();
+    cargarEstadoServidor();
 </script>
 </body>
 </html>

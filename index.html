@@ -109,9 +109,21 @@
             font-weight: 600;
             color: var(--th-text);
             background: var(--th-bg);
-            padding: 8px 14px;
+            padding: 6px 12px;
             border-radius: 20px;
             border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .date-display input[type="date"] {
+            border: none;
+            background: transparent;
+            font-weight: 700;
+            color: var(--th-text);
+            outline: none;
+            cursor: pointer;
         }
 
         .toggle-container {
@@ -152,6 +164,7 @@
 
         .badge-active { background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 8px; font-weight: 700; }
         .badge-blocked { background: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 8px; font-weight: 700; }
+        .badge-closed { background: #dcfce7; color: #166534; padding: 4px 10px; border-radius: 8px; font-weight: 700; }
 
         .extra-btn {
             background: #f59e0b; color: white; border: none; padding: 6px 12px;
@@ -207,7 +220,8 @@
         </div>
 
         <div class="date-display">
-            📅 <span id="fecha-hoy">-- --- ----</span>
+            📅 <span id="fecha-label">-- --- ----</span>
+            <input type="date" id="fecha-picker" style="display:none;" onchange="cambiarFechaAdmin(this.value)">
         </div>
 
         <button id="btn-modo-compra" class="extra-btn" style="background:#10b981;" onclick="activarModoCompra()">➕ Registrar Compras</button>
@@ -246,7 +260,7 @@
 </div>
 
 <script>
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbwrR4KQ20N2VHkR15o3WxAfbApRaF9rpoZEQp7dYtnLO8j0iDBnICEgZuK0niszSj6n/exec";
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbwouDhe6iUc3Etr3JvWqMw6JDisGUbNwYFtBWdyezFNyOuUKFpJvVFh9CQOzitJ3dOQ/exec";
     const CLAVE = "2026";
     const CLAVE_COMPRAS = "2710";
 
@@ -254,17 +268,10 @@
     let horarioExtraordinario = false;
     let modoCompra = false;
 
-    const hoyStr = new Date().toISOString().split('T')[0];
-    const fechaGuardada = localStorage.getItem('fechaUltimaCaptura');
-
-    if (fechaGuardada !== hoyStr) {
-        localStorage.setItem('capturaMatutina', 'false');
-        localStorage.setItem('capturaVespertina', 'false');
-        localStorage.setItem('fechaUltimaCaptura', hoyStr);
-    }
-
-    let capturaMatutinaRealizada = localStorage.getItem('capturaMatutina') === 'true';
-    let capturaVespertinaRealizada = localStorage.getItem('capturaVespertina') === 'true';
+    let fechaSeleccionada = new Date().toISOString().split('T')[0];
+    let capturaMatutinaRealizada = false;
+    let capturaVespertinaRealizada = false;
+    let inventarioCerrado = false;
 
     const listaNombres = [
         "AGUA 1 1/2", "AGUA GALON", "AGUA 1 1/2 SABOR", "ALCOHOL",
@@ -288,9 +295,19 @@
         n: nombre, s: '', c: '', vMat: '', vNoc: '', vTotal: 0, f: '', dif: 0
     }));
 
-    function CargarFecha() {
+    function CargarFechaUI() {
+        const partes = fechaSeleccionada.split('-');
+        const d = new Date(partes[0], partes[1] - 1, partes[2]);
         const opciones = { day: '2-digit', month: 'short', year: 'numeric' };
-        document.getElementById('fecha-hoy').innerText = new Date().toLocaleDateString('es-ES', opciones).toUpperCase();
+        document.getElementById('fecha-label').innerText = d.toLocaleDateString('es-ES', opciones).toUpperCase();
+        document.getElementById('fecha-picker').value = fechaSeleccionada;
+    }
+
+    function cambiarFechaAdmin(nuevaFecha) {
+        if (!isAdmin) return;
+        fechaSeleccionada = nuevaFecha;
+        CargarFechaUI();
+        cargarEstadoServidor();
     }
 
     function activarModoCompra() {
@@ -318,6 +335,7 @@
         if (modoCompra) return "COMPRA";
         if (isAdmin) return "ADMIN";
         if (horarioExtraordinario) return "HORARIO_EXTRAORDINARIO";
+        if (inventarioCerrado) return "INVENTARIO_CERRADO";
 
         if (capturaMatutinaRealizada && capturaVespertinaRealizada) {
             return "CONTEO_FISICO";
@@ -326,10 +344,12 @@
         const ahora = new Date();
         const mins = ahora.getHours() * 60 + ahora.getMinutes();
 
-        if (mins >= 18 * 60 && mins < 18 * 60 + 30) {
+        // INICIO DE CORTE MATUTINO A LAS 18:00 (18:00 - 18:30 hrs)
+        if (mins >= 18 * 60 && mins < (18 * 60 + 30)) {
             return capturaMatutinaRealizada ? "CONTEO_FISICO" : "VENTA_MATUTINA";
         }
 
+        // Venta Vespertina: 06:00 a 06:30 hrs
         if (mins >= 6 * 60 && mins < 6 * 60 + 30) {
             return capturaMatutinaRealizada ? "VENTA_VESPERTINA" : "BLOQUEADO_MATUTINA_PENDIENTE";
         }
@@ -339,11 +359,16 @@
 
     async function toggleModoSwitch() {
         const toggle = document.getElementById('mode-toggle');
+        const picker = document.getElementById('fecha-picker');
+        const label = document.getElementById('fecha-label');
+
         if (toggle.checked) {
             const pass = prompt("Clave Admin:");
             if (pass === CLAVE) {
                 isAdmin = true;
                 modoCompra = false;
+                picker.style.display = "inline-block";
+                label.style.display = "none";
                 await cargarEstadoServidor();
             } else {
                 alert("Clave incorrecta");
@@ -353,9 +378,11 @@
         } else {
             isAdmin = false;
             horarioExtraordinario = false;
-            productos.forEach(p => {
-                p.s = ''; p.c = ''; p.vMat = ''; p.vNoc = ''; p.vTotal = 0; p.f = ''; p.dif = 0;
-            });
+            picker.style.display = "none";
+            label.style.display = "inline";
+            fechaSeleccionada = new Date().toISOString().split('T')[0];
+            CargarFechaUI();
+            cargarEstadoServidor();
         }
         render();
     }
@@ -401,8 +428,7 @@
         productos[i].vTotal = vMat + vNoc;
 
         productos[i].dif = calcularDiferencia(productos[i]);
-        
-        // Actualizar la celda de diferencia visualmente en modo Admin
+
         const difTd = document.getElementById(`dif-${i}`);
         if (difTd) {
             difTd.innerText = productos[i].dif;
@@ -435,7 +461,7 @@
             statusText.innerText = fase === "ADMIN" ? "Modo Administración - Consulta y Edición de BD" : "Edición bajo Horario Extraordinario";
             statusBadge.innerText = "ADMIN";
             statusBadge.className = "badge-active";
-            thead.innerHTML = "<tr><th>Producto</th><th>Inicial</th><th>+Compra</th><th>-V. Mat</th><th>-V. Ves</th><th>Total V.</th><th>Físico</th><th>Diferencia</th></tr>";
+            thead.innerHTML = "<tr><th>Producto</th><th>Inicial (Previo)</th><th>+Compra</th><th>-V. Mat</th><th>-V. Ves</th><th>Total V.</th><th>Físico</th><th>Diferencia</th></tr>";
         } 
         else if (fase === "VENTA_MATUTINA") {
             statusText.innerText = "Captura Venta Matutina (Disponible: 18:00 - 18:30 hrs)";
@@ -455,6 +481,15 @@
             statusBadge.className = "badge-active";
             thead.innerHTML = "<tr><th>Producto</th><th>Conteo Físico Final</th></tr>";
         } 
+        else if (fase === "INVENTARIO_CERRADO") {
+            statusText.innerText = "Inventario del día completado y cerrado";
+            statusBadge.innerText = "CERRADO";
+            statusBadge.className = "badge-closed";
+            mainTable.style.display = "none";
+            msgBlocked.style.display = "block";
+            msgBlocked.innerHTML = "✅ <strong>El inventario de hoy ya ha sido capturado y cerrado.</strong><br>Gracias por su registro. Solicite apoyo a Admin si requiere alguna modificación.";
+            btnSend.disabled = true;
+        }
         else if (fase === "BLOQUEADO_MATUTINA_PENDIENTE") {
             statusText.innerText = "Captura bloqueada";
             statusBadge.innerText = "MATUTINO PENDIENTE";
@@ -524,19 +559,14 @@
 
     async function cargarEstadoServidor() {
         try {
-            const res = await fetch(URL_GAS);
+            const res = await fetch(`${URL_GAS}?fecha=${fechaSeleccionada}`);
             const data = await res.json();
             if (data) {
-                if (typeof data.matutinaCapturada !== 'undefined') {
-                    capturaMatutinaRealizada = data.matutinaCapturada;
-                    localStorage.setItem('capturaMatutina', capturaMatutinaRealizada);
-                }
-                if (typeof data.vespertinaCapturada !== 'undefined') {
-                    capturaVespertinaRealizada = data.vespertinaCapturada;
-                    localStorage.setItem('capturaVespertina', capturaVespertinaRealizada);
-                }
-                
-                if (data.items && data.items.length > 0 && (isAdmin || horarioExtraordinario)) {
+                capturaMatutinaRealizada = !!data.matutinaCapturada;
+                capturaVespertinaRealizada = !!data.vespertinaCapturada;
+                inventarioCerrado = !!data.inventarioCerrado;
+
+                if (data.items && data.items.length > 0) {
                     data.items.forEach(itemServidor => {
                         let localItem = productos.find(p => p.n === itemServidor.nombre);
                         if (localItem) {
@@ -564,38 +594,33 @@
 
         const fase = obtenerFaseActual();
 
-        if (fase === "VENTA_MATUTINA") {
-            capturaMatutinaRealizada = true;
-            localStorage.setItem('capturaMatutina', 'true');
-        }
-        if (fase === "VENTA_VESPERTINA") {
-            capturaVespertinaRealizada = true;
-            localStorage.setItem('capturaVespertina', 'true');
-        }
-
-        const data = productos.map(p => ({
-            rol: isAdmin ? "Admin" : (fase === "COMPRA" ? "Alejandra Paredes" : "Vendedor"),
+        const payload = {
+            fecha: fechaSeleccionada,
             fase: fase,
-            nombre: p.n,
-            inicial: p.s,
-            compra: p.c,
-            ventaMatutino: p.vMat,
-            ventaNocturno: p.vNoc,
-            fisico: p.f
-        }));
+            items: productos.map(p => ({
+                nombre: p.n,
+                inicial: p.s,
+                compra: p.c,
+                ventaMatutino: p.vMat,
+                ventaNocturno: p.vNoc,
+                fisico: p.f
+            }))
+        };
 
         try {
             await fetch(URL_GAS, { 
                 method: "POST", 
                 mode: "no-cors",
                 headers: { "Content-Type": "text/plain" },
-                body: JSON.stringify(data) 
+                body: JSON.stringify(payload) 
             });
 
             if (fase === "VENTA_MATUTINA") {
                 alert("✅ ¡Captura enviada con éxito!\n\nMuchas gracias Sra. Liliana por realizar la captura del turno matutino.");
             } else if (fase === "VENTA_VESPERTINA") {
                 alert("✅ ¡Captura enviada con éxito!\n\nMuchas gracias Sr. Alberto Melchor por realizar la captura del turno vespertino.");
+            } else if (fase === "CONTEO_FISICO") {
+                alert("✅ ¡Inventario Final capturado e Inventario Cerrado con éxito!");
             } else if (fase === "COMPRA") {
                 alert("✅ ¡Compras registradas con éxito por Alejandra Paredes!");
             } else {
@@ -610,7 +635,7 @@
         }
     }
 
-    CargarFecha();
+    CargarFechaUI();
     render();
     cargarEstadoServidor();
 </script>

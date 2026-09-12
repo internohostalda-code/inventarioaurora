@@ -33,7 +33,7 @@
 
         .main-container {
             width: 100%;
-            max-width: 1080px;
+            max-width: 1150px;
             background: var(--card-bg);
             border-radius: 20px;
             padding: 16px;
@@ -260,7 +260,7 @@
 </div>
 
 <script>
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbxWPRDNjUTF8wv5aoH3L02RVETIUxpKjIZvufWTlpWmjjS2EoOvXauxJQGM1gstrLou/exec";
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbwrkIPAxN9migqZ4qaINluVQ6wCUNk93MHwqz1i2jJpl15H64P9H8EXkZ1u-Gemc0b-/exec";
     const CLAVE = "2026";
     const CLAVE_COMPRAS = "2710";
 
@@ -292,7 +292,7 @@
     ];
 
     let productos = listaNombres.map(nombre => ({
-        n: nombre, s: '', c: '', vMat: '', vNoc: '', vTotal: 0, f: '', dif: 0
+        n: nombre, s: '', c: '', vMat: '', vNoc: '', vTotal: 0, teo: 0, f: '', dif: 0
     }));
 
     function CargarFechaUI() {
@@ -344,12 +344,10 @@
         const ahora = new Date();
         const mins = ahora.getHours() * 60 + ahora.getMinutes();
 
-        // INICIO DE CORTE MATUTINO A LAS 18:00 (18:00 - 18:30 hrs)
         if (mins >= 18 * 60 && mins < (18 * 60 + 30)) {
             return capturaMatutinaRealizada ? "CONTEO_FISICO" : "VENTA_MATUTINA";
         }
 
-        // Venta Vespertina: 06:00 a 06:30 hrs
         if (mins >= 6 * 60 && mins < 6 * 60 + 30) {
             return capturaMatutinaRealizada ? "VENTA_VESPERTINA" : "BLOQUEADO_MATUTINA_PENDIENTE";
         }
@@ -398,16 +396,21 @@
         }
     }
 
-    function calcularDiferencia(p) {
+    function recalcularFila(p) {
         let s = parseInt(p.s) || 0;
         let c = parseInt(p.c) || 0;
         let vMat = parseInt(p.vMat) || 0;
         let vNoc = parseInt(p.vNoc) || 0;
-        let f = parseInt(p.f) || 0;
-        let vTotal = vMat + vNoc;
 
-        let esperado = (s + c) - vTotal;
-        return f - esperado;
+        p.vTotal = vMat + vNoc;
+        p.teo = (s + c) - p.vTotal;
+
+        if (p.f === '' || p.f === null || isNaN(p.f)) {
+            p.dif = 0;
+        } else {
+            let f = parseInt(p.f) || 0;
+            p.dif = f - p.teo;
+        }
     }
 
     function validarEntrada(input, i, campo) {
@@ -415,24 +418,27 @@
             input.value = input.value.replace(/-/g, '');
         }
 
-        let val = parseInt(input.value);
-        if (isNaN(val) || val < 0) {
-            input.value = '';
+        if (input.value === '') {
             productos[i][campo] = '';
         } else {
-            productos[i][campo] = val;
+            let val = parseInt(input.value);
+            productos[i][campo] = (isNaN(val) || val < 0) ? '' : val;
         }
 
-        let vMat = parseInt(productos[i].vMat) || 0;
-        let vNoc = parseInt(productos[i].vNoc) || 0;
-        productos[i].vTotal = vMat + vNoc;
+        recalcularFila(productos[i]);
 
-        productos[i].dif = calcularDiferencia(productos[i]);
+        const teoTd = document.getElementById(`teo-${i}`);
+        if (teoTd) teoTd.innerText = productos[i].teo;
 
         const difTd = document.getElementById(`dif-${i}`);
         if (difTd) {
-            difTd.innerText = productos[i].dif;
-            difTd.className = productos[i].dif === 0 ? 'dif-ok' : 'dif-bad';
+            if (productos[i].f === '') {
+                difTd.innerText = '';
+                difTd.className = '';
+            } else {
+                difTd.innerText = productos[i].dif;
+                difTd.className = productos[i].dif === 0 ? 'dif-ok' : 'dif-bad';
+            }
         }
     }
 
@@ -461,7 +467,7 @@
             statusText.innerText = fase === "ADMIN" ? "Modo Administración - Consulta y Edición de BD" : "Edición bajo Horario Extraordinario";
             statusBadge.innerText = "ADMIN";
             statusBadge.className = "badge-active";
-            thead.innerHTML = "<tr><th>Producto</th><th>Inicial (Previo)</th><th>+Compra</th><th>-V. Mat</th><th>-V. Ves</th><th>Total V.</th><th>Físico</th><th>Diferencia</th></tr>";
+            thead.innerHTML = "<tr><th>Producto</th><th>Inicial (Previo)</th><th>+Compra</th><th>-V. Mat</th><th>-V. Ves</th><th>Total V.</th><th>Teórico</th><th>Físico</th><th>Diferencia</th></tr>";
         } 
         else if (fase === "VENTA_MATUTINA") {
             statusText.innerText = "Captura Venta Matutina (Disponible: 18:00 - 18:30 hrs)";
@@ -529,7 +535,8 @@
                         <td class="prod-name">${p.n}</td>
                         <td><input type="number" value="${p.c}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'c')"></td>`;
                 } else if (fase === "ADMIN" || fase === "HORARIO_EXTRAORDINARIO") {
-                    let difClass = p.dif === 0 ? 'dif-ok' : 'dif-bad';
+                    let difClass = (p.f === '') ? '' : (p.dif === 0 ? 'dif-ok' : 'dif-bad');
+                    let difTexto = (p.f === '') ? '' : p.dif;
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
                         <td><input type="number" value="${p.s}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 's')"></td>
@@ -537,8 +544,9 @@
                         <td><input type="number" value="${p.vMat}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'vMat')"></td>
                         <td><input type="number" value="${p.vNoc}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'vNoc')"></td>
                         <td><strong>${p.vTotal}</strong></td>
-                        <td><input type="number" value="${p.f}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'f')"></td>
-                        <td id="dif-${i}" class="${difClass}">${p.dif}</td>`;
+                        <td id="teo-${i}"><strong>${p.teo}</strong></td>
+                        <td><input type="number" value="${p.f}" placeholder="" min="0" oninput="validarEntrada(this, ${i}, 'f')"></td>
+                        <td id="dif-${i}" class="${difClass}">${difTexto}</td>`;
                 } else if (fase === "VENTA_MATUTINA") {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
@@ -550,7 +558,7 @@
                 } else if (fase === "CONTEO_FISICO") {
                     row.innerHTML = `
                         <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.f}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'f')"></td>`;
+                        <td><input type="number" value="${p.f}" placeholder="" min="0" step="1" oninput="validarEntrada(this, ${i}, 'f')"></td>`;
                 }
             }
         });
@@ -575,8 +583,9 @@
                             localItem.vMat = itemServidor.ventaMatutino !== undefined ? itemServidor.ventaMatutino : '';
                             localItem.vNoc = itemServidor.ventaNocturno !== undefined ? itemServidor.ventaNocturno : '';
                             localItem.vTotal = itemServidor.ventaTotal || 0;
-                            localItem.f = itemServidor.fisico !== undefined ? itemServidor.fisico : '';
-                            localItem.dif = itemServidor.diferencia !== undefined ? itemServidor.diferencia : 0;
+                            localItem.teo = itemServidor.teorico !== undefined ? itemServidor.teorico : 0;
+                            localItem.f = (itemServidor.fisico === "" || itemServidor.fisico === null || itemServidor.fisico === undefined) ? '' : itemServidor.fisico;
+                            recalcularFila(localItem);
                         }
                     });
                 }
@@ -627,7 +636,7 @@
                 alert("✅ ¡Datos e inventario actualizados en la base de datos!");
             }
 
-            location.reload();
+            setTimeout(() => { location.reload(); }, 1000);
         } catch (e) {
             alert("❌ Error al enviar los datos.");
             btn.disabled = false;

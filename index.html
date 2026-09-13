@@ -260,7 +260,7 @@
 </div>
 
 <script>
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbwrkIPAxN9migqZ4qaINluVQ6wCUNk93MHwqz1i2jJpl15H64P9H8EXkZ1u-Gemc0b-/exec";
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbxqkCtLlWWyQEkCy7zbMoYQYNlVpQXsvSI_xSI_YgUqd3VQvNg6MFGX3hBXHQtf2RF0/exec";
     const CLAVE = "2026";
     const CLAVE_COMPRAS = "2710";
 
@@ -344,11 +344,13 @@
         const ahora = new Date();
         const mins = ahora.getHours() * 60 + ahora.getMinutes();
 
-        if (mins >= 18 * 60 && mins < (18 * 60 + 30)) {
+        // NUEVO HORARIO MATUTINO: 17:50 a 19:00 hrs (1070 a 1140 mins)
+        if (mins >= (17 * 60 + 50) && mins < (19 * 60)) {
             return capturaMatutinaRealizada ? "CONTEO_FISICO" : "VENTA_MATUTINA";
         }
 
-        if (mins >= 6 * 60 && mins < 6 * 60 + 30) {
+        // NUEVO HORARIO VESPERTINO: 05:00 a 07:00 hrs (300 a 420 mins)
+        if (mins >= (5 * 60) && mins < (7 * 60)) {
             return capturaMatutinaRealizada ? "VENTA_VESPERTINA" : "BLOQUEADO_MATUTINA_PENDIENTE";
         }
 
@@ -470,13 +472,13 @@
             thead.innerHTML = "<tr><th>Producto</th><th>Inicial (Previo)</th><th>+Compra</th><th>-V. Mat</th><th>-V. Ves</th><th>Total V.</th><th>Teórico</th><th>Físico</th><th>Diferencia</th></tr>";
         } 
         else if (fase === "VENTA_MATUTINA") {
-            statusText.innerText = "Captura Venta Matutina (Disponible: 18:00 - 18:30 hrs)";
+            statusText.innerText = "Captura Venta Matutina (Disponible: 17:50 - 19:00 hrs)";
             statusBadge.innerText = "VENTA MATUTINA";
             statusBadge.className = "badge-active";
             thead.innerHTML = "<tr><th>Producto</th><th>Ventas Turno Matutino</th></tr>";
         } 
         else if (fase === "VENTA_VESPERTINA") {
-            statusText.innerText = "Captura Venta Vespertina (Disponible: 06:00 - 06:30 hrs)";
+            statusText.innerText = "Captura Venta Vespertina (Disponible: 05:00 - 07:00 hrs)";
             statusBadge.innerText = "VENTA VESPERTINA";
             statusBadge.className = "badge-active";
             thead.innerHTML = "<tr><th>Producto</th><th>Ventas Turno Vespertino</th></tr>";
@@ -512,7 +514,7 @@
             statusBadge.className = "badge-blocked";
             mainTable.style.display = "none";
             msgBlocked.style.display = "block";
-            msgBlocked.innerHTML = "⏰ <strong>Sistema Bloqueado.</strong><br>Horarios de corte:<br>- Venta Matutina: 18:00 a 18:30 hrs<br>- Venta Vespertina: 06:00 a 06:30 hrs<br><em>Usa '➕ Registrar Compras' para ingresar productos comprados en cualquier momento.</em>";
+            msgBlocked.innerHTML = "⏰ <strong>Sistema Bloqueado.</strong><br>Horarios de corte:<br>- Venta Matutina: 17:50 a 19:00 hrs<br>- Venta Vespertina: 05:00 a 07:00 hrs<br><em>Usa '➕ Registrar Compras' para ingresar productos comprados en cualquier momento.</em>";
             btnSend.disabled = true;
             btnExtra.style.display = "inline-block";
         }
@@ -649,4 +651,5 @@
     cargarEstadoServidor();
 </script>
 </body>
+    
 </html>

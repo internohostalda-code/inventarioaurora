@@ -260,7 +260,7 @@
 </div>
 
 <script>
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbxcCT60aB4OeuEbKY9W81FCUOBwUYJtTUbG66MtGdIBmnN0uDoqKMr3BgRtRMtEQ0Oy/exec";
+    const URL_GAS = "https://script.google.com/macros/s/AKfycbzHBNyi8p3KjYe7jzrmus19GxBaV8s52-lA_okZgIiFd6d8pG6cMPTJCd0G0nAo8kmD/exec";
     const CLAVE = "2026";
     const CLAVE_COMPRAS = "2710";
 
@@ -344,12 +344,12 @@
         const ahora = new Date();
         const mins = ahora.getHours() * 60 + ahora.getMinutes();
 
-        // NUEVO HORARIO MATUTINO: 17:50 a 19:00 hrs (1070 a 1140 mins)
+        // HORARIO MATUTINO: 17:50 a 19:00 hrs (1070 a 1140 mins)
         if (mins >= (17 * 60 + 50) && mins < (19 * 60)) {
             return capturaMatutinaRealizada ? "CONTEO_FISICO" : "VENTA_MATUTINA";
         }
 
-        // NUEVO HORARIO VESPERTINO: 05:00 a 07:00 hrs (300 a 420 mins)
+        // HORARIO VESPERTINO: 05:00 a 07:00 hrs (300 a 420 mins)
         if (mins >= (5 * 60) && mins < (7 * 60)) {
             return capturaMatutinaRealizada ? "VENTA_VESPERTINA" : "BLOQUEADO_MATUTINA_PENDIENTE";
         }
@@ -651,5 +651,4 @@
     cargarEstadoServidor();
 </script>
 </body>
-    
 </html>

@@ -8,16 +8,12 @@
         :root {
             --banner-gradient: linear-gradient(135deg, #0f2537 0%, #1b3b6f 100%);
             --btn-action: #1b3b6f;
-            --btn-action-hover: #0f2537;
-            --accent-gold: #d4af37;
             --th-bg: #e8f1f5;
             --th-text: #0f2537;
             --bg: #f4f7f9;
             --card-bg: #ffffff;
             --border-color: #d1e1e9;
             --text-dark: #1f2937;
-            --danger: #ef4444;
-            --success: #10b981;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -65,7 +61,6 @@
             height: auto;
             max-height: 140px;
             object-fit: contain;
-            filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.3));
         }
 
         .logout-btn {
@@ -260,20 +255,20 @@
 </div>
 
 <script>
-    const URL_GAS = "https://script.google.com/macros/s/AKfycbzHBNyi8p3KjYe7jzrmus19GxBaV8s52-lA_okZgIiFd6d8pG6cMPTJCd0G0nAo8kmD/exec";
-    const CLAVE = "2026";
-    const CLAVE_COMPRAS = "2710";
+    var URL_GAS = "https://script.google.com/macros/s/AKfycbxcCT60aB4OeuEbKY9W81FCUOBwUYJtTUbG66MtGdIBmnN0uDoqKMr3BgRtRMtEQ0Oy/exec";
+    var CLAVE = "2026";
+    var CLAVE_COMPRAS = "2710";
 
-    let isAdmin = false;
-    let horarioExtraordinario = false;
-    let modoCompra = false;
+    var isAdmin = false;
+    var horarioExtraordinario = false;
+    var modoCompra = false;
 
-    let fechaSeleccionada = new Date().toISOString().split('T')[0];
-    let capturaMatutinaRealizada = false;
-    let capturaVespertinaRealizada = false;
-    let inventarioCerrado = false;
+    var fechaSeleccionada = new Date().toISOString().split('T')[0];
+    var capturaMatutinaRealizada = false;
+    var capturaVespertinaRealizada = false;
+    var inventarioCerrado = false;
 
-    const listaNombres = [
+    var listaNombres = [
         "AGUA 1 1/2", "AGUA GALON", "AGUA 1 1/2 SABOR", "ALCOHOL",
         "BOING 1/2", "BUSCAPINA", "CEPILLO DENTAL", "CORTA UÑAS",
         "CIGARROS", "CONDON", "COTONETES", "CREMA HINDS",
@@ -291,14 +286,14 @@
         "CARGADOR DE IPHONE", "PANTENE G", "COLGATE G"
     ];
 
-    let productos = listaNombres.map(nombre => ({
-        n: nombre, s: '', c: '', vMat: '', vNoc: '', vTotal: 0, teo: 0, f: '', dif: 0
-    }));
+    var productos = listaNombres.map(function(nombre) {
+        return { n: nombre, s: '', c: '', vMat: '', vNoc: '', vTotal: 0, teo: 0, f: '', dif: 0 };
+    });
 
     function CargarFechaUI() {
-        const partes = fechaSeleccionada.split('-');
-        const d = new Date(partes[0], partes[1] - 1, partes[2]);
-        const opciones = { day: '2-digit', month: 'short', year: 'numeric' };
+        var partes = fechaSeleccionada.split('-');
+        var d = new Date(partes[0], partes[1] - 1, partes[2]);
+        var opciones = { day: '2-digit', month: 'short', year: 'numeric' };
         document.getElementById('fecha-label').innerText = d.toLocaleDateString('es-ES', opciones).toUpperCase();
         document.getElementById('fecha-picker').value = fechaSeleccionada;
     }
@@ -312,10 +307,10 @@
 
     function activarModoCompra() {
         if (!modoCompra) {
-            const pass = prompt("Acceso a Compras (Alejandra Paredes) - Ingrese PIN:");
+            var pass = prompt("Acceso a Compras (Alejandra Paredes) - Ingrese PIN:");
             if (pass === CLAVE_COMPRAS) {
                 modoCompra = true;
-                const btn = document.getElementById('btn-modo-compra');
+                var btn = document.getElementById('btn-modo-compra');
                 btn.style.background = "#ef4444";
                 btn.innerText = "✖ Cancelar Compras";
                 render();
@@ -324,9 +319,9 @@
             }
         } else {
             modoCompra = false;
-            const btn = document.getElementById('btn-modo-compra');
-            btn.style.background = "#10b981";
-            btn.innerText = "➕ Registrar Compras";
+            var btnAlt = document.getElementById('btn-modo-compra');
+            btnAlt.style.background = "#10b981";
+            btnAlt.innerText = "➕ Registrar Compras";
             render();
         }
     }
@@ -341,15 +336,13 @@
             return "CONTEO_FISICO";
         }
 
-        const ahora = new Date();
-        const mins = ahora.getHours() * 60 + ahora.getMinutes();
+        var ahora = new Date();
+        var mins = ahora.getHours() * 60 + ahora.getMinutes();
 
-        // HORARIO MATUTINO: 17:50 a 19:00 hrs (1070 a 1140 mins)
         if (mins >= (17 * 60 + 50) && mins < (19 * 60)) {
             return capturaMatutinaRealizada ? "CONTEO_FISICO" : "VENTA_MATUTINA";
         }
 
-        // HORARIO VESPERTINO: 05:00 a 07:00 hrs (300 a 420 mins)
         if (mins >= (5 * 60) && mins < (7 * 60)) {
             return capturaMatutinaRealizada ? "VENTA_VESPERTINA" : "BLOQUEADO_MATUTINA_PENDIENTE";
         }
@@ -357,19 +350,19 @@
         return "BLOQUEADO_FUERA_DE_HORARIO";
     }
 
-    async function toggleModoSwitch() {
-        const toggle = document.getElementById('mode-toggle');
-        const picker = document.getElementById('fecha-picker');
-        const label = document.getElementById('fecha-label');
+    function toggleModoSwitch() {
+        var toggle = document.getElementById('mode-toggle');
+        var picker = document.getElementById('fecha-picker');
+        var label = document.getElementById('fecha-label');
 
         if (toggle.checked) {
-            const pass = prompt("Clave Admin:");
+            var pass = prompt("Clave Admin:");
             if (pass === CLAVE) {
                 isAdmin = true;
                 modoCompra = false;
                 picker.style.display = "inline-block";
                 label.style.display = "none";
-                await cargarEstadoServidor();
+                cargarEstadoServidor();
             } else {
                 alert("Clave incorrecta");
                 toggle.checked = false;
@@ -388,7 +381,7 @@
     }
 
     function abrirHorarioExtraordinario() {
-        const pass = prompt("Ingrese clave Admin para abrir Horario Extraordinario:");
+        var pass = prompt("Ingrese clave Admin para abrir Horario Extraordinario:");
         if (pass === CLAVE) {
             horarioExtraordinario = true;
             alert("🔓 Horario extraordinario activado.");
@@ -399,10 +392,10 @@
     }
 
     function recalcularFila(p) {
-        let s = parseInt(p.s) || 0;
-        let c = parseInt(p.c) || 0;
-        let vMat = parseInt(p.vMat) || 0;
-        let vNoc = parseInt(p.vNoc) || 0;
+        var s = parseInt(p.s) || 0;
+        var c = parseInt(p.c) || 0;
+        var vMat = parseInt(p.vMat) || 0;
+        var vNoc = parseInt(p.vNoc) || 0;
 
         p.vTotal = vMat + vNoc;
         p.teo = (s + c) - p.vTotal;
@@ -410,29 +403,29 @@
         if (p.f === '' || p.f === null || isNaN(p.f)) {
             p.dif = 0;
         } else {
-            let f = parseInt(p.f) || 0;
+            var f = parseInt(p.f) || 0;
             p.dif = f - p.teo;
         }
     }
 
     function validarEntrada(input, i, campo) {
-        if (input.value.includes('-')) {
+        if (input.value.indexOf('-') !== -1) {
             input.value = input.value.replace(/-/g, '');
         }
 
         if (input.value === '') {
             productos[i][campo] = '';
         } else {
-            let val = parseInt(input.value);
+            var val = parseInt(input.value);
             productos[i][campo] = (isNaN(val) || val < 0) ? '' : val;
         }
 
         recalcularFila(productos[i]);
 
-        const teoTd = document.getElementById(`teo-${i}`);
+        var teoTd = document.getElementById('teo-' + i);
         if (teoTd) teoTd.innerText = productos[i].teo;
 
-        const difTd = document.getElementById(`dif-${i}`);
+        var difTd = document.getElementById('dif-' + i);
         if (difTd) {
             if (productos[i].f === '') {
                 difTd.innerText = '';
@@ -445,14 +438,14 @@
     }
 
     function render() {
-        const fase = obtenerFaseActual();
-        const thead = document.getElementById('thead');
-        const statusText = document.getElementById('status-text');
-        const statusBadge = document.getElementById('status-badge');
-        const btnSend = document.getElementById('btn-send');
-        const btnExtra = document.getElementById('btn-extra');
-        const mainTable = document.getElementById('main-table');
-        const msgBlocked = document.getElementById('msg-blocked');
+        var fase = obtenerFaseActual();
+        var thead = document.getElementById('thead');
+        var statusText = document.getElementById('status-text');
+        var statusBadge = document.getElementById('status-badge');
+        var btnSend = document.getElementById('btn-send');
+        var btnExtra = document.getElementById('btn-extra');
+        var mainTable = document.getElementById('main-table');
+        var msgBlocked = document.getElementById('msg-blocked');
 
         mainTable.style.display = "table";
         msgBlocked.style.display = "none";
@@ -495,7 +488,7 @@
             statusBadge.className = "badge-closed";
             mainTable.style.display = "none";
             msgBlocked.style.display = "block";
-            msgBlocked.innerHTML = "✅ <strong>El inventario de hoy ya ha sido capturado y cerrado.</strong><br>Gracias por su registro. Solicite apoyo a Admin si requiere alguna modificación.";
+            msgBlocked.innerHTML = "✅ <strong>El inventario de hoy ya ha sido capturado y cerrado.</strong><br>Gracias por su registro.";
             btnSend.disabled = true;
         }
         else if (fase === "BLOQUEADO_MATUTINA_PENDIENTE") {
@@ -523,109 +516,106 @@
     }
 
     function filtrarProductos() {
-        const tbody = document.getElementById('tbody');
-        const query = document.getElementById('search').value.toLowerCase();
-        const fase = obtenerFaseActual();
+        var tbody = document.getElementById('tbody');
+        var query = document.getElementById('search').value.toLowerCase();
+        var fase = obtenerFaseActual();
         tbody.innerHTML = "";
 
-        productos.forEach((p, i) => {
-            if (p.n.toLowerCase().includes(query)) {
-                let row = tbody.insertRow();
+        productos.forEach(function(p, i) {
+            if (p.n.toLowerCase().indexOf(query) !== -1) {
+                var row = tbody.insertRow();
                 
                 if (fase === "COMPRA") {
-                    row.innerHTML = `
-                        <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.c}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'c')"></td>`;
+                    row.innerHTML = '<td class="prod-name">' + p.n + '</td>' +
+                        '<td><input type="number" value="' + p.c + '" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ' + i + ', \'c\')"></td>';
                 } else if (fase === "ADMIN" || fase === "HORARIO_EXTRAORDINARIO") {
-                    let difClass = (p.f === '') ? '' : (p.dif === 0 ? 'dif-ok' : 'dif-bad');
-                    let difTexto = (p.f === '') ? '' : p.dif;
-                    row.innerHTML = `
-                        <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.s}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 's')"></td>
-                        <td><input type="number" value="${p.c}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'c')"></td>
-                        <td><input type="number" value="${p.vMat}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'vMat')"></td>
-                        <td><input type="number" value="${p.vNoc}" placeholder="0" min="0" oninput="validarEntrada(this, ${i}, 'vNoc')"></td>
-                        <td><strong>${p.vTotal}</strong></td>
-                        <td id="teo-${i}"><strong>${p.teo}</strong></td>
-                        <td><input type="number" value="${p.f}" placeholder="" min="0" oninput="validarEntrada(this, ${i}, 'f')"></td>
-                        <td id="dif-${i}" class="${difClass}">${difTexto}</td>`;
+                    var difClass = (p.f === '') ? '' : (p.dif === 0 ? 'dif-ok' : 'dif-bad');
+                    var difTexto = (p.f === '') ? '' : p.dif;
+                    row.innerHTML = '<td class="prod-name">' + p.n + '</td>' +
+                        '<td><input type="number" value="' + p.s + '" placeholder="0" min="0" oninput="validarEntrada(this, ' + i + ', \'s\')"></td>' +
+                        '<td><input type="number" value="' + p.c + '" placeholder="0" min="0" oninput="validarEntrada(this, ' + i + ', \'c\')"></td>' +
+                        '<td><input type="number" value="' + p.vMat + '" placeholder="0" min="0" oninput="validarEntrada(this, ' + i + ', \'vMat\')"></td>' +
+                        '<td><input type="number" value="' + p.vNoc + '" placeholder="0" min="0" oninput="validarEntrada(this, ' + i + ', \'vNoc\')"></td>' +
+                        '<td><strong>' + p.vTotal + '</strong></td>' +
+                        '<td id="teo-' + i + '"><strong>' + p.teo + '</strong></td>' +
+                        '<td><input type="number" value="' + p.f + '" placeholder="" min="0" oninput="validarEntrada(this, ' + i + ', \'f\')"></td>' +
+                        '<td id="dif-' + i + '" class="' + difClass + '">' + difTexto + '</td>';
                 } else if (fase === "VENTA_MATUTINA") {
-                    row.innerHTML = `
-                        <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.vMat}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'vMat')"></td>`;
+                    row.innerHTML = '<td class="prod-name">' + p.n + '</td>' +
+                        '<td><input type="number" value="' + p.vMat + '" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ' + i + ', \'vMat\')"></td>';
                 } else if (fase === "VENTA_VESPERTINA") {
-                    row.innerHTML = `
-                        <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.vNoc}" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ${i}, 'vNoc')"></td>`;
+                    row.innerHTML = '<td class="prod-name">' + p.n + '</td>' +
+                        '<td><input type="number" value="' + p.vNoc + '" placeholder="0" min="0" step="1" oninput="validarEntrada(this, ' + i + ', \'vNoc\')"></td>';
                 } else if (fase === "CONTEO_FISICO") {
-                    row.innerHTML = `
-                        <td class="prod-name">${p.n}</td>
-                        <td><input type="number" value="${p.f}" placeholder="" min="0" step="1" oninput="validarEntrada(this, ${i}, 'f')"></td>`;
+                    row.innerHTML = '<td class="prod-name">' + p.n + '</td>' +
+                        '<td><input type="number" value="' + p.f + '" placeholder="" min="0" step="1" oninput="validarEntrada(this, ' + i + ', \'f\')"></td>';
                 }
             }
         });
         document.getElementById('stat-total').innerText = productos.length;
     }
 
-    async function cargarEstadoServidor() {
-        try {
-            const res = await fetch(`${URL_GAS}?fecha=${fechaSeleccionada}`);
-            const data = await res.json();
-            if (data) {
-                capturaMatutinaRealizada = !!data.matutinaCapturada;
-                capturaVespertinaRealizada = !!data.vespertinaCapturada;
-                inventarioCerrado = !!data.inventarioCerrado;
+    function cargarEstadoServidor() {
+        fetch(URL_GAS + '?fecha=' + fechaSeleccionada)
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                if (data) {
+                    capturaMatutinaRealizada = !!data.matutinaCapturada;
+                    capturaVespertinaRealizada = !!data.vespertinaCapturada;
+                    inventarioCerrado = !!data.inventarioCerrado;
 
-                if (data.items && data.items.length > 0) {
-                    data.items.forEach(itemServidor => {
-                        let localItem = productos.find(p => p.n === itemServidor.nombre);
-                        if (localItem) {
-                            localItem.s = itemServidor.inicial !== undefined ? itemServidor.inicial : '';
-                            localItem.c = itemServidor.compra !== undefined ? itemServidor.compra : '';
-                            localItem.vMat = itemServidor.ventaMatutino !== undefined ? itemServidor.ventaMatutino : '';
-                            localItem.vNoc = itemServidor.ventaNocturno !== undefined ? itemServidor.ventaNocturno : '';
-                            localItem.vTotal = itemServidor.ventaTotal || 0;
-                            localItem.teo = itemServidor.teorico !== undefined ? itemServidor.teorico : 0;
-                            localItem.f = (itemServidor.fisico === "" || itemServidor.fisico === null || itemServidor.fisico === undefined) ? '' : itemServidor.fisico;
-                            recalcularFila(localItem);
-                        }
-                    });
+                    if (data.items && data.items.length > 0) {
+                        data.items.forEach(function(itemServidor) {
+                            var localItem = productos.find(function(p) { return p.n === itemServidor.nombre; });
+                            if (localItem) {
+                                localItem.s = itemServidor.inicial !== undefined ? itemServidor.inicial : '';
+                                localItem.c = itemServidor.compra !== undefined ? itemServidor.compra : '';
+                                localItem.vMat = itemServidor.ventaMatutino !== undefined ? itemServidor.ventaMatutino : '';
+                                localItem.vNoc = itemServidor.ventaNocturno !== undefined ? itemServidor.ventaNocturno : '';
+                                localItem.vTotal = itemServidor.ventaTotal || 0;
+                                localItem.teo = itemServidor.teorico !== undefined ? itemServidor.teorico : 0;
+                                localItem.f = (itemServidor.fisico === "" || itemServidor.fisico === null || itemServidor.fisico === undefined) ? '' : itemServidor.fisico;
+                                recalcularFila(localItem);
+                            }
+                        });
+                    }
+                    render();
                 }
+            })
+            .catch(function(e) {
                 render();
-            }
-        } catch (e) {
-            render();
-        }
+            });
     }
 
-    async function enviar() {
-        const btn = document.getElementById('btn-send');
+    function enviar() {
+        var btn = document.getElementById('btn-send');
         btn.disabled = true;
         btn.innerText = "Enviando... ⏳";
 
-        const fase = obtenerFaseActual();
+        var fase = obtenerFaseActual();
 
-        const payload = {
+        var payload = {
             fecha: fechaSeleccionada,
             fase: fase,
-            items: productos.map(p => ({
-                nombre: p.n,
-                inicial: p.s,
-                compra: p.c,
-                ventaMatutino: p.vMat,
-                ventaNocturno: p.vNoc,
-                fisico: p.f
-            }))
+            items: productos.map(function(p) {
+                return {
+                    nombre: p.n,
+                    inicial: p.s,
+                    compra: p.c,
+                    ventaMatutino: p.vMat,
+                    ventaNocturno: p.vNoc,
+                    fisico: p.f
+                };
+            })
         };
 
-        try {
-            await fetch(URL_GAS, { 
-                method: "POST", 
-                mode: "no-cors",
-                headers: { "Content-Type": "text/plain" },
-                body: JSON.stringify(payload) 
-            });
-
+        fetch(URL_GAS, { 
+            method: "POST", 
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain" },
+            body: JSON.stringify(payload) 
+        })
+        .then(function() {
             if (fase === "VENTA_MATUTINA") {
                 alert("✅ ¡Captura enviada con éxito!\n\nMuchas gracias Sra. Liliana por realizar la captura del turno matutino.");
             } else if (fase === "VENTA_VESPERTINA") {
@@ -637,13 +627,13 @@
             } else {
                 alert("✅ ¡Datos e inventario actualizados en la base de datos!");
             }
-
-            setTimeout(() => { location.reload(); }, 1000);
-        } catch (e) {
+            setTimeout(function() { location.reload(); }, 1000);
+        })
+        .catch(function() {
             alert("❌ Error al enviar los datos.");
             btn.disabled = false;
             btn.innerText = "Enviar a Sheets ↑";
-        }
+        });
     }
 
     CargarFechaUI();
